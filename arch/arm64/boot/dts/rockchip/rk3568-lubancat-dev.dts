@@ -7,14 +7,15 @@
 /dts-v1/;
 
 #include "rk3568-lubancat-dev.dtsi"
+#include "rk3568-lubancat-dev-cam.dtsi"
 
 / {
-    model = "AIO-3568J HDMI (Linux)";
+    model = "LubanCat-RK3568 HDMI";
     compatible = "rockchip,rk3568-lubancat-dev", "rockchip,rk3568";
 
 };
 
-// &route_hdmi {
-//     status = "okay";
-//     connect = <&vp0_out_hdmi>;
-// };
+&route_hdmi {
+    status = "okay";
+    connect = <&vp0_out_hdmi>;
+};

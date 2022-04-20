@@ -1,0 +1,298 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright (c) 2020 Rockchip Electronics Co., Ltd.
+ *
+ */
+
+/ {
+	ext_cam0_clk: external-camera0-clock {
+        compatible = "fixed-clock";
+        clock-frequency = <24000000>;
+        clock-output-names = "CLK_CAMERA0_24MHZ";
+        #clock-cells = <0>;
+    };
+
+	ext_cam1_clk: external-camera1-clock {
+        compatible = "fixed-clock";
+        clock-frequency = <24000000>;
+        clock-output-names = "CLK_CAMERA1_24MHZ";
+        #clock-cells = <0>;
+    };
+};
+
+&rkisp {
+	status = "okay";
+};
+
+&rkisp_mmu {
+	status = "okay";
+};
+
+&rkisp_vir0 {
+	status = "okay";
+	port {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		isp0_in: endpoint@0 {
+			reg = <0>;
+			remote-endpoint = <&dphy1_out>;
+		};
+	};
+};
+
+&rkisp_vir1 {
+	status = "okay";
+	port {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		isp1_in: endpoint@0 {
+			reg = <0>;
+			remote-endpoint = <&mipi_lvds_sditf>;
+		};
+	};
+};
+
+&csi2_dphy_hw {
+	status = "okay";
+};
+
+&csi2_dphy0 {
+	status = "disabled";
+};
+
+&csi2_dphy1 {
+	status = "okay";
+	/*
+	 * dphy1 only used for split mode,
+	 * can be used concurrently with dphy2
+	 * full mode and split mode are mutually exclusive
+	 */
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			dphy1_in: endpoint@1 {
+				reg = <1>;
+				remote-endpoint = <&cam0_ov5640_out>;
+				data-lanes = <1 2>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			dphy1_out: endpoint@1 {
+				reg = <1>;
+				remote-endpoint = <&isp0_in>;
+				// remote-endpoint = <&mipi_csi2_input>;
+			};
+		};
+	};
+};
+
+&csi2_dphy2 {
+	status = "okay";
+	/*
+	 * dphy2 only used for split mode,
+	 * can be used concurrently with dphy1
+	 * full mode and split mode are mutually exclusive
+	 */
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			dphy2_in: endpoint@1 {
+				reg = <1>;
+				remote-endpoint = <&cam1_ov5640_out>;
+				data-lanes = <1 2>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			dphy2_out: endpoint@1 {
+				reg = <1>;
+				remote-endpoint = <&mipi_csi2_input>;
+				// remote-endpoint = <&isp1_in>;
+			};
+		};
+	};
+};
+
+&mipi_csi2 {
+    status = "okay";
+
+    ports {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        port@0 {
+            reg = <0>;
+            #address-cells = <1>;
+            #size-cells = <0>;
+
+            mipi_csi2_input: endpoint@1 {
+                    reg = <1>;
+                    remote-endpoint = <&dphy2_out>;
+                    data-lanes = <1 2>;
+            };
+        };
+
+        port@1 {
+            reg = <1>;
+            #address-cells = <1>;
+            #size-cells = <0>;
+
+            mipi_csi2_output: endpoint@0 {
+                    reg = <0>;
+                    remote-endpoint = <&cif_mipi_in>;
+                    data-lanes = <1 2>;
+            };
+        };
+    };
+};
+
+&rkcif_mipi_lvds {
+    status = "okay";
+    port {
+        cif_mipi_in: endpoint {
+            remote-endpoint = <&mipi_csi2_output>;
+            data-lanes = <1 2>;
+        };
+    };
+};
+
+&rkcif_mipi_lvds_sditf {
+    status = "okay";
+    port {
+        mipi_lvds_sditf: endpoint {
+            remote-endpoint = <&isp1_in>;
+            data-lanes = <1 2>;
+        };
+    };
+};
+
+&rkcif_mmu {
+    status = "okay";
+};
+
+&rkcif {
+    status = "okay";
+};
+
+&i2c1 {
+	status = "okay";
+
+	cam0_ov5640: camera0@3c {
+		status = "okay";
+		compatible = "ovti,ov5640";
+		reg = <0x3c>;
+
+		clocks = <&ext_cam0_clk>;
+		clock-names = "xvclk";
+		// pinctrl-names = "default";
+		// pinctrl-0 = <&pinctrl_cam0>;
+
+		dovdd-supply = <&cam0_dovdd>; /* 1.8v */
+		avdd-supply = <&cam0_avdd>;  /* 2.8v */
+		dvdd-supply = <&cam0_dvdd>;  /* 1.5v */
+		reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_LOW>;
+		pwdn-gpios = <&gpio2 RK_PC1 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "rockchip,camera_default", "rockchip,camera_sleep";
+		rotation = <180>;
+
+		rockchip,camera-module-index = <0>;
+		rockchip,camera-module-facing = "back";
+		rockchip,camera-module-name = "NC";
+		rockchip,camera-module-lens-name = "NC";
+
+		port {
+			/* MIPI CSI bus endpoint */
+			cam0_ov5640_out: endpoint {
+					remote-endpoint = <&dphy1_in>;
+					// clock-lanes = <0>;
+					data-lanes = <1 2>;
+			};
+		};
+	};
+};
+
+&i2c5{
+	status = "okay";
+
+	cam1_ov5640: camera1@3c {
+		status = "okay";
+		compatible = "ovti,ov5640";
+		reg = <0x3c>;
+
+		clocks = <&ext_cam1_clk>;
+		clock-names = "xvclk";
+		// pinctrl-names = "default";
+		// pinctrl-0 = <&pinctrl_cam1>;
+
+		dovdd-supply = <&cam1_dovdd>; /* 1.8v */
+		avdd-supply = <&cam1_avdd>;  /* 2.8v */
+		dvdd-supply = <&cam1_dvdd>;  /* 1.5v */
+		reset-gpios = <&gpio3 RK_PB5 GPIO_ACTIVE_LOW>;
+		pwdn-gpios = <&gpio3 RK_PB0 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "rockchip,camera_default", "rockchip,camera_sleep";
+
+		rotation = <180>;
+
+		rockchip,camera-module-index = <0>;
+		rockchip,camera-module-facing = "back";
+		rockchip,camera-module-name = "NC";
+		rockchip,camera-module-lens-name = "NC";
+
+		port {
+			/* MIPI CSI bus endpoint */
+			cam1_ov5640_out: endpoint {
+					remote-endpoint = <&dphy2_in>;
+					// clock-lanes = <0>;
+					data-lanes = <1 2>;
+			};
+		};
+	};
+};
+
+&pwm11 {
+	status = "okay";
+};
+
+
+// &pinctrl {
+
+// 	cam {
+
+// 		pinctrl_cam0: pinctrl-cam0 {
+// 			rockchip,pins =
+// 				<2 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>,
+// 				<3 RK_PB6 RK_FUNC_GPIO &pcfg_pull_up>;
+// 		};
+
+//     	pinctrl_cam1: pinctrl-cam1 {
+// 			rockchip,pins =
+// 				<3 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>,
+// 				<3 RK_PB5 RK_FUNC_GPIO &pcfg_pull_up>;
+// 		};
+
+// 	};
+
+// };

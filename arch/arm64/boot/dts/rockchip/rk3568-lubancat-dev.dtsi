@@ -28,57 +28,66 @@
 		regulator-always-on;
 	};
 
-    // pcie_pi6c_oe: pcie-pi6c-oe-regulator {
-	// 	compatible = "regulator-fixed";
-	// 	//enable-active-high;
-	// 	gpio = <&gpio0 RK_PD4 GPIO_ACTIVE_LOW>;
-	// 	pinctrl-names = "default";
-	// 	pinctrl-0 = <&pcie_pi6c_oe_en>;
-	// 	regulator-name = "pcie_pi6c_oe_en";
-	// 	regulator-always-on;
-	// };
-
     vcc_4g_power: vcc-4g-power-regulator {
         compatible = "regulator-fixed";
-        enable-active-high;
-        gpio = <&gpio3 RK_PA7 GPIO_ACTIVE_HIGH>;
-        pinctrl-names = "default";
-        pinctrl-0 = <&vcc_4g_power_en>;
-        regulator-name = "vcc_4g_power_en";
-        regulator-always-on;
-    };
+		enable-active-high;
+		gpio = <&gpio3 RK_PA7 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&vcc_4g_power_en>;
+		regulator-name = "vcc_4g_power_en";
+		regulator-always-on;
+	};
 
 	leds: leds {
 		status = "okay";
 		compatible = "gpio-leds";
 
-		power_led: power {
-			label = "led_power";
-			linux,default-trigger = "ir-power-click";
-			default-state = "on";
-			gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_LOW>;
-			pinctrl-names = "default";
-			pinctrl-0 = <&led2_power>;
-		};
-
-		user_led: user {
-			label = "led_user";
-			linux,default-trigger = "ir-user-click";
-			default-state = "on";
-			gpios = <&gpio0 RK_PB0 GPIO_ACTIVE_LOW>;
-			pinctrl-names = "default";
-			pinctrl-0 = <&led1_power>;
-		};
-
-		fan_ctl: fan-ctl {
-			label = "led_fan_ctl";
-			linux,default-trigger = "ir-user-click";
+		led0: led0 {
+			label = "led0";
+			linux,default-trigger = "heartbeat";
 			default-state = "on";
 			gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_LOW>;
 			pinctrl-names = "default";
-			pinctrl-0 = <&led0_power>;
+			pinctrl-0 = <&led0_pin>;
+		};
+
+		led1: led1 {
+			label = "led1";
+			linux,default-trigger = "heartbeat";
+			default-state = "on";
+			gpios = <&gpio0 RK_PB0 GPIO_ACTIVE_LOW>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&led1_pin>;
+		};
+
+		led2: led2 {
+			label = "led2";
+			linux,default-trigger = "heartbeat";
+			default-state = "on";
+			gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_LOW>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&led2_pin>;
 		};
 	};
+};
+
+&xin32k {
+	status = "disabled";
+};
+
+&pwm2 {
+	status = "okay";
+};
+
+&i2c0 {
+        rx8010: rx8010@32 {
+                compatible = "epson,rx8010";
+                reg = <0x32>;
+                pinctrl-0 = <&rx8010_irq>;
+                interrupt-parent = <&gpio4>;
+                interrupts = <10 IRQ_TYPE_LEVEL_LOW>;
+                status = "okay";
+        };
 };
 
 &csi2_dphy0 {
@@ -95,7 +104,7 @@
 };
 
 &csi2_dphy2 {
-	status = "okay";
+	status = "disabled";
 	/*
 	* dphy2 only used for split mode,
 	* can be used  concurrently  with dphy1
@@ -114,26 +123,22 @@
 &i2c1 {
     status = "okay";
 };
-
+/*
 &i2c4 {
 	status = "okay";
 };
-
-&pca9555 {
-    status = "okay";
-};
+*/
+// &pca9555 {
+//     status = "disabled";
+// };
 
 &i2c5 {
     status = "okay";
 };
 
-&hym8563 {
-    status = "okay";
-};
-
-&mc3230 {
-    status = "okay";
-};
+// &mc3230 {
+//     status = "okay";
+// };
 
 &uart3 {
 	status = "okay";
@@ -144,7 +149,7 @@
 };
 
 &spi1 {
-	status = "okay";
+	status = "disabled";
 };
 
 &spi_wk2xxx {
@@ -159,7 +164,7 @@
         reset-gpios = <&gpio2 RK_PD6 GPIO_ACTIVE_HIGH>;
         vpcie3v3-supply = <&pcie30_3v3>;
 
-       status = "okay";
+       status = "disable";
 };
 
 &its {
@@ -190,7 +195,15 @@
 	led_status_value = <0x6940>;
 };
 
+&uart7 {
+	status = "disable";
+};
+
 &uart8 {
+	status = "okay";
+};
+
+&uart9 {
 	status = "okay";
 };
 
@@ -206,7 +219,7 @@
 };
 
 &wireless_wlan {
-	wifi_chip_type = "rtl8822cs";
+	wifi_chip_type = "ty4358";
 	status = "okay";
 };
 
@@ -247,36 +260,42 @@
 
 	usb {
 		vcc_hub_power_en: vcc-hub-power-en {
-			rockchip,pins =	<2 RK_PD7 RK_FUNC_GPIO &pcfg_pull_none>;
+			rockchip,pins = <2 RK_PD7 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
 		vcc_hub_reset_en: vcc-hub-reset-en {
 			rockchip,pins = <3 RK_PC3 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
-
-    // pcie {
-    //     pcie_pi6c_oe_en: pcie-pi6c-oe-en {
-	// 		rockchip,pins = <0 RK_PD4 RK_FUNC_GPIO &pcfg_pull_none>;
-	// 	};
-    // };
-
+/*
+    pcie {
+        pcie_pi6c_oe_en: pcie-pi6c-oe-en {
+			rockchip,pins = <3 RK_PA7 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+    };
+*/
 	4g {
 	    vcc_4g_power_en: vcc-4g-power-en {
 	        rockchip,pins = <3 RK_PA7 RK_FUNC_GPIO &pcfg_pull_none>;
 	    };
 	};
 
+	rx8010 {
+		rx8010_irq: rx8010-irq {
+				rockchip,pins = <0 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+
 	leds {
-	    led0_power: led0-power {
+	    led0_pin: led0-pin {
 	        rockchip,pins = <0 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
 	    };
 
-	    led1_power: led1-power {
+	    led1_pin: led1-pin {
 	        rockchip,pins = <0 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
 	    };
 
-	    led2_power: led2-power {
+	    led2_pin: led2-pin {
 	        rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
 	    };
 	};

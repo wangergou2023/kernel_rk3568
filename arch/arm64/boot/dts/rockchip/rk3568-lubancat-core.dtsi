@@ -13,6 +13,7 @@
 #include <dt-bindings/display/drm_mipi_dsi.h>
 #include <dt-bindings/sensor-dev.h>
 #include "rk3568.dtsi"
+#include "rk3568-linux.dtsi"
 
 / {
 	compatible = "rockchip,rk3568-lubancat-core", "rockchip,rk3568";
@@ -55,14 +56,6 @@
 		simple-audio-card,codec {
 				sound-dai = <&hdmi>;
 		};
-	};
-
-	rk_headset: rk-headset {
-		status = "disabled";
-		compatible = "rockchip_headset";
-		headset_gpio = <&gpio3 RK_PC2 GPIO_ACTIVE_LOW>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&hp_det>;
 	};
 
 	pdmics: dummy-codec {
@@ -159,6 +152,16 @@
 		pinctrl-0 = <&vcc5v0_host_en>;
 		regulator-name = "vcc5v0_host";
 		regulator-always-on;
+	};
+
+	vcc5v0_usb20_host: vcc5v0-usb20-host-regulator {
+			compatible = "regulator-fixed";
+			enable-active-high;
+			gpio = <&gpio0 RK_PD5 GPIO_ACTIVE_HIGH>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&vcc5v0_usb20_host_en>;
+			regulator-name = "vcc5v0_usb20_host";
+			regulator-always-on;
 	};
 
 	vcc5v0_otg: vcc5v0-otg-regulator {
@@ -537,11 +540,10 @@
 		rk809_codec: codec {
 			#sound-dai-cells = <0>;
 			compatible = "rockchip,rk809-codec", "rockchip,rk817-codec";
-			clocks = <&cru I2S1_MCLKOUT>;
+			clocks = <&cru I2S1_MCLKOUT_TX>;
 			clock-names = "mclk";
-			assigned-clocks = <&cru I2S1_MCLKOUT>, <&cru I2S1_MCLK_TX_IOE>;
-			assigned-clock-rates = <12288000>;
-			assigned-clock-parents = <&cru I2S1_MCLKOUT_TX>, <&cru I2S1_MCLKOUT_TX>;
+			assigned-clocks = <&cru I2S1_MCLKOUT_TX>;
+			assigned-clock-parents = <&cru CLK_I2S1_8CH_TX>;
 			pinctrl-names = "default","spk_gpio";
 			pinctrl-0 = <&i2s1m0_mclk>;
 			pinctrl-1 = <&spk_ctl_gpio>;
@@ -656,6 +658,12 @@
 	status = "okay";
 };
 
+&reserved_memory {
+	abc: abc@80900000{
+		reg = <0x0 0x80900000 0x0 0x100000>;
+	};
+};
+
 &bus_npu {
 	bus-supply = <&vdd_logic>;
 	pvtm-supply = <&vdd_cpu>;
@@ -671,11 +679,7 @@
 	bus-width = <8>;
 	supports-emmc;
 	non-removable;
-	mmc-ddr-1_8v;
-	mmc-hs200-1_8v;
 	max-frequency = <200000000>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&emmc_clk &emmc_cmd &emmc_bus8>;
 	status = "okay";
 };
 
@@ -713,12 +717,12 @@
 };
 
 &u2phy1_host {
-	phy-supply = <&vcc5v0_host>;
+	phy-supply = <&vcc5v0_usb20_host>;
 	status = "okay";
 };
 
 &u2phy1_otg {
-	phy-supply = <&vcc5v0_host>;
+	phy-supply = <&vcc5v0_usb20_host>;
 	status = "okay";
 };
 
@@ -828,6 +832,10 @@
 	usb {
 		vcc5v0_host_en: vcc5v0-host-en {
 			rockchip,pins =	<0 RK_PD6 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		vcc5v0_usb20_host_en: vcc5v0-usb20-host-en {
+			rockchip,pins = <0 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
 		vcc5v0_otg_en: vcc5v0-otg-en {

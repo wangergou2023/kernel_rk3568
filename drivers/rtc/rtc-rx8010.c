@@ -464,6 +464,7 @@ static int rx8010_probe(struct i2c_client *client,
 
 	rx8010->client = client;
 	i2c_set_clientdata(client, rx8010);
+	device_set_wakeup_capable(&client->dev, true);
 
 	err = rx8010_init_client(client);
 	if (err)
