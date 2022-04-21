@@ -103,7 +103,15 @@
                 regulator-always-on;
         };
 
-
+        vcc5v0_usb30_host: vcc5v0-usb30-host-regulator {
+                compatible = "regulator-fixed";
+                enable-active-high;
+                gpio = <&gpio0 RK_PD6 GPIO_ACTIVE_HIGH>;
+                pinctrl-names = "default";
+                pinctrl-0 = <&vcc5v0_usb30_host_en>;
+                regulator-name = "vcc5v0_usb30_host";
+                regulator-always-on;
+        };
 };
 
 &cpu0 {
@@ -601,6 +609,27 @@
         status = "okay";
 };
 
+/* USB3.0 Host1 */
+&usbhost30 {
+        status = "okay";
+};
+
+&usbhost_dwc3 {
+        status = "okay";
+};
+
+&u2phy0_host {
+        phy-supply = <&vcc5v0_usb30_host>;
+        status = "okay";
+};
+
+&usb2phy0 {
+        status = "okay";
+};
+
+&combphy1_usq {
+        status = "okay";
+};
 
 &pinctrl {
         pmic {
@@ -632,6 +661,10 @@
         usb {
                 vcc5v0_usb20_host_en: vcc5v0-usb20-host-en {
                         rockchip,pins = <0 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
+                };
+
+                vcc5v0_usb30_host_en: vcc5v0-usb30-host-en {
+                        rockchip,pins = <0 RK_PD6 RK_FUNC_GPIO &pcfg_pull_none>;
                 };
         };
 
