@@ -93,7 +93,16 @@
                 vin-supply = <&vcc5v0_sys>;
         };
 
-	
+        vcc5v0_usb20_host: vcc5v0-usb20-host-regulator {
+                compatible = "regulator-fixed";
+                enable-active-high;
+                gpio = <&gpio0 RK_PD5 GPIO_ACTIVE_HIGH>;
+                pinctrl-names = "default";
+                pinctrl-0 = <&vcc5v0_usb20_host_en>;
+                regulator-name = "vcc5v0_usb20_host";
+                regulator-always-on;
+        };
+
 
 };
 
@@ -574,6 +583,25 @@
         disable-win-move;
 };
 
+/* USB2.0 Host2 */
+&usb_host0_ehci {
+        status = "okay";
+};
+
+&usb_host0_ohci {
+        status = "okay";
+};
+
+&usb2phy1 {
+        status = "okay";
+};
+
+&u2phy1_otg {
+        phy-supply = <&vcc5v0_usb20_host>;
+        status = "okay";
+};
+
+
 &pinctrl {
         pmic {
                 pmic_int: pmic_int {
@@ -600,4 +628,11 @@
                         rockchip,pins = <3 RK_PC5 RK_FUNC_GPIO &pcfg_pull_up>;
                 };
         };
+
+        usb {
+                vcc5v0_usb20_host_en: vcc5v0-usb20-host-en {
+                        rockchip,pins = <0 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
+                };
+        };
+
 };
