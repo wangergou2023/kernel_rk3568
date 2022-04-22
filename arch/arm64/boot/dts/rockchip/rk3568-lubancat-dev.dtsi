@@ -219,7 +219,7 @@
 };
 
 &wireless_wlan {
-	wifi_chip_type = "ty4358";
+	wifi_chip_type = "rtl8822cs";
 	status = "okay";
 };
 
