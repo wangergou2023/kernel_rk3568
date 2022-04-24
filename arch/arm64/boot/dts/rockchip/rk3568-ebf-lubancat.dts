@@ -15,7 +15,8 @@
 #include "rk3568.dtsi"
 
 / {
-	compatible = "rockchip,rk3568-ebf-lubancat", "rockchip,rk3568";	
+	model = "EmbedFire LubanCat-RK3568";
+	compatible = "embedfire,lubancat-rk3568", "rockchip,rk3568";	
 
 	chosen: chosen {
                 bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0 root=PARTUUID=614e0000-0000 rw rootwait";
