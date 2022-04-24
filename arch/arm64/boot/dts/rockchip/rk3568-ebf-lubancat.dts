@@ -63,6 +63,10 @@
 			ftrace-size = <0x00000>;
 			pmsg-size = <0x50000>;
 		};
+
+		abc: abc@80900000{
+			reg = <0x0 0x80900000 0x0 0x100000>;
+		};
         };
 	
         dc_5v: dc-5v {
@@ -112,6 +116,17 @@
                 pinctrl-0 = <&vcc5v0_usb30_host_en>;
                 regulator-name = "vcc5v0_usb30_host";
                 regulator-always-on;
+        };
+
+        pcie30_3v3: gpio-regulator {
+                compatible = "regulator-gpio";
+                regulator-name = "pcie30_3v3";
+                regulator-min-microvolt = <100000>;
+                regulator-max-microvolt = <3300000>;
+                gpios = <&gpio0 RK_PD4 GPIO_ACTIVE_HIGH>;
+                gpios-states = <0x1>;
+                states = <100000 0x0
+                          3300000 0x1>;
         };
 };
 
@@ -696,6 +711,16 @@
                 compatible = "ethernet-phy-ieee802.3-c22";
                 reg = <0x0>;
         };
+};
+
+&pcie30phy {
+        status = "okay";
+};
+
+&pcie3x2 {
+        reset-gpios = <&gpio2 RK_PD6 GPIO_ACTIVE_HIGH>;
+        vpcie3v3-supply = <&pcie30_3v3>;
+        status = "okay";
 };
 
 &pinctrl {
