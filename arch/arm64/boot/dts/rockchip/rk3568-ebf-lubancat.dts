@@ -780,14 +780,15 @@
 
 &i2c1 {
         status = "okay";
+	clock-frequency = <100000>;
         goodix_ts@5d {
                 status = "okay";
-                compatible = "goodix,gt9xxx";
+                compatible = "goodix,gt911";
                 reg = <0x5d>;
                 interrupt-parent = <&gpio0>;
                 interrupts = <RK_PB5 IRQ_TYPE_LEVEL_LOW>;
-                goodix,rst-gpio = <&gpio0 RK_PB6 GPIO_ACTIVE_HIGH>;
-                goodix,irq-gpio = <&gpio0 RK_PB5 GPIO_ACTIVE_LOW>;
+                reset-gpios = <&gpio0 RK_PB6 GPIO_ACTIVE_LOW>;
+                irq-gpios = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;
         };
 };
 
