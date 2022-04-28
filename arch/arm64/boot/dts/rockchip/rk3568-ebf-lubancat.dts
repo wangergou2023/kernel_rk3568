@@ -139,6 +139,37 @@
                 regulator-always-on;
         };
 
+        rk809_sound: rk809-sound {
+                status = "okay";
+                compatible = "simple-audio-card";
+                simple-audio-card,format = "i2s";
+                simple-audio-card,name = "rockchip,rk809-codec";
+                simple-audio-card,mclk-fs = <256>;
+                simple-audio-card,widgets =
+                        "Microphone", "Mic Jack",
+                        "Headphone", "Headphone Jack";
+		simple-audio-card,routing =
+                        "Mic Jack", "MICBIAS1",
+                        "IN1P", "Mic Jack",
+                        "Headphone Jack", "HPOL",
+                        "Headphone Jack", "HPOR";
+                simple-audio-card,cpu {
+                        sound-dai = <&i2s1_8ch>;
+                };
+                simple-audio-card,codec {
+                        sound-dai = <&rk809_codec>;
+                };
+        };
+
+        rk_headset: rk-headset {
+                status = "okay";
+                compatible = "rockchip_headset";
+                headset_gpio = <&gpio0 RK_PB7 GPIO_ACTIVE_HIGH>;
+                pinctrl-names = "default";
+                pinctrl-0 = <&hp_det>;
+		io-channels = <&saradc 1>;
+        };
+
 	backlight: backlight {
 		status = "okay";
 		compatible = "pwm-backlight";
@@ -179,6 +210,22 @@
 		>;
 		default-brightness-level = <200>;
 	};
+};
+
+&saradc {
+	vref-supply = <&vcca_1v8>;
+	status = "okay";
+};
+
+&i2s1_8ch {
+        status = "okay";
+        rockchip,clk-trcm = <1>;
+	/delete-property/ rockchip,playback-only;
+        pinctrl-names = "default";
+        pinctrl-0 = <&i2s1m0_sclktx
+                     &i2s1m0_lrcktx
+                     &i2s1m0_sdi0
+                     &i2s1m0_sdo0>;
 };
 
 &pwm4 {
@@ -515,19 +562,14 @@
                         compatible = "rockchip,rk809-codec", "rockchip,rk817-codec";
                         clocks = <&cru I2S1_MCLKOUT_TX>;
                         clock-names = "mclk";
-                        assigned-clocks = <&cru I2S1_MCLKOUT_TX>;
-                        assigned-clock-parents = <&cru CLK_I2S1_8CH_TX>;
-                        pinctrl-names = "default","spk_gpio";
+                        assigned-clocks = <&cru I2S1_MCLKOUT_TX>, <&cru I2S1_MCLK_TX_IOE>;
+                        assigned-clock-rates = <12288000>;
+                        assigned-clock-parents = <&cru CLK_I2S1_8CH_TX>, <&cru I2S1_MCLKOUT_TX>;
+                        pinctrl-names = "default";
                         pinctrl-0 = <&i2s1m0_mclk>;
-                        pinctrl-1 = <&spk_ctl_gpio>;
                         hp-volume = <20>;
                         spk-volume = <3>;
                         //mic-in-differential;
-
-                        capture-volume = <0>;
-                        io-channels = <&saradc 4>;
-                        hp-det-adc-value = <1000>;
-                        spk-ctl-gpios = <&gpio3 RK_PC5 GPIO_ACTIVE_HIGH>;
                         status = "okay";
                 };
         };
@@ -1098,6 +1140,12 @@
 
                 spk_ctl_gpio: spk_ctl_gpio {
                         rockchip,pins = <3 RK_PC5 RK_FUNC_GPIO &pcfg_pull_up>;
+                };
+        };
+
+        headphone {
+                hp_det: hp-det {
+                        rockchip,pins = <0 RK_PB7 RK_FUNC_GPIO &pcfg_pull_none>;
                 };
         };
 
