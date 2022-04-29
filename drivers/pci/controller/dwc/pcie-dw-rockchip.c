@@ -131,6 +131,7 @@ struct rk_pcie {
 	unsigned int			clk_cnt;
 	struct reset_bulk_data		*rsts;
 	struct gpio_desc		*rst_gpio;
+	struct gpio_desc		*dis_gpio;
 	phys_addr_t			mem_start;
 	size_t				mem_size;
 	struct pcie_port		pp;
@@ -656,6 +657,11 @@ static int rk_pcie_host_init(struct pcie_port *pp)
 {
 	int ret;
 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+	struct rk_pcie *rk_pcie = to_rk_pcie(pci);
+
+        if (!IS_ERR(rk_pcie->dis_gpio)) {
+		gpiod_set_value_cansleep(rk_pcie->dis_gpio, 1);
+        }
 
 	dw_pcie_setup_rc(pp);
 
@@ -839,6 +845,13 @@ static int rk_pcie_resource_get(struct platform_device *pdev,
 						    GPIOD_OUT_LOW);
 	if (IS_ERR(rk_pcie->rst_gpio)) {
 		dev_err(&pdev->dev, "invalid reset-gpios property in node\n");
+		return PTR_ERR(rk_pcie->rst_gpio);
+	}
+
+	rk_pcie->dis_gpio = devm_gpiod_get_optional(&pdev->dev, "disable",
+						    GPIOD_OUT_LOW);
+	if (IS_ERR(rk_pcie->dis_gpio)) {
+		dev_err(&pdev->dev, "invalid disable-gpios property in node\n");
 		return PTR_ERR(rk_pcie->rst_gpio);
 	}
 
