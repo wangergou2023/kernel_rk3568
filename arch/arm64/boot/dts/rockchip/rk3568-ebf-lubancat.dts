@@ -118,6 +118,17 @@
                 regulator-always-on;
         };
 
+        mini_pcie_3v3: mini-pcie-3v3-regulator {
+                compatible = "regulator-fixed";
+                regulator-name = "minipcie_3v3";
+                regulator-min-microvolt = <3300000>;
+                regulator-max-microvolt = <3300000>;
+                enable-active-high;
+                gpio = <&gpio3 RK_PC3 GPIO_ACTIVE_HIGH>;
+                startup-delay-us = <5000>;
+                vin-supply = <&vcc5v0_sys>;
+        };
+
         pcie30_3v3: gpio-regulator {
                 compatible = "regulator-gpio";
                 regulator-name = "pcie30_3v3";
@@ -736,6 +747,19 @@
         status = "okay";
 };
 
+/* USB2.0 Host3  */
+&usb_host1_ehci {
+	status = "okay";
+};
+
+&usb_host1_ohci {
+	status = "okay";
+};
+
+&u2phy1_host {
+	status = "okay";
+};
+
 /* USB3.0 Host1 */
 &usbhost30 {
         status = "okay";
@@ -831,6 +855,17 @@
 &pcie3x2 {
         reset-gpios = <&gpio2 RK_PD6 GPIO_ACTIVE_HIGH>;
         vpcie3v3-supply = <&pcie30_3v3>;
+        status = "okay";
+};
+
+/* mini pcie */
+&pcie2x1 {
+        reset-gpios = <&gpio3 RK_PC1 GPIO_ACTIVE_HIGH>;
+        vpcie3v3-supply = <&mini_pcie_3v3>;
+        status = "okay";
+};
+
+&combphy2_psq {
         status = "okay";
 };
 
