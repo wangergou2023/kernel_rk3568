@@ -118,6 +118,17 @@
                 regulator-always-on;
         };
 
+        vcc5v0_otg_vbus: vcc5v0-otg-vbus-regulator {
+                compatible = "regulator-fixed";
+                enable-active-high;
+                regulator-min-microvolt = <5000000>;
+                regulator-max-microvolt = <5000000>;
+                gpio = <&gpio3 RK_PA5 GPIO_ACTIVE_HIGH>;
+                pinctrl-names = "default";
+                pinctrl-0 = <&vcc5v0_otg_vbus_en>;
+                regulator-name = "vcc5v0_otg_vbus";
+        };
+
         mini_pcie_3v3: mini-pcie-3v3-regulator {
                 compatible = "regulator-fixed";
                 regulator-name = "minipcie_3v3";
@@ -782,6 +793,25 @@
         status = "okay";
 };
 
+/* USB3.0 OTG to USB2.0 only */
+&usbdrd30 {
+	status = "okay";
+};
+
+&usbdrd_dwc3 {
+	phys = <&u2phy0_otg>;
+	phy-names = "usb2-phy";
+	extcon = <&usb2phy0>;
+	maximum-speed = "high-speed";
+	snps,dis_u2_susphy_quirk;
+	status = "okay";
+};
+
+&u2phy0_otg {
+	vbus-supply = <&vcc5v0_otg_vbus>;
+	status = "okay";
+};
+
 &gmac0 {
         phy-mode = "rgmii";
         clock_in_out = "input";
@@ -1223,6 +1253,10 @@
 
                 vcc5v0_usb30_host_en: vcc5v0-usb30-host-en {
                         rockchip,pins = <0 RK_PD6 RK_FUNC_GPIO &pcfg_pull_none>;
+                };
+
+                vcc5v0_otg_vbus_en: vcc5v0-otg-vbus-en {
+                        rockchip,pins = <3 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
                 };
         };
 
