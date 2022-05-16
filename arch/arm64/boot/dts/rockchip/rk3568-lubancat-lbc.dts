@@ -161,6 +161,48 @@
                 regulator-always-on;
         };
 
+        vdd_cam_5v: vdd-cam-5v-regulator {
+                compatible = "regulator-fixed";
+                regulator-name = "vdd_cam_5v";
+                regulator-min-microvolt = <3300000>;
+                regulator-max-microvolt = <3300000>;
+                gpio = <&gpio3 RK_PA4 GPIO_ACTIVE_HIGH>;
+                pinctrl-names = "default";
+                pinctrl-0 = <&cam_pwr_en>;
+                enable-active-high;
+                regulator-always-on;
+        };
+
+        cam_dovdd: cam-dovdd {
+                compatible = "regulator-fixed";
+                regulator-name = "cam0_dovdd";
+                regulator-always-on;
+                regulator-boot-on;
+                regulator-min-microvolt = <1800000>;
+                regulator-max-microvolt = <1800000>;
+                vin-supply = <&vdd_cam_5v>;
+        };
+
+        cam_avdd: cam-avdd {
+                compatible = "regulator-fixed";
+                regulator-name = "cam0_avdd";
+                regulator-always-on;
+                regulator-boot-on;
+                regulator-min-microvolt = <2800000>;
+                regulator-max-microvolt = <2800000>;
+                vin-supply = <&vdd_cam_5v>;
+        };
+
+        cam_dvdd: cam-dvdd {
+                compatible = "regulator-fixed";
+                regulator-name = "cam0_dvdd";
+                regulator-always-on;
+                regulator-boot-on;
+                regulator-min-microvolt = <1500000>;
+                regulator-max-microvolt = <1500000>;
+                vin-supply = <&vdd_cam_5v>;
+        };
+
         leds: leds {
                 status = "okay";
                 compatible = "gpio-leds";
@@ -204,6 +246,13 @@
                 pinctrl-names = "default";
                 pinctrl-0 = <&hp_det>;
 		io-channels = <&saradc 1>;
+        };
+
+        ext_cam_clk: external-camera-clock {
+                compatible = "fixed-clock";
+                #clock-cells = <0>;
+                clock-frequency = <24000000>;
+                clock-output-names = "CLK_CAMERA1_24MHZ";
         };
 
 	backlight: backlight {
@@ -912,6 +961,101 @@
                 reset-gpios = <&gpio0 RK_PB6 GPIO_ACTIVE_LOW>;
                 irq-gpios = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;
         };
+
+        ov5648: camera@36 {
+                compatible = "ovti,ov5648";
+                reg = <0x36>;
+                clocks = <&ext_cam_clk>;
+                clock-names = "xvclk";
+                dovdd-supply= <&cam_dovdd>; /* 1.8v */
+                avdd-supply = <&cam_avdd>;  /* 2.8v */
+                dvdd-supply = <&cam_dvdd>;  /* 1.5v */
+                pwdn-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
+                reset-gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_LOW>;
+                rotation = <180>;
+                status = "okay";
+
+                rockchip,camera-module-index = <0>;
+                rockchip,camera-module-facing = "back";
+                rockchip,camera-module-name = "NC";
+                rockchip,camera-module-lens-name = "NC";
+
+                port {
+                        /* MIPI CSI-2 bus endpoint */
+                        cam0_ov5648_out: endpoint {
+                                remote-endpoint = <&dphy1_in>;
+                                clock-lanes = <0>;
+                                data-lanes = <1 2>;
+                        };
+                };
+        };
+};
+
+&csi2_dphy_hw {
+        status = "okay";
+};
+
+&csi2_dphy1 {
+        status = "okay";
+        /*
+         * dphy1 only used for split mode,
+         * can be used concurrently with dphy2
+         * full mode and split mode are mutually exclusive
+         */
+        ports {
+                #address-cells = <1>;
+                #size-cells = <0>;
+
+                port@0 {
+                        reg = <0>;
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+
+                        dphy1_in: endpoint@1 {
+                                reg = <1>;
+                                remote-endpoint = <&cam0_ov5648_out>;
+                                data-lanes = <1 2>;
+                        };
+                };
+
+                port@1 {
+                        reg = <1>;
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+
+                        dphy1_out: endpoint@1 {
+                                reg = <1>;
+                      		remote-endpoint = <&isp0_in>;
+                        };
+                };
+        };
+};
+
+&rkisp {
+        status = "okay";
+};
+
+&rkisp_mmu {
+        status = "okay";
+};
+
+&rkisp_vir0 {
+        status = "okay";
+        ports {
+                #address-cells = <1>;
+                #size-cells = <0>;
+
+                port@0 {
+                        reg = <0>;
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+
+                        isp0_in: endpoint@0 {
+                                reg = <0>;
+                        	remote-endpoint = <&dphy1_out>;
+                        };
+                };
+        };
 };
 
 &route_hdmi {
@@ -1266,9 +1410,15 @@
                 };
         };
 
-       leds {
-            sys_status_led_pin: sys-status-led-pin {
-                rockchip,pins = <0 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
-            };
+        cam {
+                cam_pwr_en: cam-pwr-en {
+                        rockchip,pins = <3 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
+                };
+        };
+
+	leds {
+		sys_status_led_pin: sys-status-led-pin {
+			rockchip,pins = <0 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
+            	};
 	};
 };
