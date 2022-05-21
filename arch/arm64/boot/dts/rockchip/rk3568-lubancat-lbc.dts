@@ -1101,6 +1101,13 @@
 		backlight = <&backlight>;
 		reset-gpios = <&gpio0 RK_PC5 GPIO_ACTIVE_LOW>;
 	
+		enable-delay-ms = <35>;
+		prepare-delay-ms = <6>;
+		reset-delay-ms = <0>;
+		init-delay-ms = <20>;
+		unprepare-delay-ms = <0>;
+		disable-delay-ms = <20>;
+
                 size,width = <68>;
                 size,height = <121>;
 
@@ -1316,7 +1323,7 @@
 		disp_timings0: display-timings {
 			native-mode = <&dsi0_timing0>;
 			dsi0_timing0: timing0 {
-				clock-frequency = <61589808>;
+				clock-frequency = <59603040>;
 				hactive = <720>;
 				vactive = <1280>;
 				hsync-len = <6>;
