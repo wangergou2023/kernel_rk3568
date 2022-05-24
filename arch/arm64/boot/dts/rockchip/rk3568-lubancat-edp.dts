@@ -2,9 +2,6 @@
 /*
  * Copyright (c) 2020 Rockchip Electronics Co., Ltd.
  *
- * EDP接口设备树
- * AUX通信失败，协商速率过低，怀疑硬件问题
- *
  *
  */
 
@@ -29,14 +26,14 @@
 
     edp_panel: edp-panel {
 		compatible = "simple-panel";
+		backlight = <&backlight>;
 		status = "okay";
         power-supply = <&vcc3v3_lcd_edp>;
         enable-gpios = <&gpio3 RK_PA3 GPIO_ACTIVE_HIGH>;
 		//bus-format = <MEDIA_BUS_FMT_RBG888_1X24>;
-		prepare-delay-ms = <500>; //AUX通信前延时
-		enable-delay-ms = <500>;
+		prepare-delay-ms = <100>; //AUX通信前延时
+		enable-delay-ms = <100>;
 
-		backlight = <&backlight>;
         display-timings {
                 native-mode = <&timing0>;
 
@@ -111,8 +108,8 @@
 
 &edp {
 	status = "okay";
-	hpd-gpios = <&gpio0 RK_PC2 GPIO_ACTIVE_HIGH>;
-	// force-hpd; //强制hpd，忽略物理hdp信号
+	// hpd-gpios = <&gpio0 RK_PC2 GPIO_ACTIVE_HIGH>; //热插拔信号检测
+	force-hpd; //强制hpd，忽略物理hdp信号
 
 	ports {
 		edp_out: port@1 {
@@ -134,6 +131,7 @@
 
 &route_edp {
     status = "okay";
+	connect = <&vp0_out_edp>;
 };
 
 &edp_in_vp0 {
