@@ -7,11 +7,11 @@
 
  /dts-v1/;
 
-#include "rk3568-lubancat-dev.dtsi"
+#include "rk3568-lubancat2-io.dtsi"
 
 / {
-    model = "LubanCat-RK3568 HDMI+EDP (Linux)";
-    compatible = "rockchip,rk3568-lubancat-edp", "rockchip,rk3568";
+    model = "LubanCat2-IO HDMI+EDP";
+    compatible = "rockchip,rk3568-lubancat2-io-edp", "rockchip,rk3568";
 
 	vcc3v3_lcd_edp: vcc3v3-lcd-edp {
 		compatible = "regulator-fixed";

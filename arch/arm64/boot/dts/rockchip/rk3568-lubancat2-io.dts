@@ -6,12 +6,12 @@
 
 /dts-v1/;
 
-#include "rk3568-lubancat-dev.dtsi"
-#include "rk3568-lubancat-dev-cam.dtsi"
+#include "rk3568-lubancat2-io.dtsi"
+#include "rk3568-lubancat2-io-cam.dtsi"
 
 / {
-    model = "LubanCat-RK3568 HDMI";
-    compatible = "rockchip,rk3568-lubancat-dev", "rockchip,rk3568";
+    model = "LubanCat2-IO HDMI";
+    compatible = "rockchip,rk3568-lubancat2-io", "rockchip,rk3568";
 
 };
 

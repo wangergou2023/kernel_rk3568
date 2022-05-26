@@ -16,7 +16,7 @@
 
 
 / {
-	compatible = "rockchip,rk3568-lubancat-core", "rockchip,rk3568";
+	compatible = "rockchip,lubancat2-m", "rockchip,rk3568";
 
 	audiopwmout_diff: audiopwmout-diff {
 		status = "disabled";

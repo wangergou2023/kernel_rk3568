@@ -4,7 +4,7 @@
  *
  */
 
-#include "rk3568-lubancat-port.dtsi"
+#include "rk3568-lubancat2-m-port.dtsi"
 
 / {
 

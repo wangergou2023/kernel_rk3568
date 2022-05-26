@@ -8,11 +8,11 @@
 
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/pinctrl/rockchip.h>
-#include "rk3568-lubancat-core.dtsi"
+#include "rk3568-lubancat2-m.dtsi"
 #include "rk3568-linux.dtsi"
 
 / {
-	compatible = "rockchip,rk3568-lubancat-port", "rockchip,rk3568";
+	compatible = "rockchip,lubancat2-m-port", "rockchip,rk3568";
 
 	adc_keys: adc-keys {
 		compatible = "adc-keys";

@@ -5,11 +5,11 @@
  */
 
 
-#include "rk3568-lubancat-dev.dtsi"
+#include "rk3568-lubancat2-io.dtsi"
 
 / {
-    model = "LubanCat-RK3568 MIPI (Linux)";
-    compatible = "rockchip,rk3568-lubancat-dev", "rockchip,rk3568";
+    model = "LubanCat2-IO MIPI";
+    compatible = "rockchip,rk3568-lubancat2-io", "rockchip,rk3568";
 
     backlight: backlight {
 	status = "okay";
