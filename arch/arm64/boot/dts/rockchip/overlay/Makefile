@@ -1,6 +1,10 @@
 # SPDX-License-Identifier: GPL-2.0
-dtbo-$(CONFIG_ARCH_ROCKCHIP) += \
+ifeq ($(CONFIG_ARCH_ROCKCHIP), y)
+
+dtbo-$(CONFIG_CPU_RK3568) += \
 	lubancat2-uart3-overlay.dtbo
+
+endif
 
 scr-$(CONFIG_ARCH_ROCKCHIP) += \
 	rockchip-fixup.scr
