@@ -1,0 +1,13 @@
+## Introduction
+
+## Platform and Chips:
+
+rockchip (Rockchip)
+- rk3566
+- rk3568
+
+## usage
+
+Kernel provided DT overlay files are in
+  /boot/dtbs/$(uname -r)/rockchip/overlay/
+

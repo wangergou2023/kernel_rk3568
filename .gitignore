@@ -137,4 +137,5 @@ defconfig
 
 # Kdevelop4
 *.kdev4
-
+*.dtb*
+*.scr

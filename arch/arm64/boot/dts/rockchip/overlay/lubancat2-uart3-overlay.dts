@@ -1,0 +1,27 @@
+/*
+ * Copyright (C) 2022 - All Rights Reserved by
+ * filename : lubancat2-uart-overlay.dts
+ * brief : Device Tree overlay for ebf lubancat2 uart device
+ * author : embedfire
+ * date : 2022-05-31
+ * version : A001
+ */
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/pinctrl/rockchip.h>
+#include <dt-bindings/clock/rk3568-cru.h>
+
+
+/ {
+	fragment@0 {
+		target = <&uart3>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+};
+
