@@ -302,6 +302,10 @@
 	status = "okay";
 };
 
+&tsadc {
+       status = "okay";
+};
+
 &i2s1_8ch {
         status = "okay";
         rockchip,clk-trcm = <1>;
