@@ -18,22 +18,6 @@
 / {
 	compatible = "rockchip,lubancat2-m", "rockchip,rk3568";
 
-	audiopwmout_diff: audiopwmout-diff {
-		status = "disabled";
-		compatible = "simple-audio-card";
-		simple-audio-card,format = "i2s";
-		simple-audio-card,name = "rockchip,audiopwmout-diff";
-		simple-audio-card,mclk-fs = <256>;
-		simple-audio-card,bitclock-master = <&master>;
-		simple-audio-card,frame-master = <&master>;
-		simple-audio-card,cpu {
-			sound-dai = <&i2s3_2ch>;
-		};
-		master: simple-audio-card,codec {
-			sound-dai = <&dig_acodec>;
-		};
-	};
-
 	dc_12v: dc-12v {
 		compatible = "regulator-fixed";
 		regulator-name = "dc_12v";
@@ -43,45 +27,12 @@
 		regulator-max-microvolt = <12000000>;
 	};
 
-	hdmi_sound: hdmi-sound {
-		compatible = "simple-audio-card";
-		simple-audio-card,format = "i2s";
-		simple-audio-card,mclk-fs = <128>;
-		simple-audio-card,name = "rockchip,hdmi";
-		status = "disabled";
-
-		simple-audio-card,cpu {
-				sound-dai = <&i2s0_8ch>;
-		};
-		simple-audio-card,codec {
-				sound-dai = <&hdmi>;
-		};
-	};
-
 	rk_headset: rk-headset {
 		status = "disabled";
 		compatible = "rockchip_headset";
 		headset_gpio = <&gpio3 RK_PC2 GPIO_ACTIVE_LOW>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&hp_det>;
-	};
-
-	pdmics: dummy-codec {
-		status = "disabled";
-		compatible = "rockchip,dummy-codec";
-		#sound-dai-cells = <0>;
-	};
-
-	pdm_mic_array: pdm-mic-array {
-		status = "disabled";
-		compatible = "simple-audio-card";
-		simple-audio-card,name = "rockchip,pdm-mic-array";
-		simple-audio-card,cpu {
-			sound-dai = <&pdm>;
-		};
-		simple-audio-card,codec {
-			sound-dai = <&pdmics>;
-		};
 	};
 
 	rk809_sound: rk809-sound {
@@ -93,7 +44,7 @@
 		simple-audio-card,widgets =
                         "Microphone", "Mic Jack",
                         "Headphone", "Headphone Jack";
-        simple-audio-card,routing =
+	        simple-audio-card,routing =
                         "Mic Jack", "MICBIAS1",
                         "IN1P", "Mic Jack",
                         "Headphone Jack", "HPOL",
@@ -104,32 +55,6 @@
 		simple-audio-card,codec {
 			sound-dai = <&rk809_codec>;
 		};
-	};
-
-	spdif-sound {
-		status = "okay";
-		compatible = "simple-audio-card";
-		simple-audio-card,name = "ROCKCHIP,SPDIF";
-		simple-audio-card,cpu {
-				sound-dai = <&spdif_8ch>;
-		};
-		simple-audio-card,codec {
-				sound-dai = <&spdif_out>;
-		};
-	};
-
-	spdif_out: spdif-out {
-			status = "okay";
-			compatible = "linux,spdif-dit";
-			#sound-dai-cells = <0>;
-	};
-
-	vad_sound: vad-sound {
-		status = "disabled";
-		compatible = "rockchip,multicodecs-card";
-		rockchip,card-name = "rockchip,rk3568-vad";
-		rockchip,cpu = <&i2s1_8ch>;
-		rockchip,codec = <&rk809_codec>, <&vad>;
 	};
 
 	vcc3v3_sys: vcc3v3-sys {
@@ -197,11 +122,7 @@
 		regulator-state-mem {
 			regulator-off-in-suspend;
 		};
-	};
-
-	test-power {
-		status = "okay";
-	};
+	};	
 };
 
 &cpu0 {
@@ -272,10 +193,6 @@
 
 &hdmi_in_vp1 {
 	status = "disabled";
-};
-
-&hdmi_sound {
-	status = "okay";
 };
 
 &i2c0 {

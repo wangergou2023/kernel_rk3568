@@ -7,7 +7,7 @@
 /dts-v1/;
 
 #include "rk3568-lubancat2-io.dtsi"
-#include "rk3568-lubancat2-io-cam.dtsi"
+//#include "rk3568-lubancat2-io-cam.dtsi"
 
 / {
     model = "LubanCat2-IO HDMI";
