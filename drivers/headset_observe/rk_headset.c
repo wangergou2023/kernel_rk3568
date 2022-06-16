@@ -177,7 +177,7 @@ static void headsetobserve_work(struct work_struct *work)
 		pr_warn("old_status == headset_info->headset_status\n");
 		goto out;
 	}
-	DBG("(headset in is %s)headset status is %s\n",
+	pr_info("(headset in is %s)headset status is %s\n",
 	    pdata->headset_insert_type ? "high level" : "low level",
 	    headset_info->headset_status ? "in" : "out");
 	if (headset_info->headset_status == HEADSET_IN) {
