@@ -18,6 +18,57 @@
 / {
 	compatible = "rockchip,lubancat2-m", "rockchip,rk3568";
 
+        chosen: chosen {
+                bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0 root=PARTUUID=614e0000-0000 rw rootwait";
+        };
+
+        fiq-debugger {
+                compatible = "rockchip,fiq-debugger";
+                rockchip,serial-id = <2>;
+                rockchip,wake-irq = <0>;
+                /* If enable uart uses irq instead of fiq */
+                rockchip,irq-mode-enable = <1>;
+                rockchip,baudrate = <1500000>;  /* Only 115200 and 1500000 */
+                interrupts = <GIC_SPI 252 IRQ_TYPE_LEVEL_LOW>;
+                pinctrl-names = "default";
+                pinctrl-0 = <&uart2m0_xfer>;
+                status = "okay";
+        };
+
+        debug: debug@fd904000 {
+                compatible = "rockchip,debug";
+                reg = <0x0 0xfd904000 0x0 0x1000>,
+                        <0x0 0xfd905000 0x0 0x1000>,
+                        <0x0 0xfd906000 0x0 0x1000>,
+                        <0x0 0xfd907000 0x0 0x1000>;
+        };
+
+        cspmu: cspmu@fd90c000 {
+                compatible = "rockchip,cspmu";
+                reg = <0x0 0xfd90c000 0x0 0x1000>,
+                        <0x0 0xfd90d000 0x0 0x1000>,
+                        <0x0 0xfd90e000 0x0 0x1000>,
+                        <0x0 0xfd90f000 0x0 0x1000>;
+        };
+
+        reserved-memory {
+                #address-cells = <2>;
+                #size-cells = <2>;
+                ranges;
+                ramoops: ramoops@110000 {
+                        compatible = "ramoops";
+                        reg = <0x0 0x110000 0x0 0xf0000>;
+                        record-size = <0x20000>;
+                        console-size = <0x80000>;
+                        ftrace-size = <0x00000>;
+                        pmsg-size = <0x50000>;
+                };
+
+                abc: abc@80900000{
+                        reg = <0x0 0x80900000 0x0 0x100000>;
+                };
+        };
+
 	dc_12v: dc-12v {
 		compatible = "regulator-fixed";
 		regulator-name = "dc_12v";
@@ -28,7 +79,7 @@
 	};
 
 	rk_headset: rk-headset {
-		status = "disabled";
+		status = "okay";
 		compatible = "rockchip_headset";
 		headset_gpio = <&gpio3 RK_PC2 GPIO_ACTIVE_LOW>;
 		pinctrl-names = "default";
@@ -467,19 +518,15 @@
 			compatible = "rockchip,rk809-codec", "rockchip,rk817-codec";
 			clocks = <&cru I2S1_MCLKOUT_TX>;
 			clock-names = "mclk";
-			assigned-clocks = <&cru I2S1_MCLKOUT_TX>;
-			assigned-clock-parents = <&cru CLK_I2S1_8CH_TX>;
-			pinctrl-names = "default","spk_gpio";
+			assigned-clocks = <&cru I2S1_MCLKOUT_TX>, <&cru I2S1_MCLK_TX_IOE>;
+			assigned-clock-rates = <12288000>;
+			assigned-clock-parents = <&cru CLK_I2S1_8CH_TX>, <&cru I2S1_MCLKOUT_TX>;
+			pinctrl-names = "default";
 			pinctrl-0 = <&i2s1m0_mclk>;
-			pinctrl-1 = <&spk_ctl_gpio>;
 			hp-volume = <20>;
 			spk-volume = <3>;
 			//mic-in-differential;
-
 			capture-volume = <0>;
-			io-channels = <&saradc 4>;
-			hp-det-adc-value = <1000>;
-			spk-ctl-gpios = <&gpio3 RK_PC5 GPIO_ACTIVE_HIGH>;
 			status = "okay";
 		};
 	};
@@ -751,10 +798,6 @@
 		soc_slppin_rst: soc_slppin_rst {
 			rockchip,pins =
 				<0 RK_PA2 RK_FUNC_2 &pcfg_pull_none>;
-		};
-
-		spk_ctl_gpio: spk_ctl_gpio {
-			rockchip,pins = <3 RK_PC5 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
 

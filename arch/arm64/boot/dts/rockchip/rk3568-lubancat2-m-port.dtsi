@@ -9,7 +9,6 @@
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/pinctrl/rockchip.h>
 #include "rk3568-lubancat2-m.dtsi"
-#include "rk3568-linux.dtsi"
 
 / {
 	compatible = "rockchip,lubancat2-m-port", "rockchip,rk3568";
@@ -709,13 +708,6 @@
 				<0 RK_PB6 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
-/*
-	mxc6655xa {
-		mxc6655xa_irq_gpio: mxc6655xa_irq_gpio {
-			rockchip,pins = <RK_GPIO3 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-	};
-*/
 };
 
 &sfc{
