@@ -124,3 +124,4 @@ static struct mdio_device_id __maybe_unused jlsemi_tbl[] = {
 };
 
 MODULE_DEVICE_TABLE(mdio, jlsemi_tbl);
+
