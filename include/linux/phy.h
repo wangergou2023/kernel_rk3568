@@ -178,6 +178,8 @@ static inline const char *phy_modes(phy_interface_t interface)
 #define PHY_ID_FMT "%s:%02x"
 
 #define MII_BUS_ID_SIZE	61
+#define MII_DEVADDR_C45_SHIFT	16
+#define MII_REGADDR_C45_MASK	GENMASK(15, 0)
 
 /* Or MII_ADDR_C45 into regnum for read/write on mii_bus to enable the 21 bit
    IEEE 802.3ae clause 45 addressing mode used by 10GIGE phy chips. */
@@ -676,6 +678,10 @@ struct phy_driver {
 
 #define PHY_ANY_ID "MATCH ANY PHY"
 #define PHY_ANY_UID 0xffffffff
+
+#define PHY_ID_MATCH_EXACT(id) .phy_id = (id), .phy_id_mask = GENMASK(31, 0)
+#define PHY_ID_MATCH_MODEL(id) .phy_id = (id), .phy_id_mask = GENMASK(31, 4)
+#define PHY_ID_MATCH_VENDOR(id) .phy_id = (id), .phy_id_mask = GENMASK(31, 10)
 
 /* A Structure for boards to register fixups with the PHY Lib */
 struct phy_fixup {
