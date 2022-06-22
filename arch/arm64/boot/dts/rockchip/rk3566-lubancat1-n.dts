@@ -330,6 +330,34 @@
         pinctrl-0 = <&pwm0m1_pins>;
 };
 
+&pwm3 {
+        status = "okay";
+
+        compatible = "rockchip,remotectl-pwm";
+        remote_pwm_id = <3>;
+        handle_cpu_id = <1>;
+        remote_support_psci = <0>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&pwm3_pins>;
+
+        ir_key_lubancat{
+                rockchip,usercode = <0xff00>;
+                rockchip,key_table =
+                        <0xeb   KEY_POWER>,
+                        <0xec   KEY_MENU>,
+                        <0xfe   KEY_BACK>,
+                        <0xb7   KEY_HOME>,
+                        <0xa3   KEY_WWW>,
+                        <0xf4   KEY_VOLUMEUP>,
+                        <0xa7   KEY_VOLUMEDOWN>,
+                        <0xf8   KEY_REPLY>,
+                        <0xfc   KEY_UP>,
+                        <0xfd   KEY_DOWN>,
+                        <0xf1   KEY_LEFT>,
+                        <0xe5   KEY_RIGHT>;
+        };
+};
+
 &cpu0 {
         cpu-supply = <&vdd_cpu>;
 };
