@@ -321,6 +321,22 @@
         status = "okay";
 };
 
+&pwm8 {
+        status = "okay";
+};
+
+&pwm9 {
+        status = "okay";
+};
+
+&pwm10 {
+        status = "okay";
+};
+
+&pwm14 {
+        status = "okay";
+};
+
 &cpu0 {
         cpu-supply = <&vdd_cpu>;
 };
