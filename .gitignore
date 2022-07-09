@@ -139,3 +139,7 @@ defconfig
 *.kdev4
 *.dtb*
 *.scr
+
+extboot/
+extboot.tmp
+extboot.img
