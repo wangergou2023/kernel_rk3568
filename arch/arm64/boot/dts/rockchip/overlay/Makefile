@@ -2,7 +2,17 @@
 ifeq ($(CONFIG_ARCH_ROCKCHIP), y)
 
 dtbo-$(CONFIG_CPU_RK3568) += \
-	lubancat2-uart3-overlay.dtbo
+	lubancat-dsi0-mipi-display-overlay.dtbo \
+	lubancat-i2c3-m0-overlay.dtbo \
+	lubancat-i2c5-m0-overlay.dtbo \
+	lubancat-pwm8-m0-overlay.dtbo \
+	lubancat-pwm9-m0-overlay.dtbo \
+	lubancat-pwm10-m0-overlay.dtbo \
+	lubancat-pwm14-m0-overlay.dtbo \
+	lubancat-spi3-m1-overlay.dtbo \
+	lubancat-spi3-m1-gpio-cs-overlay.dtbo \
+	lubancat-uart3-m0-overlay.dtbo \
+	lubancat-uart3-m1-overlay.dtbo
 
 endif
 
