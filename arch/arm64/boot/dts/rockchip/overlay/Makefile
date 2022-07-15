@@ -3,6 +3,7 @@ ifeq ($(CONFIG_ARCH_ROCKCHIP), y)
 
 dtbo-$(CONFIG_CPU_RK3568) += \
 	lubancat-dsi0-mipi-display-overlay.dtbo \
+	lubancat-gmac1-disable-overlay.dtbo \
 	lubancat-i2c3-m0-overlay.dtbo \
 	lubancat-i2c5-m0-overlay.dtbo \
 	lubancat-pwm8-m0-overlay.dtbo \

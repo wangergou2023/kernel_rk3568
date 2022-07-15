@@ -138,6 +138,7 @@ dtb-$(CONFIG_CPU_RK3399) += \
 # endif
 
 dtb-$(CONFIG_CPU_RK3568) += \
+	rk3566-lubancat-zero-w.dtb \
 	rk3566-lubancat1-n.dtb \
 	rk3568-lubancat2.dtb \
 	rk3568-lubancat2-io.dtb 
