@@ -317,4 +317,11 @@
 			};
 		};
 	};
+
+	fragment@5 {
+		target = <&route_hdmi>;
+		__overlay__ {
+			status = "disabled";
+		};
+	};
 };
