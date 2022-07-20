@@ -50,7 +50,7 @@ dtb-$(CONFIG_CPU_RK3328) += \
 	rk3328-rock64-android-avb.dtb \
 	rk3328-roc-cc.dtb \
 
-dtb-$(CONFIG_CPU_RK3568) += \
+dtb-$(CONFIG_CPU_RK3358) += \
 	rk3358-evb-ddr3-v10-linux.dtb \
 
 dtb-$(CONFIG_CPU_RK3368) += \
@@ -85,51 +85,62 @@ dtb-$(CONFIG_CPU_RK3399) += \
 	rk3399pro-evb-v11-linux.dtb \
 	rk3399pro-evb-v14-linux.dtb
 
+# dtb-$(CONFIG_CPU_RK3568) += \
+# 	rk3566-box-demo-v10.dtb \
+# 	rk3566-evb-mipitest-v10.dtb \
+# 	rk3566-evb1-ddr4-v10.dtb \
+# 	rk3566-evb1-ddr4-v10-linux.dtb \
+# 	rk3566-evb1-ddr4-v10-lvds.dtb \
+# 	rk3566-evb2-lp4x-v10.dtb \
+# 	rk3566-evb2-lp4x-v10-edp.dtb \
+# 	rk3566-evb2-lp4x-v10-eink.dtb \
+# 	rk3566-evb2-lp4x-v10-i2s-mic-array.dtb \
+# 	rk3566-evb2-lp4x-v10-linux.dtb \
+# 	rk3566-evb2-lp4x-v10-pdm-mic-array.dtb \
+# 	rk3566-evb3-ddr3-v10.dtb \
+# 	rk3566-evb3-ddr3-v10-linux.dtb \
+# 	rk3566-evb5-lp4x-v10.dtb \
+# 	rk3566-rk817-eink.dtb \
+# 	rk3566-rk817-eink-w6.dtb \
+# 	rk3566-rk817-eink-w103.dtb \
+# 	rk3566-rk817-tablet.dtb \
+# 	rk3566-rk817-tablet-k108.dtb \
+# 	rk3566-rk817-tablet-rkg11.dtb \
+# 	rk3566-rk817-tablet-v10.dtb \
+# 	rk3568-evb1-ddr4-v10.dtb \
+# 	rk3568-evb1-ddr4-v10-linux.dtb \
+# 	rk3568-evb1-ddr4-v10-linux-spi-nor.dtb \
+# 	rk3568-evb2-lp4x-v10.dtb \
+# 	rk3568-evb2-lp4x-v10-bt1120-to-hdmi.dtb \
+# 	rk3568-evb4-lp3-v10.dtb \
+# 	rk3568-evb5-ddr4-v10.dtb \
+# 	rk3568-evb6-ddr3-v10.dtb \
+# 	rk3568-evb6-ddr3-v10-linux.dtb \
+# 	rk3568-evb6-ddr3-v10-rk628-bt1120-to-hdmi.dtb \
+# 	rk3568-evb6-ddr3-v10-rk628-rgb2hdmi.dtb \
+# 	rk3568-evb6-ddr3-v10-rk630-bt656-to-cvbs.dtb \
+# 	rk3568-evb7-ddr4-v10.dtb \
+# 	rk3568-iotest-ddr3-v10.dtb \
+# 	rk3568-iotest-ddr3-v10-linux.dtb \
+# 	rk3568-nvr-demo-v10.dtb \
+# 	rk3568-nvr-demo-v10-linux.dtb \
+# 	rk3568-nvr-demo-v10-linux-spi-nand.dtb \
+# 	rk3568-nvr-demo-v12-linux.dtb \
+# 	rk3568-nvr-demo-v12-linux-spi-nand.dtb \
+# 	rk3566-lubancat1-n.dtb \
+# 	rk3568-lubancat2.dtb \
+# 	rk3568-lubancat2-io.dtb \
+# 	rk3568-lubancat2-io-mipi.dtb \
+# 	rk3568-lubancat2@_saradc_ch3=288.dtb \
+# 	rk3568-lubancat2-io@_saradc_ch3=407.dtb \
+# 	rk3568-lubancat2-io-mipi@_saradc_ch3=1024.dtb
+
+# endif
 
 dtb-$(CONFIG_CPU_RK3568) += \
-	rk3566-box-demo-v10.dtb \
-	rk3566-evb-mipitest-v10.dtb \
-	rk3566-evb1-ddr4-v10.dtb \
-	rk3566-evb1-ddr4-v10-linux.dtb \
-	rk3566-evb1-ddr4-v10-lvds.dtb \
-	rk3566-evb2-lp4x-v10.dtb \
-	rk3566-evb2-lp4x-v10-edp.dtb \
-	rk3566-evb2-lp4x-v10-eink.dtb \
-	rk3566-evb2-lp4x-v10-i2s-mic-array.dtb \
-	rk3566-evb2-lp4x-v10-linux.dtb \
-	rk3566-evb2-lp4x-v10-pdm-mic-array.dtb \
-	rk3566-evb3-ddr3-v10.dtb \
-	rk3566-evb3-ddr3-v10-linux.dtb \
-	rk3566-evb5-lp4x-v10.dtb \
-	rk3566-rk817-eink.dtb \
-	rk3566-rk817-eink-w6.dtb \
-	rk3566-rk817-eink-w103.dtb \
-	rk3566-rk817-tablet.dtb \
-	rk3566-rk817-tablet-k108.dtb \
-	rk3566-rk817-tablet-rkg11.dtb \
-	rk3566-rk817-tablet-v10.dtb \
-	rk3568-evb1-ddr4-v10.dtb \
-	rk3568-evb1-ddr4-v10-linux.dtb \
-	rk3568-evb1-ddr4-v10-linux-spi-nor.dtb \
-	rk3568-evb2-lp4x-v10.dtb \
-	rk3568-evb2-lp4x-v10-bt1120-to-hdmi.dtb \
-	rk3568-evb4-lp3-v10.dtb \
-	rk3568-evb5-ddr4-v10.dtb \
-	rk3568-evb6-ddr3-v10.dtb \
-	rk3568-evb6-ddr3-v10-linux.dtb \
-	rk3568-evb6-ddr3-v10-rk628-bt1120-to-hdmi.dtb \
-	rk3568-evb6-ddr3-v10-rk628-rgb2hdmi.dtb \
-	rk3568-evb6-ddr3-v10-rk630-bt656-to-cvbs.dtb \
-	rk3568-evb7-ddr4-v10.dtb \
-	rk3568-iotest-ddr3-v10.dtb \
-	rk3568-iotest-ddr3-v10-linux.dtb \
-	rk3568-nvr-demo-v10.dtb \
-	rk3568-nvr-demo-v10-linux.dtb \
-	rk3568-nvr-demo-v10-linux-spi-nand.dtb \
-	rk3568-nvr-demo-v12-linux.dtb \
-	rk3568-nvr-demo-v12-linux-spi-nand.dtb \
+	rk3566-lubancat1-n.dtb \
 	rk3568-lubancat2.dtb \
-	rk3568-lubancat2-io.dtb
+	rk3568-lubancat2-io.dtb 
 
 endif
 

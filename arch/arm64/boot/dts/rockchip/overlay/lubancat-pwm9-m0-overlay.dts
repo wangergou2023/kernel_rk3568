@@ -1,10 +1,6 @@
 /*
  * Copyright (C) 2022 - All Rights Reserved by
- * filename : lubancat2-uart-overlay.dts
- * brief : Device Tree overlay for ebf lubancat2 uart device
- * author : embedfire
- * date : 2022-05-31
- * version : A001
+ * EmbedFire LubanCat
  */
 
 /dts-v1/;
@@ -17,7 +13,7 @@
 
 / {
 	fragment@0 {
-		target = <&uart3>;
+		target = <&pwm9>;
 
 		__overlay__ {
 			status = "okay";
