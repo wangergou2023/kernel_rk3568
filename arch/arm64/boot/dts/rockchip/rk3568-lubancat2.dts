@@ -892,7 +892,21 @@
     disable-win-move;
 };
 
-/* USB2.0 Host2 */
+/* USB OTG/USB Host_1 USB 2.0 Comb */
+&usb2phy0 {
+	status = "okay";
+};
+
+&u2phy0_host {
+    phy-supply = <&vcc5v0_usb30_host>;
+    status = "okay";
+};
+
+&u2phy0_otg {
+    vbus-supply = <&vcc5v0_otg_vbus>;
+    status = "okay";
+};
+
 &usb_host0_ehci {
     status = "okay";
 };
@@ -901,8 +915,9 @@
     status = "okay";
 };
 
+/* USB Host_2/USB Host_3 USB 2.0 Comb */
 &usb2phy1 {
-    status = "okay";
+	status = "okay";
 };
 
 &u2phy1_otg {
@@ -910,7 +925,10 @@
     status = "okay";
 };
 
-/* USB2.0 Host3  */
+&u2phy1_host {
+    status = "okay";
+};
+
 &usb_host1_ehci {
     status = "okay";
 };
@@ -919,48 +937,38 @@
     status = "okay";
 };
 
-&u2phy1_host {
+/* MULTI_PHY0 For SATA0, USB3.0 OTG Only USB2.0 */
+&combphy0_us {
     status = "okay";
 };
 
-/* USB3.0 Host1 */
-&usbhost30 {
-    status = "okay";
-};
-
-&usbhost_dwc3 {
-    status = "okay";
-};
-
-&u2phy0_host {
-    phy-supply = <&vcc5v0_usb30_host>;
-    status = "okay";
-};
-
-&usb2phy0 {
-    status = "okay";
-};
-
-&combphy1_usq {
-    status = "okay";
-};
-
-/* USB3.0 OTG to USB2.0 only */
 &usbdrd30 {
     status = "okay";
 };
 
 &usbdrd_dwc3 {
-    phys = <&u2phy0_otg>;
-    phy-names = "usb2-phy";
-    extcon = <&usb2phy0>;
-    maximum-speed = "high-speed";
-    snps,dis_u2_susphy_quirk;
+	phys = <&u2phy0_otg>;
+	phy-names = "usb2-phy";
+	extcon = <&usb2phy0>;
+	maximum-speed = "high-speed";
+	snps,dis_u2_susphy_quirk;
+    status = "okay";    
+};
+
+&sata0 {
+	status = "okay";
+};
+
+/* USB3.0 Host */
+&combphy1_usq {
     status = "okay";
 };
 
-&u2phy0_otg {
-    vbus-supply = <&vcc5v0_otg_vbus>;
+&usbhost30 {
+    status = "okay";
+};
+
+&usbhost_dwc3 {
     status = "okay";
 };
 
