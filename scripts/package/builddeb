@@ -89,14 +89,15 @@ cp "$($MAKE -s -f $srctree/Makefile image_name)" "$tmpdir/$installed_image_path"
 if grep -q "^CONFIG_OF=y" $KCONFIG_CONFIG ; then
 	# Only some architectures with OF support have this target
 	if grep -q dtbs_install "${srctree}/arch/$SRCARCH/Makefile"; then
-		$MAKE KBUILD_SRC= INSTALL_DTBS_PATH="$tmpdir/boot/usr/lib/$packagename" dtbs_install
+		$MAKE KBUILD_SRC= INSTALL_DTBS_PATH="$tmpdir/boot/dtb" dtbs_install
 	fi
 fi
 
 if grep -q "^CONFIG_ARCH_ROCKCHIP=y" $KCONFIG_CONFIG ; then
- 	cp $objtree/arch/arm64/boot/dts/rockchip/uEnv/uEnv*.txt "$tmpdir/boot"
-	if [ -f "$tmpdir/boot/usr/lib/$packagename/${RK_KERNEL_DTS}.dtb" ]; then
-		cp "$tmpdir/boot/usr/lib/$packagename/${RK_KERNEL_DTS}.dtb" "$tmpdir/boot/rk-kernel.dtb"
+	mkdir -p "$tmpdir/boot/uEnv"
+ 	cp $objtree/arch/arm64/boot/dts/rockchip/uEnv/uEnv*.txt "$tmpdir/boot/uEnv"
+	if [ -f "$tmpdir/boot/dtb/${RK_KERNEL_DTS}.dtb" ]; then
+		cp "$tmpdir/boot/dtb/${RK_KERNEL_DTS}.dtb" "$tmpdir/boot/rk-kernel.dtb"
 	fi
 fi
 
