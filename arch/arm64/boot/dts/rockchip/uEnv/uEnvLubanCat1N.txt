@@ -1,11 +1,10 @@
 uname_r=4.19.232
 size=0x1000000
-dtb=rk3566-lubancat1-n.dtb
+#dtb=rk3566-lubancat1-n.dtb
 
 enable_uboot_overlays=1
 #overlay_start
 
-#dtoverlay=/dtb/overlay/lubancat-dsi0-mipi-display-overlay.dtbo
 #dtoverlay=/dtb/overlay/lubancat-i2c3-m0-overlay.dtbo
 #dtoverlay=/dtb/overlay/lubancat-i2c5-m0-overlay.dtbo
 #dtoverlay=/dtb/overlay/lubancat-pwm10-m0-overlay.dtbo
