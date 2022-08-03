@@ -63,10 +63,6 @@
             ftrace-size = <0x00000>;
             pmsg-size = <0x50000>;
         };
-
-        // abc: abc@80900000{
-        //     reg = <0x0 0x80900000 0x0 0x100000>;
-        // };
     };
 
     dc_5v: dc-5v {
@@ -225,7 +221,6 @@
 
     wireless_wlan: wireless-wlan {
         compatible = "wlan-platdata";
-        rockchip,grf = <&grf>;
         wifi_chip_type = "rtl8821cu";
         pinctrl-names = "default";
         pinctrl-0 = <&wifi_poweren_gpio>;
@@ -325,24 +320,7 @@
             regulator-off-in-suspend;
         };
     };
-/*
-    vdd_cpu: syr827@40 {
-        compatible = "silergy,syr827";
-        reg = <0x40>;
-        fcs,suspend-voltage-selector = <1>;
-        regulator-name = "vdd_cpu";
-        regulator-min-microvolt = <712500>;
-        regulator-max-microvolt = <1390000>;
-        regulator-ramp-delay = <2300>;
-        regulator-always-on;
-        regulator-boot-on;
-        vin-supply = <&vcc5v0_sys>;
 
-        regulator-state-mem {
-            regulator-off-in-suspend;
-        };
-    };
-*/
     rk809: pmic@20 {
         compatible = "rockchip,rk809";
         reg = <0x20>;
