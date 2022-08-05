@@ -7,9 +7,14 @@
 /dts-v1/;
 
 #include "rk3566-lubancat-zero.dtsi"
+#include "rk3568-lubancat-mipi-dsi0-ebf410045.dtsi"
 
 / {
-    model = "EmbedFire LubanCat-Zero HDMI";
+    model = "EmbedFire LubanCat-Zero HDMI+MIPI";
     compatible = "embedfire,lubancat-zero", "rockchip,rk3566";
 
+};
+
+&dsi0_panel {
+    reset-gpios = <&gpio3 RK_PA4 GPIO_ACTIVE_LOW>;
 };

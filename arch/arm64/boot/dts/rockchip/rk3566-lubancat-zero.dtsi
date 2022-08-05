@@ -15,12 +15,8 @@
 #include "rk3566.dtsi"
 
 / {
-    model = "EmbedFire LubanCat1-N";
-    compatible = "embedfire,lubancat1-n", "rockchip,rk3566";
-
-    aliases {
-        ethernet1 = &r8168;
-    };
+    model = "EmbedFire LubanCat-Zero";
+    compatible = "embedfire,lubancat-zero", "rockchip,rk3566";
 
     chosen: chosen {
             bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0 root=PARTUUID=614e0000-0000 rw rootwait";
@@ -68,20 +64,6 @@
             pmsg-size = <0x50000>;
         };
     };
-
-	adc_keys: adc-keys {
-		compatible = "adc-keys";
-		io-channels = <&saradc 0>;
-		io-channel-names = "buttons";
-		keyup-threshold-microvolt = <1800000>;
-		poll-interval = <100>;
-
-		restart-key {
-			label = "restart";
-			linux,code = <KEY_RESTART>;
-			press-threshold-microvolt = <9>;
-		};
-	};
 
     dc_5v: dc-5v {
         compatible = "regulator-fixed";
@@ -189,37 +171,6 @@
         };
     };
 
-    rk809_sound: rk809-sound {
-        status = "okay";
-        compatible = "simple-audio-card";
-        simple-audio-card,format = "i2s";
-        simple-audio-card,name = "rockchip,rk809-codec";
-        simple-audio-card,mclk-fs = <256>;
-        simple-audio-card,widgets =
-            "Microphone", "Mic Jack",
-            "Headphone", "Headphone Jack";
-        simple-audio-card,routing =
-            "Mic Jack", "MICBIAS1",
-            "IN1P", "Mic Jack",
-            "Headphone Jack", "HPOL",
-            "Headphone Jack", "HPOR";
-        simple-audio-card,cpu {
-            sound-dai = <&i2s1_8ch>;
-        };
-        simple-audio-card,codec {
-            sound-dai = <&rk809_codec>;
-        };
-    };
-
-    rk_headset: rk-headset {
-        status = "okay";
-        compatible = "rockchip_headset";
-        headset_gpio = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;
-        pinctrl-names = "default";
-        pinctrl-0 = <&hp_det>;
-        io-channels = <&saradc 1>;
-    };
-
     ext_cam_clk: external-camera-clock {
         compatible = "fixed-clock";
         #clock-cells = <0>;
@@ -268,49 +219,12 @@
         default-brightness-level = <200>;
     };
 
-    sdio_pwrseq: sdio-pwrseq {
-        compatible = "mmc-pwrseq-simple";
-        clocks = <&rk809 1>;
-        clock-names = "ext_clock";
-        pinctrl-names = "default";
-        pinctrl-0 = <&wifi_enable_h>;
-        /*
-            * On the module itself this is one of these (depending
-            * on the actual card populated):
-            * - SDIO_RESET_L_WL_REG_ON
-            * - PDN (power down when low)
-        */
-        reset-gpios = <&gpio2 RK_PB1 GPIO_ACTIVE_LOW>;
-        post-power-on-delay-ms = <100>;
-        status = "okay";
-    };
-
     wireless_wlan: wireless-wlan {
         compatible = "wlan-platdata";
-        rockchip,grf = <&grf>;
-        clocks = <&rk809 1>;
-        clock-names = "ext_clock";
-
-        wifi_chip_type = "rtl8822cs";
-
+        wifi_chip_type = "rtl8821cu";
         pinctrl-names = "default";
-        pinctrl-0 = <&wifi_host_wake_irq>;
-        WIFI,host_wake_irq = <&gpio2 RK_PB2 GPIO_ACTIVE_HIGH>;
-        status = "okay";
-    };
-
-    wireless_bluetooth: wireless-bluetooth {
-        compatible = "bluetooth-platdata";
-        clocks = <&rk809 1>;
-        clock-names = "ext_clock";
-        //wifi-bt-power-toggle;
-        uart_rts_gpios = <&gpio2 RK_PB5 GPIO_ACTIVE_LOW>;
-        pinctrl-names = "default", "rts_gpio";
-        pinctrl-0 = <&uart1m0_rtsn>;
-        pinctrl-1 = <&uart1_gpios>;
-        BT,reset_gpio    = <&gpio3 RK_PA0 GPIO_ACTIVE_HIGH>;
-        BT,wake_gpio     = <&gpio3 RK_PA2 GPIO_ACTIVE_HIGH>;
-        BT,wake_host_irq = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
+        pinctrl-0 = <&wifi_poweren_gpio>;
+        WIFI,poweren_gpio = <&gpio0 RK_PC1 GPIO_ACTIVE_LOW>;
         status = "okay";
     };
 };
@@ -324,48 +238,9 @@
     status = "okay";
 };
 
-&i2s1_8ch {
-    status = "okay";
-    rockchip,clk-trcm = <1>;
-    /delete-property/ rockchip,playback-only;
-    pinctrl-names = "default";
-    pinctrl-0 = <&i2s1m0_sclktx
-                    &i2s1m0_lrcktx
-                    &i2s1m0_sdi0
-                    &i2s1m0_sdo0>;
-};
-
 &pwm0 {
     status = "okay";
     pinctrl-0 = <&pwm0m1_pins>;
-};
-
-&pwm3 {
-    status = "okay";
-
-    compatible = "rockchip,remotectl-pwm";
-    remote_pwm_id = <3>;
-    handle_cpu_id = <1>;
-    remote_support_psci = <0>;
-    pinctrl-names = "default";
-    pinctrl-0 = <&pwm3_pins>;
-
-    ir_key_lubancat{
-        rockchip,usercode = <0xff00>;
-        rockchip,key_table =
-            <0xeb   KEY_POWER>,
-            <0xec   KEY_MENU>,
-            <0xfe   KEY_BACK>,
-            <0xb7   KEY_HOME>,
-            <0xa3   KEY_WWW>,
-            <0xf4   KEY_VOLUMEUP>,
-            <0xa7   KEY_VOLUMEDOWN>,
-            <0xf8   KEY_REPLY>,
-            <0xfc   KEY_UP>,
-            <0xfd   KEY_DOWN>,
-            <0xf1   KEY_LEFT>,
-            <0xe5   KEY_RIGHT>;
-    };
 };
 
 &cpu0 {
@@ -445,24 +320,7 @@
             regulator-off-in-suspend;
         };
     };
-/*
-    vdd_cpu: syr827@40 {
-        compatible = "silergy,syr827";
-        reg = <0x40>;
-        fcs,suspend-voltage-selector = <1>;
-        regulator-name = "vdd_cpu";
-        regulator-min-microvolt = <712500>;
-        regulator-max-microvolt = <1390000>;
-        regulator-ramp-delay = <2300>;
-        regulator-always-on;
-        regulator-boot-on;
-        vin-supply = <&vcc5v0_sys>;
 
-        regulator-state-mem {
-            regulator-off-in-suspend;
-        };
-    };
-*/
     rk809: pmic@20 {
         compatible = "rockchip,rk809";
         reg = <0x20>;
@@ -709,22 +567,6 @@
                 };
             };
         };
-
-        rk809_codec: codec {
-            #sound-dai-cells = <0>;
-            compatible = "rockchip,rk809-codec", "rockchip,rk817-codec";
-            clocks = <&cru I2S1_MCLKOUT_TX>;
-            clock-names = "mclk";
-            assigned-clocks = <&cru I2S1_MCLKOUT_TX>, <&cru I2S1_MCLK_TX_IOE>;
-            assigned-clock-rates = <12288000>;
-            assigned-clock-parents = <&cru CLK_I2S1_8CH_TX>, <&cru I2S1_MCLKOUT_TX>;
-            pinctrl-names = "default";
-            pinctrl-0 = <&i2s1m0_mclk>;
-            hp-volume = <20>;
-            spk-volume = <3>;
-            //mic-in-differential;
-            status = "okay";
-        };
     };
 };
 
@@ -816,22 +658,6 @@
     vqmmc-supply = <&vccio_sd>;
     pinctrl-names = "default";
     pinctrl-0 = <&sdmmc0_bus4 &sdmmc0_clk &sdmmc0_cmd &sdmmc0_det>;
-    status = "okay";
-};
-
-&sdmmc1 {
-    max-frequency = <100000000>;
-    supports-sdio;
-    bus-width = <4>;
-    disable-wp;
-    cap-sd-highspeed;
-    cap-sdio-irq;
-    keep-power-in-suspend;
-    pinctrl-names = "default";
-    pinctrl-0 = <&sdmmc1_bus4 &sdmmc1_cmd &sdmmc1_clk>;
-    sd-uhs-sdr104;
-    mmc-pwrseq = <&sdio_pwrseq>;
-    non-removable;
     status = "okay";
 };
 
@@ -930,8 +756,9 @@
     status = "okay";
 };
 
-/* USB3.0 Host */
+/* USB3.0 Host to USB2.0 only */
 &combphy1_usq {
+    rockchip,dis-u3otg1-port; /* 配置 dwc3_1 控制器最高支持 high speed */
     status = "okay";
 };
 
@@ -940,6 +767,9 @@
 };
 
 &usbhost_dwc3 {
+    phys = <&u2phy0_host>; /* 配置 phys 属性只引用 usb 2.0 phy 节点 */
+    phy-names = "usb2-phy";
+    maximum-speed = "high-speed"; /* 配置 dwc3 控制器最高支持 high speed */
     status = "okay";
 };
 
@@ -975,23 +805,6 @@
     rgmii_phy1: phy@0 {
         compatible = "ethernet-phy-ieee802.3-c22";
         reg = <0x0>;
-    };
-};
-
-&pcie2x1 {
-    reset-gpios = <&gpio3 RK_PC1 GPIO_ACTIVE_HIGH>;
-    vpcie3v3-supply = <&pcie_3v3>;
-    status = "okay";
-
-    pcie@00 {
-        reg = <0x00000000 0 0 0 0>;
-        #address-cells = <3>;
-        #size-cells = <2>;
-
-        r8168: pcie@01,0 {
-            reg = <0x000000 0 0 0 0>;
-            local-mac-address = [ 00 00 00 00 00 00 ];
-        };
     };
 };
 
@@ -1110,14 +923,14 @@
 
 &route_hdmi {
     status = "okay";
-    connect = <&vp0_out_hdmi>;
-};
-
-&hdmi_in_vp1 {
-    status = "disabled";
+    connect = <&vp1_out_hdmi>;
 };
 
 &hdmi_in_vp0 {
+    status = "disabled";
+};
+
+&hdmi_in_vp1 {
     status = "okay";
 };
 
@@ -1148,27 +961,9 @@
         };
     };
 
-    headphone {
-        hp_det: hp-det {
-            rockchip,pins = <0 RK_PB7 RK_FUNC_GPIO &pcfg_pull_none>;
-        };
-    };
-
-    sdio-pwrseq {
-        wifi_enable_h: wifi-enable-h {
-            rockchip,pins = <2 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
-        };
-    };
-
     wireless-wlan {
-        wifi_host_wake_irq: wifi-host-wake-irq {
-            rockchip,pins = <2 RK_PB2 RK_FUNC_GPIO &pcfg_pull_down>;
-        };
-    };
-
-    wireless-bluetooth {
-        uart1_gpios: uart1-gpios {
-            rockchip,pins = <2 RK_PB5 RK_FUNC_GPIO &pcfg_pull_none>;
+        wifi_poweren_gpio: wifi-poweren-gpio {
+            rockchip,pins = <0 RK_PC1 RK_FUNC_GPIO &pcfg_output_low>;
         };
     };
 
