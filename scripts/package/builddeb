@@ -96,9 +96,9 @@ fi
 if grep -q "^CONFIG_ARCH_ROCKCHIP=y" $KCONFIG_CONFIG ; then
 	mkdir -p "$tmpdir/boot/uEnv"
  	cp $objtree/arch/arm64/boot/dts/rockchip/uEnv/uEnv*.txt "$tmpdir/boot/uEnv"
-	if [ -f "$tmpdir/boot/dtb/${RK_KERNEL_DTS}.dtb" ]; then
-		cp "$tmpdir/boot/dtb/${RK_KERNEL_DTS}.dtb" "$tmpdir/boot/rk-kernel.dtb"
-	fi
+	# if [ -f "$tmpdir/boot/dtb/${RK_KERNEL_DTS}.dtb" ]; then
+	# 	cp "$tmpdir/boot/dtb/${RK_KERNEL_DTS}.dtb" "$tmpdir/boot/rk-kernel.dtb"
+	# fi
 fi
 
 if grep -q '^CONFIG_MODULES=y' $KCONFIG_CONFIG ; then
