@@ -15,12 +15,8 @@
 #include "rk3566.dtsi"
 
 / {
-    model = "EmbedFire LubanCat1-N";
-    compatible = "embedfire,lubancat1-n", "rockchip,rk3566";
-
-    aliases {
-        ethernet1 = &r8168;
-    };
+    model = "EmbedFire LubanCat1";
+    compatible = "embedfire,lubancat1", "rockchip,rk3566";
 
     chosen: chosen {
             bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0 root=PARTUUID=614e0000-0000 rw rootwait";
@@ -112,13 +108,33 @@
         vin-supply = <&vcc5v0_sys>;
     };
 
-    pcie_3v3: pcie2-3v3-regulator {
+    vcc5v0_usb20_host: vcc5v0-usb20-host-regulator {
         compatible = "regulator-fixed";
-        regulator-name = "pcie_3v3";
+        enable-active-high;
+        gpio = <&gpio2 RK_PB6 GPIO_ACTIVE_HIGH>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&vcc5v0_usb20_host_en>;
+        regulator-name = "vcc5v0_usb20_host";
+        regulator-always-on;
+    };
+
+    vcc5v0_usb30_host: vcc5v0-usb30-host-regulator {
+        compatible = "regulator-fixed";
+        enable-active-high;
+        gpio = <&gpio2 RK_PB5 GPIO_ACTIVE_HIGH>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&vcc5v0_usb30_host_en>;
+        regulator-name = "vcc5v0_usb30_host";
+        regulator-always-on;
+    };
+
+    pcie2_3v3: pcie2-3v3-regulator {
+        compatible = "regulator-fixed";
+        regulator-name = "pcie2_3v3";
         regulator-min-microvolt = <3300000>;
         regulator-max-microvolt = <3300000>;
         enable-active-high;
-        gpio = <&gpio3 RK_PC3 GPIO_ACTIVE_HIGH>;
+        gpio = <&gpio3 RK_PD4 GPIO_ACTIVE_HIGH>;
         startup-delay-us = <5000>;
         vin-supply = <&vcc5v0_sys>;
     };
@@ -266,52 +282,6 @@
             248 249 250 251 252 253 254 255
         >;
         default-brightness-level = <200>;
-    };
-
-    sdio_pwrseq: sdio-pwrseq {
-        compatible = "mmc-pwrseq-simple";
-        clocks = <&rk809 1>;
-        clock-names = "ext_clock";
-        pinctrl-names = "default";
-        pinctrl-0 = <&wifi_enable_h>;
-        /*
-            * On the module itself this is one of these (depending
-            * on the actual card populated):
-            * - SDIO_RESET_L_WL_REG_ON
-            * - PDN (power down when low)
-        */
-        reset-gpios = <&gpio2 RK_PB1 GPIO_ACTIVE_LOW>;
-        post-power-on-delay-ms = <100>;
-        status = "okay";
-    };
-
-    wireless_wlan: wireless-wlan {
-        compatible = "wlan-platdata";
-        rockchip,grf = <&grf>;
-        clocks = <&rk809 1>;
-        clock-names = "ext_clock";
-
-        wifi_chip_type = "rtl8822cs";
-
-        pinctrl-names = "default";
-        pinctrl-0 = <&wifi_host_wake_irq>;
-        WIFI,host_wake_irq = <&gpio2 RK_PB2 GPIO_ACTIVE_HIGH>;
-        status = "okay";
-    };
-
-    wireless_bluetooth: wireless-bluetooth {
-        compatible = "bluetooth-platdata";
-        clocks = <&rk809 1>;
-        clock-names = "ext_clock";
-        //wifi-bt-power-toggle;
-        uart_rts_gpios = <&gpio2 RK_PB5 GPIO_ACTIVE_LOW>;
-        pinctrl-names = "default", "rts_gpio";
-        pinctrl-0 = <&uart1m0_rtsn>;
-        pinctrl-1 = <&uart1_gpios>;
-        BT,reset_gpio    = <&gpio3 RK_PA0 GPIO_ACTIVE_HIGH>;
-        BT,wake_gpio     = <&gpio3 RK_PA2 GPIO_ACTIVE_HIGH>;
-        BT,wake_host_irq = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
-        status = "okay";
     };
 };
 
@@ -750,7 +720,6 @@
 
 &pmu_io_domains {
     status = "okay";
-    pmuio1-supply = <&vcc3v3_pmu>;
     pmuio2-supply = <&vcc3v3_pmu>;
     vccio1-supply = <&vccio_acodec>;
     vccio3-supply = <&vccio_sd>;
@@ -819,28 +788,6 @@
     status = "okay";
 };
 
-&sdmmc1 {
-    max-frequency = <100000000>;
-    supports-sdio;
-    bus-width = <4>;
-    disable-wp;
-    cap-sd-highspeed;
-    cap-sdio-irq;
-    keep-power-in-suspend;
-    pinctrl-names = "default";
-    pinctrl-0 = <&sdmmc1_bus4 &sdmmc1_cmd &sdmmc1_clk>;
-    sd-uhs-sdr104;
-    mmc-pwrseq = <&sdio_pwrseq>;
-    non-removable;
-    status = "okay";
-};
-
-&uart1 {
-    status = "okay";
-    pinctrl-names = "default";
-    pinctrl-0 = <&uart1m0_xfer &uart1m0_ctsn>;
-};
-
 &vdpu {
     status = "okay";
 };
@@ -885,6 +832,7 @@
 };
 
 &u2phy0_host {
+    phy-supply = <&vcc5v0_usb30_host>;
     status = "okay";
 };
 
@@ -906,6 +854,7 @@
 };
 
 &u2phy1_otg {
+    phy-supply = <&vcc5v0_usb20_host>;
     status = "okay";
 };
 
@@ -947,10 +896,10 @@
     phy-mode = "rgmii";
     clock_in_out = "input";
 
-    snps,reset-gpio = <&gpio4 RK_PC0 GPIO_ACTIVE_LOW>;
+    snps,reset-gpio = <&gpio2 RK_PB0 GPIO_ACTIVE_LOW>;
     snps,reset-active-low;
-    /* Reset time is 100ms, 100ms */
-    snps,reset-delays-us = <0 100000 100000>;
+    /* Reset time is 20ms, 100ms */
+    snps,reset-delays-us = <0 20000 100000>;
 
     assigned-clocks = <&cru SCLK_GMAC1_RX_TX>, <&cru SCLK_GMAC1>;
     assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>, <&gmac1_clkin>;
@@ -964,8 +913,8 @@
                     &gmac1m1_rgmii_bus
                     &gmac1m1_clkinout>;
 
-    tx_delay = <0x16>;
-    rx_delay = <0x0a>;
+    tx_delay = <0x1e>;
+    rx_delay = <0x09>;
 
     phy-handle = <&rgmii_phy1>;
     status = "okay";
@@ -979,20 +928,10 @@
 };
 
 &pcie2x1 {
-    reset-gpios = <&gpio3 RK_PC1 GPIO_ACTIVE_HIGH>;
-    vpcie3v3-supply = <&pcie_3v3>;
+    reset-gpios = <&gpio0 RK_PB6 GPIO_ACTIVE_HIGH>;
+    disable-gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
+    vpcie3v3-supply = <&pcie2_3v3>;
     status = "okay";
-
-    pcie@00 {
-        reg = <0x00000000 0 0 0 0>;
-        #address-cells = <3>;
-        #size-cells = <2>;
-
-        r8168: pcie@01,0 {
-            reg = <0x000000 0 0 0 0>;
-            local-mac-address = [ 00 00 00 00 00 00 ];
-        };
-    };
 };
 
 &combphy2_psq {
@@ -1154,23 +1093,16 @@
         };
     };
 
-    sdio-pwrseq {
-        wifi_enable_h: wifi-enable-h {
-            rockchip,pins = <2 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
+    usb {
+        vcc5v0_usb20_host_en: vcc5v0-usb20-host-en {
+            rockchip,pins = <2 RK_PB6 RK_FUNC_GPIO &pcfg_pull_none>;
         };
-    };
 
-    wireless-wlan {
-        wifi_host_wake_irq: wifi-host-wake-irq {
-            rockchip,pins = <2 RK_PB2 RK_FUNC_GPIO &pcfg_pull_down>;
-        };
-    };
-
-    wireless-bluetooth {
-        uart1_gpios: uart1-gpios {
+        vcc5v0_usb30_host_en: vcc5v0-usb30-host-en {
             rockchip,pins = <2 RK_PB5 RK_FUNC_GPIO &pcfg_pull_none>;
         };
     };
+
 
     lcd {
         mipi_dsi0_lcd_pwr_en: mipi-dsi0-lcd-pwr-en {
