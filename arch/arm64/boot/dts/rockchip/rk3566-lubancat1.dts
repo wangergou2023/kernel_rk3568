@@ -951,6 +951,21 @@
         irq-gpios = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
     };
 
+    dw9714: dw9714@0c {
+        status = "okay";
+        compatible = "dongwoon,dw9714";
+        reg = <0x0c>;
+		rockchip,camera-module-index = <0>;
+        rockchip,vcm-max-current = <100>;
+		rockchip,vcm-start-current = <0>;
+		rockchip,vcm-rated-current = <100>;
+		rockchip,vcm-step-mode = <0xd>;
+        rockchip,vcm-dlc-enable = <0>;
+        rockchip,vcm-mclk = <0>;    
+        rockchip,vcm-t-src = <0>;
+		rockchip,camera-module-facing = "back";
+    };
+    
     ov5648: camera@36 {
         compatible = "ovti,ov5648";
         reg = <0x36>;
@@ -968,6 +983,7 @@
         rockchip,camera-module-facing = "back";
         rockchip,camera-module-name = "THDS11073";
         rockchip,camera-module-lens-name = "Largan-40122a1";
+        lens-focus = <&dw9714>;
 
         port {
                 /* MIPI CSI-2 bus endpoint */
