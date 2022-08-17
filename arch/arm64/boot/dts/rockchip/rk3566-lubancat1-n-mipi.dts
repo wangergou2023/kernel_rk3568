@@ -1,0 +1,36 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright (c) 2020 Rockchip Electronics Co., Ltd.
+ *
+ */
+
+/dts-v1/;
+
+#include "rk3566-lubancat1-n.dts"
+#include "rk3568-lubancat-mipi-dsi0-ebf410045.dtsi"
+
+/ {
+    model = "EmbedFire LubanCa1 MIPI";
+    compatible = "embedfire,lubancat1", "rockchip,rk3566";
+
+};
+
+&dsi0_panel {
+    reset-gpios = <&gpio3 RK_PA4 GPIO_ACTIVE_LOW>;
+};
+
+&route_hdmi {
+    status = "disabled";
+};
+
+&hdmi_in_vp0 {
+    status = "disabled";
+};
+
+&hdmi_in_vp1 {
+    status = "disabled";
+};
+
+&hdmi {
+    status = "disabled";
+};

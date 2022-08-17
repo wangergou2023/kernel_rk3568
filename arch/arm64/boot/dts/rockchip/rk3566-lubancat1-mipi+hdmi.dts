@@ -6,12 +6,12 @@
 
 /dts-v1/;
 
-#include "rk3566-lubancat-zero.dtsi"
+#include "rk3566-lubancat1.dts"
 #include "rk3568-lubancat-mipi-dsi0-ebf410045.dtsi"
 
 / {
-    model = "EmbedFire LubanCat-Zero HDMI+MIPI";
-    compatible = "embedfire,lubancat-zero", "rockchip,rk3566";
+    model = "EmbedFire LubanCa1 MIPI+MDMI";
+    compatible = "embedfire,lubancat1", "rockchip,rk3566";
 
 };
 

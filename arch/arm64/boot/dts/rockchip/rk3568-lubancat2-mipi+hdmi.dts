@@ -6,40 +6,10 @@
 
 /dts-v1/;
 
-#include "rk3568-lubancat2.dtsi"
+#include "rk3568-lubancat2.dts"
 #include "rk3568-lubancat-mipi-dsi0-ebf410045.dtsi"
 / {
-    model = "EmbedFire LubanCat2 HDMI";
+    model = "EmbedFire LubanCat2 HDMI+MIPI";
     compatible = "embedfire,lubancat2", "rockchip,rk3568";
 
-};
-
-&route_hdmi {
-    status = "okay";
-    connect = <&vp0_out_hdmi>;
-};
-
-&hdmi_in_vp0 {
-    status = "okay";
-};
-
-&hdmi_in_vp1 {
-    status = "disabled";
-};
-
-&hdmi {
-    status = "okay";
-};
-
-&route_dsi0 {
-	status = "okay";
-	connect = <&vp1_out_dsi0>;
-};
-
-&dsi0_in_vp0 {
-    status = "disabled";
-};
-
-&dsi0_in_vp1 {
-    status = "okay";
 };
