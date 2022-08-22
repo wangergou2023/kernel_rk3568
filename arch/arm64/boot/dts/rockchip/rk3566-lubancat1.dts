@@ -137,6 +137,7 @@
         gpio = <&gpio0 RK_PD3 GPIO_ACTIVE_HIGH>;
         startup-delay-us = <5000>;
         vin-supply = <&vcc5v0_sys>;
+        regulator-always-on;
     };
 
     mipi_dsi0_lcd_power: mipi-dsi0-lcd-power-regulator {
