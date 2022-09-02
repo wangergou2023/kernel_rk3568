@@ -18,10 +18,6 @@
     model = "EmbedFire LubanCat1-N";
     compatible = "embedfire,lubancat1-n", "rockchip,rk3566";
 
-    aliases {
-        ethernet1 = &r8168;
-    };
-
     chosen: chosen {
             bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0 root=PARTUUID=614e0000-0000 rw rootwait";
     };
@@ -268,49 +264,12 @@
         default-brightness-level = <200>;
     };
 
-    sdio_pwrseq: sdio-pwrseq {
-        compatible = "mmc-pwrseq-simple";
-        clocks = <&rk809 1>;
-        clock-names = "ext_clock";
-        pinctrl-names = "default";
-        pinctrl-0 = <&wifi_enable_h>;
-        /*
-            * On the module itself this is one of these (depending
-            * on the actual card populated):
-            * - SDIO_RESET_L_WL_REG_ON
-            * - PDN (power down when low)
-        */
-        reset-gpios = <&gpio2 RK_PB1 GPIO_ACTIVE_LOW>;
-        post-power-on-delay-ms = <100>;
-        status = "okay";
-    };
-
     wireless_wlan: wireless-wlan {
         compatible = "wlan-platdata";
-        rockchip,grf = <&grf>;
-        clocks = <&rk809 1>;
-        clock-names = "ext_clock";
-
-        wifi_chip_type = "rtl8822cs";
-
+        wifi_chip_type = "rtl8821cu";
         pinctrl-names = "default";
-        pinctrl-0 = <&wifi_host_wake_irq>;
-        WIFI,host_wake_irq = <&gpio2 RK_PB2 GPIO_ACTIVE_HIGH>;
-        status = "okay";
-    };
-
-    wireless_bluetooth: wireless-bluetooth {
-        compatible = "bluetooth-platdata";
-        clocks = <&rk809 1>;
-        clock-names = "ext_clock";
-        //wifi-bt-power-toggle;
-        uart_rts_gpios = <&gpio2 RK_PB5 GPIO_ACTIVE_LOW>;
-        pinctrl-names = "default", "rts_gpio";
-        pinctrl-0 = <&uart1m0_rtsn>;
-        pinctrl-1 = <&uart1_gpios>;
-        BT,reset_gpio    = <&gpio3 RK_PA0 GPIO_ACTIVE_HIGH>;
-        BT,wake_gpio     = <&gpio3 RK_PA2 GPIO_ACTIVE_HIGH>;
-        BT,wake_host_irq = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
+        pinctrl-0 = <&wifi_poweren_gpio>;
+        WIFI,poweren_gpio = <&gpio0 RK_PC1 GPIO_ACTIVE_LOW>;
         status = "okay";
     };
 };
@@ -445,24 +404,7 @@
             regulator-off-in-suspend;
         };
     };
-/*
-    vdd_cpu: syr827@40 {
-        compatible = "silergy,syr827";
-        reg = <0x40>;
-        fcs,suspend-voltage-selector = <1>;
-        regulator-name = "vdd_cpu";
-        regulator-min-microvolt = <712500>;
-        regulator-max-microvolt = <1390000>;
-        regulator-ramp-delay = <2300>;
-        regulator-always-on;
-        regulator-boot-on;
-        vin-supply = <&vcc5v0_sys>;
 
-        regulator-state-mem {
-            regulator-off-in-suspend;
-        };
-    };
-*/
     rk809: pmic@20 {
         compatible = "rockchip,rk809";
         reg = <0x20>;
@@ -797,9 +739,10 @@
 
 &sdhci {
     bus-width = <8>;
-    supports-emmc;
+	max-frequency = <200000000>;
+	mmc-hs200-1_8v;		
     non-removable;
-    max-frequency = <200000000>;
+    supports-emmc;
     status = "okay";
 };
 
@@ -816,28 +759,6 @@
     pinctrl-names = "default";
     pinctrl-0 = <&sdmmc0_bus4 &sdmmc0_clk &sdmmc0_cmd &sdmmc0_det>;
     status = "okay";
-};
-
-&sdmmc1 {
-    max-frequency = <100000000>;
-    supports-sdio;
-    bus-width = <4>;
-    disable-wp;
-    cap-sd-highspeed;
-    cap-sdio-irq;
-    keep-power-in-suspend;
-    pinctrl-names = "default";
-    pinctrl-0 = <&sdmmc1_bus4 &sdmmc1_cmd &sdmmc1_clk>;
-    sd-uhs-sdr104;
-    mmc-pwrseq = <&sdio_pwrseq>;
-    non-removable;
-    status = "okay";
-};
-
-&uart1 {
-    status = "okay";
-    pinctrl-names = "default";
-    pinctrl-0 = <&uart1m0_xfer &uart1m0_ctsn>;
 };
 
 &vdpu {
@@ -944,27 +865,34 @@
 
 &gmac1 {
     phy-mode = "rgmii";
-    clock_in_out = "input";
+    clock_in_out = "output";
 
-    snps,reset-gpio = <&gpio4 RK_PC0 GPIO_ACTIVE_LOW>;
+    snps,reset-gpio = <&gpio2 RK_PB2 GPIO_ACTIVE_LOW>;
     snps,reset-active-low;
     /* Reset time is 100ms, 100ms */
-    snps,reset-delays-us = <0 100000 100000>;
+    snps,reset-delays-us = <0 75000 100000>;
 
     assigned-clocks = <&cru SCLK_GMAC1_RX_TX>, <&cru SCLK_GMAC1>;
-    assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>, <&gmac1_clkin>;
+    assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>, <&cru CLK_MAC1_2TOP>;
     assigned-clock-rates = <0>, <125000000>;
 
     pinctrl-names = "default";
     pinctrl-0 = <&gmac1m1_miim
-                    &gmac1m1_tx_bus2
-                    &gmac1m1_rx_bus2
-                    &gmac1m1_rgmii_clk
-                    &gmac1m1_rgmii_bus
-                    &gmac1m1_clkinout>;
+             &gmac1m1_tx_bus2_level3
+             &gmac1m1_rx_bus2
+             &gmac1m1_rgmii_clk_level2
+             &gmac1m1_rgmii_bus_level3>;
 
-    tx_delay = <0x16>;
-    rx_delay = <0x0a>;
+    // RTL8211F
+    // tx_delay = <0x24>;
+    // rx_delay = <0x08>;
+
+    // JL2101
+    // tx_delay = <0x1a>;
+    // rx_delay = <0x08>;
+
+    tx_delay = <0x24>;
+    rx_delay = <0x08>;
 
     phy-handle = <&rgmii_phy1>;
     status = "okay";
@@ -978,20 +906,8 @@
 };
 
 &pcie2x1 {
-    reset-gpios = <&gpio3 RK_PC1 GPIO_ACTIVE_HIGH>;
     vpcie3v3-supply = <&pcie_3v3>;
     status = "okay";
-
-    pcie@00 {
-        reg = <0x00000000 0 0 0 0>;
-        #address-cells = <3>;
-        #size-cells = <2>;
-
-        r8168: pcie@01,0 {
-            reg = <0x000000 0 0 0 0>;
-            local-mac-address = [ 00 00 00 00 00 00 ];
-        };
-    };
 };
 
 &combphy2_psq {
@@ -1169,21 +1085,9 @@
         };
     };
 
-    sdio-pwrseq {
-        wifi_enable_h: wifi-enable-h {
-            rockchip,pins = <2 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
-        };
-    };
-
     wireless-wlan {
-        wifi_host_wake_irq: wifi-host-wake-irq {
-            rockchip,pins = <2 RK_PB2 RK_FUNC_GPIO &pcfg_pull_down>;
-        };
-    };
-
-    wireless-bluetooth {
-        uart1_gpios: uart1-gpios {
-            rockchip,pins = <2 RK_PB5 RK_FUNC_GPIO &pcfg_pull_none>;
+        wifi_poweren_gpio: wifi-poweren-gpio {
+            rockchip,pins = <0 RK_PC1 RK_FUNC_GPIO &pcfg_output_low>;
         };
     };
 
