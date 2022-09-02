@@ -155,15 +155,15 @@
         vin-supply = <&vcc5v0_sys>;
     };
 
-	vcc3v3_pcie: gpio-regulator {
-		compatible = "regulator-fixed";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-		regulator-name = "vcc3v3_pcie";
-		vin-supply = <&vcc5v0_sys>;
-	};
+    vcc3v3_pcie: gpio-regulator {
+        compatible = "regulator-fixed";
+        regulator-always-on;
+        regulator-boot-on;
+        regulator-min-microvolt = <3300000>;
+        regulator-max-microvolt = <3300000>;
+        regulator-name = "vcc3v3_pcie";
+        vin-supply = <&vcc5v0_sys>;
+    };
 
     mipi_dsi0_lcd_power: mipi-dsi0-lcd-power-regulator {
         compatible = "regulator-fixed";
