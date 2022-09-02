@@ -155,15 +155,24 @@
         vin-supply = <&vcc5v0_sys>;
     };
 
-    pcie30_3v3: gpio-regulator {
-        compatible = "regulator-gpio";
-        regulator-name = "pcie30_3v3";
-        regulator-min-microvolt = <100000>;
+    2g5_phy1_3v3: 2g5-phy1-regulator {
+        compatible = "regulator-fixed";
+        regulator-name = "2g5_phy1_3v3";
+        regulator-min-microvolt = <3300000>;
         regulator-max-microvolt = <3300000>;
-        gpios = <&gpio0 RK_PD4 GPIO_ACTIVE_HIGH>;
-        gpios-states = <0x1>;
-        states = <100000 0x0
-              3300000 0x1>;
+        regulator-boot-on;
+        regulator-always-on;
+        vin-supply = <&vcc3v3_sys>;
+    };
+
+    2g5_phy2_3v3: 2g5-phy2-regulator {
+        compatible = "regulator-fixed";
+        regulator-name = "2g5_phy2_3v3";
+        regulator-min-microvolt = <3300000>;
+        regulator-max-microvolt = <3300000>;
+        regulator-boot-on;
+        regulator-always-on;
+        vin-supply = <&vcc3v3_sys>;
     };
 
     mipi_dsi0_lcd_power: mipi-dsi0-lcd-power-regulator {
@@ -1007,10 +1016,40 @@
     status = "okay";
 };
 
-&pcie3x2 {
-    reset-gpios = <&gpio2 RK_PD6 GPIO_ACTIVE_HIGH>;
-    vpcie3v3-supply = <&pcie30_3v3>;
+&pcie3x1 {
+    rockchip,bifurcation;
+    reset-gpios = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
+    vpcie3v3-supply = <&2g5_phy1_3v3>;
     status = "okay";
+
+    pcie@00 {
+        reg = <0x00000000 0 0 0 0>;
+        #address-cells = <3>;
+        #size-cells = <2>;
+
+        r8168: pcie@01,0 {
+            reg = <0x000000 0 0 0 0>;
+            local-mac-address = [ 00 00 00 00 00 00 ];
+        };
+    };
+};
+
+&pcie3x2 {
+    rockchip,bifurcation;
+    reset-gpios = <&gpio2 RK_PD6 GPIO_ACTIVE_HIGH>;
+    vpcie3v3-supply = <&2g5_phy1_3v3>;
+    status = "okay";
+	
+    pcie@00 {
+        reg = <0x00000000 0 0 0 0>;
+        #address-cells = <3>;
+        #size-cells = <2>;
+
+        r8168: pcie@01,0 {
+            reg = <0x000000 0 0 0 0>;
+            local-mac-address = [ 00 00 00 00 00 00 ];
+        };
+    };
 };
 
 /* mini pcie */
