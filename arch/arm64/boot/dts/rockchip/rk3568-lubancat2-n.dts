@@ -165,6 +165,18 @@
         vin-supply = <&vcc5v0_sys>;
     };
 
+    sata_power: sata-power-regulator {
+        compatible = "regulator-fixed";
+        regulator-name = "sata_power";
+        regulator-min-microvolt = <12000000>;
+        regulator-max-microvolt = <12000000>;
+        gpio = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
+        enable-active-high;
+        regulator-boot-on;
+        pinctrl-names = "default";
+        pinctrl-0 = <&sata_pwr_en>;
+    };
+
     mipi_dsi0_lcd_power: mipi-dsi0-lcd-power-regulator {
         compatible = "regulator-fixed";
         enable-active-high;
@@ -920,6 +932,7 @@
 };
 
 &sata0 {
+    target-supply = <&sata_power>;
     status = "okay";
 };
 
@@ -1244,6 +1257,12 @@
 
         vcc5v0_otg_vbus_en: vcc5v0-otg-vbus-en {
             rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
+        };
+    };
+
+    sata {
+	sata_pwr_en: sata-pwr-en {
+            rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
         };
     };
 
