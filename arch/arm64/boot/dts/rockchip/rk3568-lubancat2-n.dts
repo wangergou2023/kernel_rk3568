@@ -1006,9 +1006,9 @@
     status = "okay";
 };
 
-&pcie3x1 {
+&pcie3x2 {
 	rockchip,bifurcation;
-	reset-gpios = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&vcc3v3_pcie>;
 	status = "okay";
 
@@ -1026,9 +1026,9 @@
 	};
 };
 
-&pcie3x2 {
+&pcie3x1 {
 	rockchip,bifurcation;
-	reset-gpios = <&gpio2 RK_PD6 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio2 RK_PD5 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&vcc3v3_pcie>;
 	status = "okay";
 
