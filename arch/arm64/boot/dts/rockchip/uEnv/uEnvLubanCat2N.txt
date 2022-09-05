@@ -1,6 +1,6 @@
 uname_r=4.19.232
 size=0x1000000
-#dtb=rk3568-lubancat2.dtb
+#dtb=rk3568-lubancat2-n.dtb
 
 enable_uboot_overlays=1
 #overlay_start
