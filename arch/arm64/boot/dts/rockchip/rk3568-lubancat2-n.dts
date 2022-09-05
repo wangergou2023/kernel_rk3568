@@ -18,6 +18,13 @@
     model = "EmbedFire LubanCat2-N HDMI";
     compatible = "embedfire,lubancat2-n", "rockchip,rk3568";
 
+	aliases {
+		ethernet0 = &gmac0;
+		ethernet1 = &gmac1;
+		ethernet2 = &rtl8125_2;
+		ethernet3 = &rtl8125_1;
+	};
+
     chosen: chosen {
         bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0 root=PARTUUID=614e0000-0000 rw rootwait";
     };
@@ -1019,9 +1026,9 @@
     status = "okay";
 };
 
-&pcie3x2 {
+&pcie3x1 {
 	rockchip,bifurcation;
-	reset-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio2 RK_PD5 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&vcc3v3_pcie>;
 	status = "okay";
 
@@ -1039,9 +1046,9 @@
 	};
 };
 
-&pcie3x1 {
+&pcie3x2 {
 	rockchip,bifurcation;
-	reset-gpios = <&gpio2 RK_PD5 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&vcc3v3_pcie>;
 	status = "okay";
 
