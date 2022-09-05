@@ -1138,7 +1138,7 @@
         port {
             /* MIPI CSI-2 bus endpoint */
             cam0_ov5648_out: endpoint {
-                remote-endpoint = <&dphy1_in>;
+                remote-endpoint = <&dphy0_in>;
                 clock-lanes = <0>;
                 data-lanes = <1 2>;
             };
@@ -1150,13 +1150,9 @@
     status = "okay";
 };
 
-&csi2_dphy1 {
+&csi2_dphy0 {
     status = "okay";
-    /*
-     * dphy1 only used for split mode,
-     * can be used concurrently with dphy2
-     * full mode and split mode are mutually exclusive
-     */
+
     ports {
         #address-cells = <1>;
         #size-cells = <0>;
@@ -1166,7 +1162,7 @@
             #address-cells = <1>;
             #size-cells = <0>;
 
-            dphy1_in: endpoint@1 {
+            dphy0_in: endpoint@1 {
                 reg = <1>;
                 remote-endpoint = <&cam0_ov5648_out>;
                 data-lanes = <1 2>;
@@ -1178,7 +1174,7 @@
             #address-cells = <1>;
             #size-cells = <0>;
 
-            dphy1_out: endpoint@1 {
+            dphy0_out: endpoint@1 {
                 reg = <1>;
                 remote-endpoint = <&isp0_in>;
             };
@@ -1207,7 +1203,7 @@
 
             isp0_in: endpoint@0 {
                 reg = <0>;
-                remote-endpoint = <&dphy1_out>;
+                remote-endpoint = <&dphy0_out>;
             };
         };
     };
