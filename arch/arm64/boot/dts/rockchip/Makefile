@@ -142,10 +142,8 @@ dtb-$(CONFIG_CPU_RK3568) += \
 	rk3566-lubancat-zero-mipi.dtb \
 	rk3566-lubancat1.dtb \
 	rk3566-lubancat1-mipi.dtb \
-	rk3566-lubancat1-mipi+hdmi.dtb \
 	rk3566-lubancat1-n.dtb \
 	rk3566-lubancat1-n-mipi.dtb \
-	rk3566-lubancat1-n-mipi+hdmi.dtb \
 	rk3568-lubancat2.dtb \
 	rk3568-lubancat2-mipi.dtb \
 	rk3568-lubancat2-mipi+hdmi.dtb \
