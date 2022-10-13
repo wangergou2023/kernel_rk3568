@@ -1511,6 +1511,8 @@ __releases(&info->lock)
 		if (res)
 			module_put(info->fbops->owner);
 	}
+
+	fb_pan_display(info, &info->var);
 #ifdef CONFIG_FB_DEFERRED_IO
 	if (info->fbdefio)
 		fb_deferred_io_open(info, inode, file);
