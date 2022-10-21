@@ -900,7 +900,7 @@
     snps,reset-gpio = <&gpio2 RK_PB0 GPIO_ACTIVE_LOW>;
     snps,reset-active-low;
     /* Reset time is 100ms, 100ms */
-    snps,reset-delays-us = <0 75000 100000>;
+    snps,reset-delays-us = <0 100000 100000>;
 
     assigned-clocks = <&cru SCLK_GMAC1_RX_TX>, <&cru SCLK_GMAC1>;
     assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>, <&cru CLK_MAC1_2TOP>;
@@ -913,8 +913,11 @@
              &gmac1m1_rgmii_clk_level2
              &gmac1m1_rgmii_bus_level3>;
 
-    tx_delay = <0x1a>;
-    rx_delay = <0x0c>; 
+    // tx_delay = <0x1a>;
+    // rx_delay = <0x0c>; 
+
+    tx_delay = <0x8>;
+    rx_delay = <0x6>; 
 
     phy-handle = <&rgmii_phy1>;
     status = "okay";
