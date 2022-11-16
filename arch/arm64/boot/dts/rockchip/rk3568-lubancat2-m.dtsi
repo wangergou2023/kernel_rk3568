@@ -173,7 +173,11 @@
 		regulator-state-mem {
 			regulator-off-in-suspend;
 		};
-	};	
+	};
+	
+	test-power {
+		status = "okay";
+	};
 };
 
 &cpu0 {

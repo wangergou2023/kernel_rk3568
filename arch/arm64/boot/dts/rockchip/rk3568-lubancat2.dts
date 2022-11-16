@@ -320,6 +320,10 @@
         >;
         default-brightness-level = <200>;
     };
+
+	test-power {
+		status = "okay";
+	};
 };
 
 &saradc {
