@@ -148,7 +148,9 @@ dtb-$(CONFIG_CPU_RK3568) += \
 	rk3568-lubancat2-mipi.dtb \
 	rk3568-lubancat2-mipi+hdmi.dtb \
 	rk3568-lubancat2-n.dtb \
-	rk3568-lubancat2-io.dtb 
+	rk3568-lubancat2-n-mipi.dtb \
+	rk3568-lubancat2-n-mipi+hdmi.dtb \
+	rk3568-lubancat2-io.dtb
 
 endif
 
