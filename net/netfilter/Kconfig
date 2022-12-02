@@ -962,7 +962,7 @@ config NETFILTER_XT_TARGET_FULLCONENAT
 	Full Cone NAT
 
 	To compile it as a module, choose M here. If unsure, say N.
-	
+
 config NETFILTER_XT_TARGET_NFLOG
 	tristate '"NFLOG" target support'
 	default m if NETFILTER_ADVANCED=n
