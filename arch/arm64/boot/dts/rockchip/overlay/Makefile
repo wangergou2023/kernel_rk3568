@@ -7,6 +7,7 @@ dtbo-$(CONFIG_CPU_RK3568) += \
 	lubancat-gmac1-disable-overlay.dtbo \
 	lubancat-i2c3-m0-overlay.dtbo \
 	lubancat-i2c5-m0-overlay.dtbo \
+	lubancat-pcie2x1-disable-overlay.dtbo \
 	lubancat-pwm3-ir-overlay.dtbo \
 	lubancat-pwm8-m0-overlay.dtbo \
 	lubancat-pwm9-m0-overlay.dtbo \
