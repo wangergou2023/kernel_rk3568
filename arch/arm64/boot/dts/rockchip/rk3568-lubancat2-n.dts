@@ -11,6 +11,7 @@
 #include <dt-bindings/pinctrl/rockchip.h>
 #include <dt-bindings/input/rk-input.h>
 #include <dt-bindings/display/drm_mipi_dsi.h>
+#include <dt-bindings/display/rockchip_vop.h>
 #include <dt-bindings/sensor-dev.h>
 #include "rk3568.dtsi"
 
@@ -861,10 +862,15 @@
     status = "okay";
     assigned-clocks = <&cru DCLK_VOP0>, <&cru DCLK_VOP1>;
     assigned-clock-parents = <&pmucru PLL_HPLL>, <&cru PLL_VPLL>;
+    disable-win-move;
 };
 
 &vop_mmu {
     status = "okay";
+};
+
+&vp0 {
+        cursor-win-id = <ROCKCHIP_VOP2_CLUSTER0>;
 };
 
 &rng {
@@ -873,10 +879,6 @@
 
 &rockchip_suspend {
     status = "okay";
-};
-
-&vop {
-    disable-win-move;
 };
 
 /* USB OTG/USB Host_1 USB 2.0 Comb */
