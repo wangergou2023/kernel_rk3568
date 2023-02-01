@@ -1233,6 +1233,35 @@
             };
         };
     };
+
+   ov13850: ov13850@10 {
+        compatible = "ovti,ov13850";
+        reg = <0x10>;
+        clocks = <&ext_cam_clk>;
+        clock-names = "xvclk";
+        dovdd-supply= <&cam_dovdd>; /* 1.8v */
+        avdd-supply = <&cam_avdd>;  /* 2.8v */
+        dvdd-supply = <&cam_dvdd>;  /* 1.2v */
+        pwdn-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
+        reset-gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_HIGH>;
+        rotation = <180>;
+        status = "okay";
+
+        rockchip,camera-module-index = <2>;
+        rockchip,camera-module-facing = "back";
+        rockchip,camera-module-name = "ZC-OV13850R2A-V1";
+        rockchip,camera-module-lens-name = "Largan-50064B31";
+        lens-focus = <&dw9714>;
+
+        port {
+            /* MIPI CSI-2 bus endpoint */
+            ov13850_out: endpoint {
+                remote-endpoint = <&dphy0_in_ov13850>;
+                clock-lanes = <0>;
+                data-lanes = <1 2 3 4>;
+            };
+        };
+   };
 };
 
 &csi2_dphy_hw {
@@ -1261,6 +1290,12 @@
                 reg = <2>;
                 remote-endpoint = <&ov8858_out>;
                 data-lanes = <1 2>;
+            };
+
+            dphy0_in_ov13850: endpoint@3 {
+                reg = <3>;
+                remote-endpoint = <&ov13850_out>;
+                data-lanes = <1 2 3 4>;
             };
         };
 
