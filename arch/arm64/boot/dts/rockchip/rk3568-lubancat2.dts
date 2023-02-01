@@ -1150,7 +1150,7 @@
     clock-frequency = <100000>;
     
     // MIPI Touch
-    goodix_ts@5d {
+    gt911: gt911@5d {
         status = "okay";
         compatible = "goodix,gt911";
         reg = <0x5d>;
