@@ -209,17 +209,7 @@
         vin-supply = <&vdd_cam_5v>;
     };
 
-    cam0_dvdd: cam-dvdd {
-        compatible = "regulator-fixed";
-        regulator-name = "cam0_dvdd";
-        regulator-always-on;
-        regulator-boot-on;
-        regulator-min-microvolt = <1500000>;
-        regulator-max-microvolt = <1500000>;
-        vin-supply = <&vdd_cam_5v>;
-    };
-
-    cam1_dvdd: cam-dvdd {
+    cam_dvdd: cam-dvdd {
         compatible = "regulator-fixed";
         regulator-name = "cam1_dvdd";
         regulator-always-on;
@@ -1170,55 +1160,8 @@
         irq-gpios = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;
     };
 
-    // IMX258 Camare
-    dw9714_imx258: dw9714@0e {
-        status = "okay";
-        compatible = "dongwoon,dw9714";
-        reg = <0x0e>;
-        rockchip,camera-module-index = <0>;
-        rockchip,vcm-max-current = <100>;
-        rockchip,vcm-start-current = <0>;
-        rockchip,vcm-rated-current = <100>;
-        rockchip,vcm-step-mode = <0xd>;
-        rockchip,vcm-dlc-enable = <0>;
-        rockchip,vcm-mclk = <0>;    
-        rockchip,vcm-t-src = <0>;
-        rockchip,camera-module-facing = "back";
-    };
-
-    imx258_eeprom: imx258_eeprom@50 {
-        compatible = "otp,imx258_eeprom";
-        status = "okay";
-        reg = <0x50>;
-    };
-
-    imx258: imx258@1a {
-        compatible = "sony,imx258";
-        reg = <0x1a>;
-        clocks = <&ext_cam_clk>;
-        clock-names = "xvclk";
-        dovdd-supply= <&cam_dovdd>; /* 1.8v */
-        avdd-supply = <&cam_avdd>;  /* 2.8v */
-        dvdd-supply = <&cam1_dvdd>;  /* 1.2v */
-        pwdn-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_LOW>;
-        reset-gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_LOW>;
-        rockchip,camera-module-index = <0>;
-        rockchip,camera-module-facing = "back";
-        rockchip,camera-module-name = "GEIR180089";
-        rockchip,camera-module-lens-name = "LG500627G";
-        // lens-focus = <&dw9714_imx258>;
-        eeprom-ctrl = <&imx258_eeprom>;
-
-        port {
-            imx258_out: endpoint {
-                remote-endpoint = <&dphy0_in_imx258>;
-                data-lanes = <1 2 3 4>;
-            };
-        };
-    };
-
     // ov5648 Camare
-    dw9714_ov5648: dw9714@0c {
+    dw9714: dw9714@0c {
         status = "okay";
         compatible = "dongwoon,dw9714";
         reg = <0x0c>;
@@ -1250,7 +1193,7 @@
         rockchip,camera-module-facing = "back";
         rockchip,camera-module-name = "THDS11073";
         rockchip,camera-module-lens-name = "Largan-40122a1";
-        lens-focus = <&dw9714_ov5648>;
+        lens-focus = <&dw9714>;
 
         port {
             /* MIPI CSI-2 bus endpoint */
@@ -1279,14 +1222,8 @@
             #address-cells = <1>;
             #size-cells = <0>;
 
-            dphy0_in_imx258: endpoint@1 {
+            dphy0_in_ov5648: endpoint@1 {
                 reg = <1>;
-                remote-endpoint = <&imx258_out>;
-                data-lanes = <1 2 3 4>;
-            };
-
-            dphy0_in_ov5648: endpoint@2 {
-                reg = <2>;
                 remote-endpoint = <&ov5648_out>;
                 data-lanes = <1 2>;
             };
