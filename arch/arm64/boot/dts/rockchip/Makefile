@@ -139,17 +139,24 @@ dtb-$(CONFIG_CPU_RK3399) += \
 
 dtb-$(CONFIG_CPU_RK3568) += \
 	rk3566-lubancat-zero.dtb \
-	rk3566-lubancat-zero-mipi.dtb \
+	rk3566-lubancat-zero-mipi720p.dtb \
+	rk3566-lubancat-zero-mipi1080p.dtb \
 	rk3566-lubancat1.dtb \
-	rk3566-lubancat1-mipi.dtb \
+	rk3566-lubancat1-mipi720p.dtb \
+	rk3566-lubancat1-mipi1080p.dtb \
 	rk3566-lubancat1-n.dtb \
-	rk3566-lubancat1-n-mipi.dtb \
+	rk3566-lubancat1-n-mipi720p.dtb \
+	rk3566-lubancat1-n-mipi1080p.dtb \
 	rk3568-lubancat2.dtb \
-	rk3568-lubancat2-mipi.dtb \
-	rk3568-lubancat2-mipi+hdmi.dtb \
+	rk3568-lubancat2-mipi720p.dtb \
+	rk3568-lubancat2-mipi1080p.dtb \
+	rk3568-lubancat2-mipi720p+hdmi.dtb \
+	rk3568-lubancat2-mipi1080p+hdmi.dtb \
 	rk3568-lubancat2-n.dtb \
-	rk3568-lubancat2-n-mipi.dtb \
-	rk3568-lubancat2-n-mipi+hdmi.dtb \
+	rk3568-lubancat2-n-mipi720p.dtb \
+	rk3568-lubancat2-n-mipi1080p.dtb \
+	rk3568-lubancat2-n-mipi720p+hdmi.dtb \
+	rk3568-lubancat2-n-mipi1080p+hdmi.dtb \
 	rk3568-lubancat2-io.dtb
 
 endif

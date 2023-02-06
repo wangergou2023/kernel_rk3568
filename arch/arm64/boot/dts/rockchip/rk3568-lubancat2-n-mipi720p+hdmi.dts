@@ -1,0 +1,16 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright (c) 2020 Rockchip Electronics Co., Ltd.
+ *
+ */
+
+/dts-v1/;
+
+#include "rk3568-lubancat2-n.dts"
+#include "rk3568-lubancat-mipi-dsi0-ebf410125_720p.dtsi"
+
+/ {
+    model = "EmbedFire LubanCat2N HDMI+MIPI";
+    compatible = "embedfire,lubancat2n", "rockchip,rk3568";
+
+};

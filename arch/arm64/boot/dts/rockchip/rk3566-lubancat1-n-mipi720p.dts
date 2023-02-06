@@ -6,8 +6,8 @@
 
 /dts-v1/;
 
-#include "rk3566-lubancat1.dts"
-#include "rk3568-lubancat-mipi-dsi0-ebf410045.dtsi"
+#include "rk3566-lubancat1-n.dts"
+#include "rk3568-lubancat-mipi-dsi0-ebf410125_720p.dtsi"
 
 / {
     model = "EmbedFire LubanCa1 MIPI";
