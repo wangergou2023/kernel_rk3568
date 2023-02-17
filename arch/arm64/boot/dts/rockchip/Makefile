@@ -154,8 +154,10 @@ dtb-$(CONFIG_CPU_RK3568) += \
 	rk3568-lubancat2-mipi1080p+hdmi.dtb \
 	rk3568-lubancat2-n.dtb \
 	rk3568-lubancat2-n-mipi720p.dtb \
+	rk3568-lubancat2-n-mipi_rpi.dtb \
 	rk3568-lubancat2-n-mipi1080p.dtb \
 	rk3568-lubancat2-n-mipi720p+hdmi.dtb \
+	rk3568-lubancat2-n-mipi_rpi+hdmi.dtb \
 	rk3568-lubancat2-n-mipi1080p+hdmi.dtb \
 	rk3568-lubancat2-io.dtb
 
