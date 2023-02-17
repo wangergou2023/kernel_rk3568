@@ -111,7 +111,7 @@ config R8125
 	tristate "Realtek 8125 10/100/1000M/2.5G Ethernet support"
 	depends on PCI
 	select REALTEK_PHY
-	help
+	---help---
 	  Say Y here if you have a RTL8125 10/100/1000M/2.5G Ethernet adapter.
 
 	  To compile this driver as a module, choose M here: the module
