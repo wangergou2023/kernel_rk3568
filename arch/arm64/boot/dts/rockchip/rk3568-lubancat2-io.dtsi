@@ -28,8 +28,8 @@
 		regulator-always-on;
 	};
 
-    vcc_4g_power: vcc-4g-power-regulator {
-        compatible = "regulator-fixed";
+	vcc_4g_power: vcc-4g-power-regulator {
+		compatible = "regulator-fixed";
 		enable-active-high;
 		gpio = <&gpio3 RK_PA7 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
@@ -80,14 +80,14 @@
 };
 
 &i2c0 {
-        rx8010: rx8010@32 {
-                compatible = "epson,rx8010";
-                reg = <0x32>;
-                pinctrl-0 = <&rx8010_irq>;
-                interrupt-parent = <&gpio4>;
-                interrupts = <10 IRQ_TYPE_LEVEL_LOW>;
-                status = "okay";
-        };
+		rx8010: rx8010@32 {
+				compatible = "epson,rx8010";
+				reg = <0x32>;
+				pinctrl-0 = <&rx8010_irq>;
+				interrupt-parent = <&gpio4>;
+				interrupts = <10 IRQ_TYPE_LEVEL_LOW>;
+				status = "okay";
+		};
 };
 
 &csi2_dphy0 {
@@ -121,7 +121,7 @@
 };
 
 &i2c1 {
-    status = "okay";
+	status = "okay";
 };
 /*
 &i2c4 {
@@ -129,15 +129,15 @@
 };
 */
 // &pca9555 {
-//     status = "disabled";
+//	 status = "disabled";
 // };
 
 &i2c5 {
-    status = "okay";
+	status = "okay";
 };
 
 // &mc3230 {
-//     status = "okay";
+//	 status = "okay";
 // };
 
 &uart3 {
@@ -145,7 +145,7 @@
 };
 
 &uart4 {
-    status = "okay";
+	status = "okay";
 };
 
 &spi1 {
@@ -157,34 +157,34 @@
 };
 
 &pcie30phy {
-       status = "okay";
+	   status = "okay";
 };
 
 &pcie3x2 {
-        reset-gpios = <&gpio2 RK_PD6 GPIO_ACTIVE_HIGH>;
-        vpcie3v3-supply = <&pcie30_3v3>;
+		reset-gpios = <&gpio2 RK_PD6 GPIO_ACTIVE_HIGH>;
+		vpcie3v3-supply = <&pcie30_3v3>;
 
-       status = "disable";
+	   status = "disable";
 };
 
 &its {
-    status = "okay";
+	status = "okay";
 };
 
 &can1 {
-    status = "okay";
+	status = "okay";
 };
 
 &can2 {
-    status = "okay";
+	status = "okay";
 };
 
 &gmac0 {
-    status = "okay";
+	status = "okay";
 };
 
 &gmac1 {
-    status = "okay";
+	status = "okay";
 };
 
 &rgmii_phy0 {
@@ -224,23 +224,23 @@
 };
 
 &wireless_bluetooth {
-	BT,wake_gpio     = <&gpio3 RK_PA2 GPIO_ACTIVE_HIGH>;
+	BT,wake_gpio	 = <&gpio3 RK_PA2 GPIO_ACTIVE_HIGH>;
 	BT,wake_host_irq = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
 	status = "okay";
 };
 
 &spdif_8ch{
-    status = "disabled";
+	status = "disabled";
 };
 
 &rk809_codec {
-    hp-ctl-gpios = <&gpio1 RK_PB0 GPIO_ACTIVE_HIGH>;
+	hp-ctl-gpios = <&gpio1 RK_PB0 GPIO_ACTIVE_HIGH>;
 };
 
 &rk809 {
-    rtc {
-        status = "disabled";
-    };
+	rtc {
+		status = "disabled";
+	};
 };
 
 &pwm7 {
@@ -268,16 +268,16 @@
 		};
 	};
 /*
-    pcie {
-        pcie_pi6c_oe_en: pcie-pi6c-oe-en {
+	pcie {
+		pcie_pi6c_oe_en: pcie-pi6c-oe-en {
 			rockchip,pins = <3 RK_PA7 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
-    };
+	};
 */
 	4g {
-	    vcc_4g_power_en: vcc-4g-power-en {
-	        rockchip,pins = <3 RK_PA7 RK_FUNC_GPIO &pcfg_pull_none>;
-	    };
+		vcc_4g_power_en: vcc-4g-power-en {
+			rockchip,pins = <3 RK_PA7 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
 	};
 
 	rx8010 {
@@ -287,16 +287,16 @@
 	};
 
 	leds {
-	    led0_pin: led0-pin {
-	        rockchip,pins = <0 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
-	    };
+		led0_pin: led0-pin {
+			rockchip,pins = <0 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
 
-	    led1_pin: led1-pin {
-	        rockchip,pins = <0 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
-	    };
+		led1_pin: led1-pin {
+			rockchip,pins = <0 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
 
-	    led2_pin: led2-pin {
-	        rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
-	    };
+		led2_pin: led2-pin {
+			rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
 	};
 };

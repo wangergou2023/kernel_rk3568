@@ -220,8 +220,8 @@
 		pinctrl-names = "default", "rts_gpio";
 		pinctrl-0 = <&uart8m0_rtsn>;
 		pinctrl-1 = <&uart8_gpios>;
-		BT,reset_gpio    = <&gpio3 RK_PA0 GPIO_ACTIVE_HIGH>;
-		BT,wake_gpio     = <&gpio3 RK_PA2 GPIO_ACTIVE_HIGH>;
+		BT,reset_gpio	= <&gpio3 RK_PA0 GPIO_ACTIVE_HIGH>;
+		BT,wake_gpio	 = <&gpio3 RK_PA2 GPIO_ACTIVE_HIGH>;
 		BT,wake_host_irq = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
 		status = "disabled";
 	};
@@ -305,11 +305,11 @@
 
 	pinctrl-names = "default";
 	pinctrl-0 = <&gmac0_miim
-		     &gmac0_tx_bus2
-		     &gmac0_rx_bus2
-		     &gmac0_rgmii_clk
-		     &gmac0_rgmii_bus
-		     &gmac0_clkinout>;
+			 &gmac0_tx_bus2
+			 &gmac0_rx_bus2
+			 &gmac0_rgmii_clk
+			 &gmac0_rgmii_bus
+			 &gmac0_clkinout>;
 
 	tx_delay = <0x1c>;
 	rx_delay = <0x0f>;
@@ -332,11 +332,11 @@
 
 	pinctrl-names = "default";
 	pinctrl-0 = <&gmac1m1_miim
-		     &gmac1m1_tx_bus2
-		     &gmac1m1_rx_bus2
-		     &gmac1m1_rgmii_clk
-		     &gmac1m1_rgmii_bus
-		     &gmac1m1_clkinout>;
+			 &gmac1m1_tx_bus2
+			 &gmac1m1_rx_bus2
+			 &gmac1m1_rgmii_clk
+			 &gmac1m1_rgmii_bus
+			 &gmac1m1_clkinout>;
 
 	tx_delay = <0x1c>;
 	rx_delay = <0x0e>;
@@ -625,8 +625,8 @@
 		irq-gpio = <&gpio0 RK_PA6 IRQ_TYPE_EDGE_FALLING>;
 		cs-gpio = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
 		/* rk3399 driver support SPI_CPOL | SPI_CPHA | SPI_CS_HIGH */
-		//spi-cpha;     /* SPI mode: CPHA=1 */
-		//spi-cpol;     /* SPI mode: CPOL=1 */
+		//spi-cpha;	 /* SPI mode: CPHA=1 */
+		//spi-cpol;	 /* SPI mode: CPOL=1 */
 		//spi-cs-high;
 	};
 };
@@ -663,13 +663,13 @@
 &pinctrl {
 
 	cam {
-        vcc_cam0_power_en: vcc-cam0-power-en {
-            rockchip,pins = <0 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
-        };
+		vcc_cam0_power_en: vcc-cam0-power-en {
+			rockchip,pins = <0 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
 
-        vcc_cam1_power_en: vcc-cam1-power-en {
-            rockchip,pins = <0 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
-        };
+		vcc_cam1_power_en: vcc-cam1-power-en {
+			rockchip,pins = <0 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
 		// pinctrl_ov5640: pinctrl-ov5640 {
 		// 	rockchip,pins =
 		// 		<2 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>,
@@ -711,8 +711,8 @@
 };
 
 &sfc{
-    pinctrl-names = "default";
-    pinctrl-0 = <&fspi_pins>;
-    assigned-clock-rates = <50000000>;
-    status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&fspi_pins>;
+	assigned-clock-rates = <50000000>;
+	status = "okay";
 };

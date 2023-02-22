@@ -6,18 +6,18 @@
 
 / {
 	ext_cam0_clk: external-camera0-clock {
-        compatible = "fixed-clock";
-        clock-frequency = <24000000>;
-        clock-output-names = "CLK_CAMERA0_24MHZ";
-        #clock-cells = <0>;
-    };
+		compatible = "fixed-clock";
+		clock-frequency = <24000000>;
+		clock-output-names = "CLK_CAMERA0_24MHZ";
+		#clock-cells = <0>;
+	};
 
 	ext_cam1_clk: external-camera1-clock {
-        compatible = "fixed-clock";
-        clock-frequency = <24000000>;
-        clock-output-names = "CLK_CAMERA1_24MHZ";
-        #clock-cells = <0>;
-    };
+		compatible = "fixed-clock";
+		clock-frequency = <24000000>;
+		clock-output-names = "CLK_CAMERA1_24MHZ";
+		#clock-cells = <0>;
+	};
 };
 
 &rkisp {
@@ -137,64 +137,64 @@
 };
 
 &mipi_csi2 {
-    status = "okay";
+	status = "okay";
 
-    ports {
-        #address-cells = <1>;
-        #size-cells = <0>;
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
 
-        port@0 {
-            reg = <0>;
-            #address-cells = <1>;
-            #size-cells = <0>;
+		port@0 {
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
 
-            mipi_csi2_input: endpoint@1 {
-                    reg = <1>;
-                    remote-endpoint = <&dphy2_out>;
-                    data-lanes = <1 2>;
-            };
-        };
+			mipi_csi2_input: endpoint@1 {
+					reg = <1>;
+					remote-endpoint = <&dphy2_out>;
+					data-lanes = <1 2>;
+			};
+		};
 
-        port@1 {
-            reg = <1>;
-            #address-cells = <1>;
-            #size-cells = <0>;
+		port@1 {
+			reg = <1>;
+			#address-cells = <1>;
+			#size-cells = <0>;
 
-            mipi_csi2_output: endpoint@0 {
-                    reg = <0>;
-                    remote-endpoint = <&cif_mipi_in>;
-                    data-lanes = <1 2>;
-            };
-        };
-    };
+			mipi_csi2_output: endpoint@0 {
+					reg = <0>;
+					remote-endpoint = <&cif_mipi_in>;
+					data-lanes = <1 2>;
+			};
+		};
+	};
 };
 
 &rkcif_mipi_lvds {
-    status = "okay";
-    port {
-        cif_mipi_in: endpoint {
-            remote-endpoint = <&mipi_csi2_output>;
-            data-lanes = <1 2>;
-        };
-    };
+	status = "okay";
+	port {
+		cif_mipi_in: endpoint {
+			remote-endpoint = <&mipi_csi2_output>;
+			data-lanes = <1 2>;
+		};
+	};
 };
 
 &rkcif_mipi_lvds_sditf {
-    status = "okay";
-    port {
-        mipi_lvds_sditf: endpoint {
-            remote-endpoint = <&isp1_in>;
-            data-lanes = <1 2>;
-        };
-    };
+	status = "okay";
+	port {
+		mipi_lvds_sditf: endpoint {
+			remote-endpoint = <&isp1_in>;
+			data-lanes = <1 2>;
+		};
+	};
 };
 
 &rkcif_mmu {
-    status = "okay";
+	status = "okay";
 };
 
 &rkcif {
-    status = "okay";
+	status = "okay";
 };
 
 &i2c1 {
@@ -287,7 +287,7 @@
 // 				<3 RK_PB6 RK_FUNC_GPIO &pcfg_pull_up>;
 // 		};
 
-//     	pinctrl_cam1: pinctrl-cam1 {
+//	 	pinctrl_cam1: pinctrl-cam1 {
 // 			rockchip,pins =
 // 				<3 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>,
 // 				<3 RK_PB5 RK_FUNC_GPIO &pcfg_pull_up>;

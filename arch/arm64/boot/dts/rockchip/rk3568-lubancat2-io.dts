@@ -10,12 +10,11 @@
 //#include "rk3568-lubancat2-io-cam.dtsi"
 
 / {
-    model = "LubanCat2-IO HDMI";
-    compatible = "rockchip,rk3568-lubancat2-io", "rockchip,rk3568";
-
+	model = "LubanCat2-IO HDMI";
+	compatible = "rockchip,rk3568-lubancat2-io", "rockchip,rk3568";
 };
 
 &route_hdmi {
-    status = "okay";
-    connect = <&vp0_out_hdmi>;
+	status = "okay";
+	connect = <&vp0_out_hdmi>;
 };

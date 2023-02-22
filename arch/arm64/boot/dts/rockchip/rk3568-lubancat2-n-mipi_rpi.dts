@@ -10,23 +10,22 @@
 #include "rk3568-lubancat-mipi-dsi0-rpi.dtsi"
 
 / {
-    model = "EmbedFire LubanCat2N MIPI";
-    compatible = "embedfire,lubancat2n", "rockchip,rk3568";
-
+	model = "EmbedFire LubanCat2N MIPI";
+	compatible = "embedfire,lubancat2n", "rockchip,rk3568";
 };
 
 &route_hdmi {
-    status = "disabled";
+	status = "disabled";
 };
 
 &hdmi_in_vp0 {
-    status = "disabled";
+	status = "disabled";
 };
 
 &hdmi_in_vp1 {
-    status = "disabled";
+	status = "disabled";
 };
 
 &hdmi {
-    status = "disabled";
+	status = "disabled";
 };

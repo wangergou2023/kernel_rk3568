@@ -6,18 +6,17 @@
 
 #include "rk3568-lubancat-mipi-csi2.dtsi"
 
-
 &ov5648 {
-    pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
-    reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_LOW>;
+	pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_LOW>;
 };
 
 &ov8858 {
-    pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
-    reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
+	pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
 };
 
 &ov13850 {
-    pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
-    reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
+	pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
 };

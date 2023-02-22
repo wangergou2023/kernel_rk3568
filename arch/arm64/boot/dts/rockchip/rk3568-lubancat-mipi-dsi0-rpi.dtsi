@@ -30,11 +30,11 @@
 };
 
 &dsi0_in_vp0 {
-    status = "disabled";
+	status = "disabled";
 };
 
 &dsi0_in_vp1 {
-    status = "okay";
+	status = "okay";
 };
 
 &dsi0 {
