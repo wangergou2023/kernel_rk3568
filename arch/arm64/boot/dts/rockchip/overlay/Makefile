@@ -2,10 +2,6 @@
 ifeq ($(CONFIG_ARCH_ROCKCHIP), y)
 
 dtbo-$(CONFIG_CPU_RK3568) += \
-	rk356x-lubancat-dsi0-720p-overlay.dtbo \
-	rk356x-lubancat-dsi0-1080p-overlay.dtbo \
-	rk356x-lubancat-dsi0-rpi-overlay.dtbo \
-	rk356x-lubancat-hdmi-disabled-overlay.dtbo \
 	rk356x-lubancat-gmac1-disabled-overlay.dtbo \
 	rk356x-lubancat-i2c3-m0-overlay.dtbo \
 	rk356x-lubancat-i2c5-m0-overlay.dtbo \
@@ -21,7 +17,15 @@ dtbo-$(CONFIG_CPU_RK3568) += \
 	rk356x-lubancat-uart3-m0-overlay.dtbo \
 	rk356x-lubancat-uart3-m1-overlay.dtbo \
 	rk356x-lubancat-uart8-m0-overlay.dtbo \
-	rk3566-lubancat-0-spi3-m1-gpio-cs-overlay.dtbo
+	rk3566-lubancat-dsi0-720p-overlay.dtbo \
+	rk3566-lubancat-dsi0-1080p-overlay.dtbo \
+	rk3566-lubancat-dsi0-rpi-overlay.dtbo \
+	rk3566-lubancat-0-spi3-m1-gpio-cs-overlay.dtbo \
+	rk3568-lubancat-dsi0-720p-overlay.dtbo \
+	rk3568-lubancat-dsi0-1080p-overlay.dtbo \
+	rk3568-lubancat-dsi0-rpi-overlay.dtbo \
+	rk3568-lubancat-hdmi-disabled-overlay.dtbo
+
 
 endif
 
