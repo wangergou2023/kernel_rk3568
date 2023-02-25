@@ -18,9 +18,9 @@
     model = "EmbedFire LubanCat";
     compatible = "embedfire,lubancat", "rockchip,rk3566";
 
-    chosen: chosen {
-            bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0 root=PARTUUID=614e0000-0000 rw rootwait";
-    };
+	chosen: chosen {
+		bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0 console=tty1 root=PARTUUID=614e0000-0000 rw rootwait";
+	};
 
     fiq-debugger {
         compatible = "rockchip,fiq-debugger";
