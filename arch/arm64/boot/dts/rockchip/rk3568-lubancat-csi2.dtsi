@@ -4,6 +4,15 @@
  *
  */
 
+/ {
+	ext_cam_25m_clk: external-camera-25m-clock {
+		compatible = "fixed-clock";
+		clock-frequency = <25000000>;
+		clock-output-names = "ext_cam_25m_clk";
+		#clock-cells = <0>;
+	};
+};
+
 &i2c1 {
 	// ov5648 Camare
 	dw9714: dw9714@0c {
@@ -19,6 +28,22 @@
 		rockchip,vcm-mclk = <0>;	
 		rockchip,vcm-t-src = <0>;
 		rockchip,camera-module-facing = "back";
+	};
+
+	ov5647: ov5647@36 {
+		compatible = "ovti,ov5647";
+		reg = <0x36>;
+		clocks = <&ext_cam_25m_clk>;
+		clock-names = "ext_cam_25m_clk";
+		pwdn-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_LOW>;
+		lens-focus = <&dw9714>;
+
+		port {
+			ov5647_out: endpoint {
+				remote-endpoint = <&dphy0_in_ov5647>;
+				data-lanes = <1 2>;
+			};
+		};
 	};
 
 	ov5648: camera@36 {
@@ -142,6 +167,12 @@
 				remote-endpoint = <&ov13850_out>;
 				data-lanes = <1 2 3 4>;
 			};
+
+			dphy0_in_ov5647: endpoint@4 {
+				reg = <4>;
+				remote-endpoint = <&ov5647_out>;
+				data-lanes = <1 2>;
+			};
 		};
 
 		port@1 {
@@ -179,3 +210,12 @@
 		};
 	};
 };
+
+&rkcif_mmu {
+	status = "okay";
+};
+
+&rkcif {
+	status = "okay";
+};
+
