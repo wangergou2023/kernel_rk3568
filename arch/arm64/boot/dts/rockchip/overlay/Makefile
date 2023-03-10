@@ -4,6 +4,7 @@ ifeq ($(CONFIG_ARCH_ROCKCHIP), y)
 dtbo-$(CONFIG_CPU_RK3568) += \
 	rk356x-lubancat-gmac1-disabled-overlay.dtbo \
 	rk356x-lubancat-i2c3-m0-overlay.dtbo \
+	rk356x-lubancat-i2c3-m1-overlay.dtbo \
 	rk356x-lubancat-i2c5-m0-overlay.dtbo \
 	rk356x-lubancat-pcie2x1-disabled-overlay.dtbo \
 	rk356x-lubancat-pwm3-ir-overlay.dtbo \
@@ -11,12 +12,22 @@ dtbo-$(CONFIG_CPU_RK3568) += \
 	rk356x-lubancat-pwm9-m0-overlay.dtbo \
 	rk356x-lubancat-pwm10-m0-overlay.dtbo \
 	rk356x-lubancat-pwm11-ir-m0-overlay.dtbo \
+	rk356x-lubancat-pwm12-m1-overlay.dtbo \
+	rk356x-lubancat-pwm13-m1-overlay.dtbo \
 	rk356x-lubancat-pwm14-m0-overlay.dtbo \
+	rk356x-lubancat-pwm14-m1-overlay.dtbo \
+	rk356x-lubancat-pwm15-ir-m0-overlay.dtbo \
+	rk356x-lubancat-pwm15-ir-m1-overlay.dtbo \
 	rk356x-lubancat-spi3-m1-overlay.dtbo \
 	rk356x-lubancat-spi3-m1-gpio-cs-overlay.dtbo \
 	rk356x-lubancat-uart3-m0-overlay.dtbo \
 	rk356x-lubancat-uart3-m1-overlay.dtbo \
+	rk356x-lubancat-uart4-m1-overlay.dtbo \
+	rk356x-lubancat-uart5-m1-overlay.dtbo \
+	rk356x-lubancat-uart7-m1-overlay.dtbo \
 	rk356x-lubancat-uart8-m0-overlay.dtbo \
+	rk356x-lubancat-uart8-m1-overlay.dtbo \
+	rk356x-lubancat-uart9-m1-overlay.dtbo \
 	rk3566-lubancat-dsi0-720p-overlay.dtbo \
 	rk3566-lubancat-dsi0-1080p-overlay.dtbo \
 	rk3566-lubancat-dsi0-rpi-overlay.dtbo \

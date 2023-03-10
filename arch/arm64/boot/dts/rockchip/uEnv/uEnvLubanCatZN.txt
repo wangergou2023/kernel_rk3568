@@ -13,9 +13,15 @@ enable_uboot_overlays=1
 #dtoverlay=/dtb/overlay/rk356x-lubancat-pwm8-m0-overlay.dtbo
 #dtoverlay=/dtb/overlay/rk356x-lubancat-pwm9-m0-overlay.dtbo
 #dtoverlay=/dtb/overlay/rk356x-lubancat-pwm11-ir-m0-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk356x-lubancat-pwm12-m1-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk356x-lubancat-pwm13-m1-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk356x-lubancat-pwm14-m1-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk356x-lubancat-pwm15-ir-m1-overlay.dtbo
 #dtoverlay=/dtb/overlay/rk3566-lubancat-0-spi3-m1-gpio-cs-overlay.dtbo
 #dtoverlay=/dtb/overlay/rk356x-lubancat-spi3-m1-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk356x-lubancat-uart4-m1-overlay.dtbo
 #dtoverlay=/dtb/overlay/rk356x-lubancat-uart8-m0-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk356x-lubancat-uart9-m1-overlay.dtbo
 #display
 #dtoverlay=/dtb/overlay/rk3566-lubancat-dsi0-720p-overlay.dtbo
 #dtoverlay=/dtb/overlay/rk3566-lubancat-dsi0-1080p-overlay.dtbo
