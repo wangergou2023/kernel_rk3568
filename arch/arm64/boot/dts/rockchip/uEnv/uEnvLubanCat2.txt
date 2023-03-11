@@ -34,7 +34,7 @@ enable_uboot_overlays=1
 #dtoverlay=/dtb/overlay/rk3568-lubancat-can1-m0-overlay.dtbo
 #dtoverlay=/dtb/overlay/rk3568-lubancat-can1-m1-overlay.dtbo
 #mini-pcie 5G modules
-#dtoverlay=/dtb/overlay/rk356x-lubancat-pcie2x1-disable-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk356x-lubancat-pcie2x1-disabled-overlay.dtbo
 #display
 #dtoverlay=/dtb/overlay/rk3568-lubancat-hdmi-disabled-overlay.dtbo
 #dtoverlay=/dtb/overlay/rk3568-lubancat-dsi0-720p-overlay.dtbo
