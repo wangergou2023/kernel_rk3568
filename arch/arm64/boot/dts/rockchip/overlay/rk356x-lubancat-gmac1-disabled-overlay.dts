@@ -11,5 +11,21 @@
 			status = "disabled";
 		};
 	};
+
+	fragment@1 {
+		target = <&mdio1>;
+
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@2 {
+		target = <&rgmii_phy1>;
+
+		__overlay__ {
+			status = "disabled";
+		};
+	};
 };
 
