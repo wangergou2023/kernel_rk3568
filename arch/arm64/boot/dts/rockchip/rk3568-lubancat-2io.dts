@@ -7,7 +7,7 @@
 /dts-v1/;
 
 #include "rk3568-lubancat-2io.dtsi"
-//#include "rk3568-lubancat-2io-cam.dtsi"
+#include "rk3568-lubancat-2io-cam.dtsi"
 
 / {
 	model = "LubanCat-2IO";

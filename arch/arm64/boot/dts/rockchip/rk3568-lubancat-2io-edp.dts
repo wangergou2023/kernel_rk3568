@@ -15,7 +15,7 @@
 
 	vcc3v3_lcd_edp: vcc3v3-lcd-edp {
 		compatible = "regulator-fixed";
-		gpio = <&gpio3 RK_PA6 GPIO_ACTIVE_HIGH>;
+		gpio = <&gpio3 RK_PA3 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		regulator-name = "vcc3v3_lcd_edp";
 		regulator-boot-on;
@@ -29,7 +29,7 @@
 		backlight = <&backlight>;
 		status = "okay";
 		power-supply = <&vcc3v3_lcd_edp>;
-		enable-gpios = <&gpio3 RK_PA3 GPIO_ACTIVE_HIGH>;
+		enable-gpios = <&gpio2 RK_PD7 GPIO_ACTIVE_HIGH>;
 		//bus-format = <MEDIA_BUS_FMT_RBG888_1X24>;
 		prepare-delay-ms = <100>; //AUX通信前延时
 		enable-delay-ms = <100>;
@@ -64,7 +64,7 @@
 	backlight: backlight {
 		status = "okay";
 		compatible = "pwm-backlight";
-		pwms = <&pwm0 0 500000 0>; //2khz
+		pwms = <&pwm2 0 500000 0>; //2khz
 		brightness-levels = <
 			  0   1   2   3   4   5   6   7
 			  8   9  10  11  12  13  14  15

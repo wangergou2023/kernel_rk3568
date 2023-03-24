@@ -7,49 +7,239 @@
 / {
 	ext_cam0_clk: external-camera0-clock {
 		compatible = "fixed-clock";
+		#clock-cells = <0>;
 		clock-frequency = <24000000>;
 		clock-output-names = "CLK_CAMERA0_24MHZ";
+	};
+
+	ext_cam0_25m_clk: external-camera0-25m-clock {
+		compatible = "fixed-clock";
+		clock-frequency = <25000000>;
+		clock-output-names = "ext_cam0_25m_clk";
 		#clock-cells = <0>;
+	};
+
+	vdd_cam0_5v: vdd-cam0-5v-regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "vdd_cam0_5v";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpio3 RK_PA2 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&cam0_pwr_en>;
+		enable-active-high;
+		regulator-always-on;
+	};
+
+	cam0_dovdd: cam0-dovdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam0_dovdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		vin-supply = <&vdd_cam0_5v>;
+	};
+
+	cam0_avdd: cam0-avdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam0_avdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		vin-supply = <&vdd_cam0_5v>;
+	};
+
+	cam0_dvdd: cam0-dvdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam0_dvdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <1200000>;
+		regulator-max-microvolt = <1200000>;
+		vin-supply = <&vdd_cam0_5v>;
 	};
 
 	ext_cam1_clk: external-camera1-clock {
 		compatible = "fixed-clock";
+		#clock-cells = <0>;
 		clock-frequency = <24000000>;
 		clock-output-names = "CLK_CAMERA1_24MHZ";
+	};
+
+	ext_cam1_25m_clk: external-camera1-25m-clock {
+		compatible = "fixed-clock";
+		clock-frequency = <25000000>;
+		clock-output-names = "ext_cam1_25m_clk";
 		#clock-cells = <0>;
 	};
+
+
+	vdd_cam1_5v: vdd-cam1-5v-regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "vdd_cam1_5v";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpio3 RK_PA4 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&cam1_pwr_en>;
+		enable-active-high;
+		regulator-always-on;
+	};
+
+	cam1_dovdd: cam1-dovdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam1_dovdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		vin-supply = <&vdd_cam1_5v>;
+	};
+
+	cam1_avdd: cam1-avdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam1_avdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		vin-supply = <&vdd_cam1_5v>;
+	};
+
+	cam1_dvdd: cam1-dvdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam1_dvdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <1200000>;
+		regulator-max-microvolt = <1200000>;
+		vin-supply = <&vdd_cam1_5v>;
+	};
+
 };
 
-&rkisp {
+&i2c1 {
 	status = "okay";
-};
+	// ov5648 Camare
+	cam0_dw9714: cam0_dw9714@0c {
+		status = "okay";
+		compatible = "dongwoon,dw9714";
+		reg = <0x0c>;
+		rockchip,camera-module-index = <0>;
+		rockchip,vcm-max-current = <100>;
+		rockchip,vcm-start-current = <0>;
+		rockchip,vcm-rated-current = <100>;
+		rockchip,vcm-step-mode = <0xd>;
+		rockchip,vcm-dlc-enable = <0>;
+		rockchip,vcm-mclk = <0>;	
+		rockchip,vcm-t-src = <0>;
+		rockchip,camera-module-facing = "back";
+	};
 
-&rkisp_mmu {
-	status = "okay";
-};
+	cam0_ov5648: cam0_camera@36 {
+		compatible = "ovti,ov5648";
+		reg = <0x36>;
+		clocks = <&ext_cam0_clk>;
+		clock-names = "xvclk";
+		dovdd-supply= <&cam0_dovdd>; /* 1.8v */
+		avdd-supply = <&cam0_avdd>;  /* 2.8v */
+		dvdd-supply = <&cam0_dvdd>;  /* 1.2v */
+		pwdn-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
+		reset-gpios = <&gpio1 RK_PB0 GPIO_ACTIVE_LOW>;
+		rotation = <180>;
+		status = "okay";
 
-&rkisp_vir0 {
-	status = "okay";
-	port {
-		#address-cells = <1>;
-		#size-cells = <0>;
+		rockchip,camera-module-index = <0>;
+		rockchip,camera-module-facing = "back";
+		rockchip,camera-module-name = "THDS11073";
+		rockchip,camera-module-lens-name = "Largan-40122a1";
+		lens-focus = <&cam0_dw9714>;
 
-		isp0_in: endpoint@0 {
-			reg = <0>;
-			remote-endpoint = <&dphy1_out>;
+		port {
+			/* MIPI CSI-2 bus endpoint */
+			cam0_ov5648_out: endpoint {
+				remote-endpoint = <&dphy1_in_ov5648>;
+				clock-lanes = <0>;
+				data-lanes = <1 2>;
+			};
+		};
+	};
+	ov8858: ov8858@36 {
+		compatible = "ovti,ov8858";
+		reg = <0x36>;
+		clocks = <&ext_cam0_clk>;
+		clock-names = "xvclk";
+		dovdd-supply= <&cam0_dovdd>; /* 1.8v */
+		avdd-supply = <&cam0_avdd>;  /* 2.8v */
+		dvdd-supply = <&cam0_dvdd>;  /* 1.2v */
+		pwdn-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
+		reset-gpios = <&gpio1 RK_PB0 GPIO_ACTIVE_HIGH>;
+		rotation = <180>;
+		status = "okay";
+
+		rockchip,camera-module-index = <1>;
+		rockchip,camera-module-facing = "back";
+		rockchip,camera-module-name = "HS5885-BNSM1018-V01";
+		rockchip,camera-module-lens-name = "default";
+		lens-focus = <&cam0_dw9714>;
+
+		port {
+			/* MIPI CSI-2 bus endpoint */
+			ov8858_out: endpoint {
+				remote-endpoint = <&dphy1_in_ov8858>;
+				clock-lanes = <0>;
+				data-lanes = <1 2>;
+			};
 		};
 	};
 };
 
-&rkisp_vir1 {
+&i2c5 {
 	status = "okay";
-	port {
-		#address-cells = <1>;
-		#size-cells = <0>;
+	// ov5648 Camare
+	cam1_dw9714: cam1_dw9714@0c {
+		status = "okay";
+		compatible = "dongwoon,dw9714";
+		reg = <0x0c>;
+		rockchip,camera-module-index = <0>;
+		rockchip,vcm-max-current = <100>;
+		rockchip,vcm-start-current = <0>;
+		rockchip,vcm-rated-current = <100>;
+		rockchip,vcm-step-mode = <0xd>;
+		rockchip,vcm-dlc-enable = <0>;
+		rockchip,vcm-mclk = <0>;	
+		rockchip,vcm-t-src = <0>;
+		rockchip,camera-module-facing = "back";
+	};
 
-		isp1_in: endpoint@0 {
-			reg = <0>;
-			remote-endpoint = <&mipi_lvds_sditf>;
+	cam1_ov5648: cam1_camera@36 {
+		compatible = "ovti,ov5648";
+		reg = <0x36>;
+		clocks = <&ext_cam1_clk>;
+		clock-names = "xvclk";
+		dovdd-supply= <&cam1_dovdd>; /* 1.8v */
+		avdd-supply = <&cam1_avdd>;  /* 2.8v */
+		dvdd-supply = <&cam1_dvdd>;  /* 1.2v */
+		pwdn-gpios = <&gpio1 RK_PB1 GPIO_ACTIVE_HIGH>;
+		reset-gpios = <&gpio1 RK_PB2 GPIO_ACTIVE_LOW>;
+		rotation = <180>;
+		status = "okay";
+
+		rockchip,camera-module-index = <0>;
+		rockchip,camera-module-facing = "back";
+		rockchip,camera-module-name = "THDS11073";
+		rockchip,camera-module-lens-name = "Largan-40122a1";
+		lens-focus = <&cam1_dw9714>;
+
+		port {
+			/* MIPI CSI-2 bus endpoint */
+			cam1_ov5648_out: endpoint {
+				remote-endpoint = <&dphy2_in_ov5648>;
+				clock-lanes = <0>;
+				data-lanes = <1 2>;
+			};
 		};
 	};
 };
@@ -59,16 +249,12 @@
 };
 
 &csi2_dphy0 {
-	status = "disabled";
+	status = "disable";
 };
 
 &csi2_dphy1 {
 	status = "okay";
-	/*
-	 * dphy1 only used for split mode,
-	 * can be used concurrently with dphy2
-	 * full mode and split mode are mutually exclusive
-	 */
+	
 	ports {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -78,9 +264,15 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 
-			dphy1_in: endpoint@1 {
+			dphy1_in_ov5648: endpoint@1 {
 				reg = <1>;
-				remote-endpoint = <&cam0_ov5640_out>;
+				remote-endpoint = <&cam0_ov5648_out>;
+				data-lanes = <1 2>;
+			};
+
+			dphy1_in_ov8858: endpoint@2 {
+				reg = <2>;
+				remote-endpoint = <&ov8858_out>;
 				data-lanes = <1 2>;
 			};
 		};
@@ -93,7 +285,6 @@
 			dphy1_out: endpoint@1 {
 				reg = <1>;
 				remote-endpoint = <&isp0_in>;
-				// remote-endpoint = <&mipi_csi2_input>;
 			};
 		};
 	};
@@ -101,11 +292,7 @@
 
 &csi2_dphy2 {
 	status = "okay";
-	/*
-	 * dphy2 only used for split mode,
-	 * can be used concurrently with dphy1
-	 * full mode and split mode are mutually exclusive
-	 */
+	
 	ports {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -115,9 +302,9 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 
-			dphy2_in: endpoint@1 {
+			dphy2_in_ov5648: endpoint@1 {
 				reg = <1>;
-				remote-endpoint = <&cam1_ov5640_out>;
+				remote-endpoint = <&cam1_ov5648_out>;
 				data-lanes = <1 2>;
 			};
 		};
@@ -129,62 +316,50 @@
 
 			dphy2_out: endpoint@1 {
 				reg = <1>;
-				remote-endpoint = <&mipi_csi2_input>;
-				// remote-endpoint = <&isp1_in>;
+				remote-endpoint = <&isp1_in>;
 			};
 		};
 	};
 };
 
-&mipi_csi2 {
+
+&rkisp {
+	status = "okay";
+};
+
+&rkisp_mmu {
+	status = "okay";
+};
+
+&rkisp_vir0 {
 	status = "okay";
 
-	ports {
+	port {
 		#address-cells = <1>;
 		#size-cells = <0>;
 
+		isp0_in: endpoint@0 {
+			reg = <0>;
+			// csi2 dphy端的 port名
+			remote-endpoint = <&dphy1_out>;
+		};
+	};
+};
+
+&rkisp_vir1 {
+	status = "okay";
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
 		port@0 {
 			reg = <0>;
 			#address-cells = <1>;
 			#size-cells = <0>;
 
-			mipi_csi2_input: endpoint@1 {
-					reg = <1>;
-					remote-endpoint = <&dphy2_out>;
-					data-lanes = <1 2>;
+			isp1_in: endpoint@0 {
+			reg = <0>;
+			remote-endpoint = <&dphy2_out>;
 			};
-		};
-
-		port@1 {
-			reg = <1>;
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			mipi_csi2_output: endpoint@0 {
-					reg = <0>;
-					remote-endpoint = <&cif_mipi_in>;
-					data-lanes = <1 2>;
-			};
-		};
-	};
-};
-
-&rkcif_mipi_lvds {
-	status = "okay";
-	port {
-		cif_mipi_in: endpoint {
-			remote-endpoint = <&mipi_csi2_output>;
-			data-lanes = <1 2>;
-		};
-	};
-};
-
-&rkcif_mipi_lvds_sditf {
-	status = "okay";
-	port {
-		mipi_lvds_sditf: endpoint {
-			remote-endpoint = <&isp1_in>;
-			data-lanes = <1 2>;
 		};
 	};
 };
@@ -197,102 +372,14 @@
 	status = "okay";
 };
 
-&i2c1 {
-	status = "okay";
-
-	cam0_ov5640: camera0@3c {
-		status = "okay";
-		compatible = "ovti,ov5640";
-		reg = <0x3c>;
-
-		clocks = <&ext_cam0_clk>;
-		clock-names = "xvclk";
-		// pinctrl-names = "default";
-		// pinctrl-0 = <&pinctrl_cam0>;
-
-		dovdd-supply = <&cam0_dovdd>; /* 1.8v */
-		avdd-supply = <&cam0_avdd>;  /* 2.8v */
-		dvdd-supply = <&cam0_dvdd>;  /* 1.5v */
-		reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_LOW>;
-		pwdn-gpios = <&gpio2 RK_PC1 GPIO_ACTIVE_HIGH>;
-		pinctrl-names = "rockchip,camera_default", "rockchip,camera_sleep";
-		rotation = <180>;
-
-		rockchip,camera-module-index = <0>;
-		rockchip,camera-module-facing = "back";
-		rockchip,camera-module-name = "NC";
-		rockchip,camera-module-lens-name = "NC";
-
-		port {
-			/* MIPI CSI bus endpoint */
-			cam0_ov5640_out: endpoint {
-					remote-endpoint = <&dphy1_in>;
-					// clock-lanes = <0>;
-					data-lanes = <1 2>;
-			};
+&pinctrl {
+	cam {
+		cam0_pwr_en: cam0_pwr_en {
+			rockchip,pins = <3 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+		cam1_pwr_en: cam1_pwr_en {
+			rockchip,pins = <3 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
-};
-
-&i2c5{
-	status = "okay";
-
-	cam1_ov5640: camera1@3c {
-		status = "okay";
-		compatible = "ovti,ov5640";
-		reg = <0x3c>;
-
-		clocks = <&ext_cam1_clk>;
-		clock-names = "xvclk";
-		// pinctrl-names = "default";
-		// pinctrl-0 = <&pinctrl_cam1>;
-
-		dovdd-supply = <&cam1_dovdd>; /* 1.8v */
-		avdd-supply = <&cam1_avdd>;  /* 2.8v */
-		dvdd-supply = <&cam1_dvdd>;  /* 1.5v */
-		reset-gpios = <&gpio3 RK_PB5 GPIO_ACTIVE_LOW>;
-		pwdn-gpios = <&gpio3 RK_PB0 GPIO_ACTIVE_HIGH>;
-		pinctrl-names = "rockchip,camera_default", "rockchip,camera_sleep";
-
-		rotation = <180>;
-
-		rockchip,camera-module-index = <0>;
-		rockchip,camera-module-facing = "back";
-		rockchip,camera-module-name = "NC";
-		rockchip,camera-module-lens-name = "NC";
-
-		port {
-			/* MIPI CSI bus endpoint */
-			cam1_ov5640_out: endpoint {
-					remote-endpoint = <&dphy2_in>;
-					// clock-lanes = <0>;
-					data-lanes = <1 2>;
-			};
-		};
-	};
-};
-
-&pwm11 {
-	status = "okay";
-};
-
-
-// &pinctrl {
-
-// 	cam {
-
-// 		pinctrl_cam0: pinctrl-cam0 {
-// 			rockchip,pins =
-// 				<2 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>,
-// 				<3 RK_PB6 RK_FUNC_GPIO &pcfg_pull_up>;
-// 		};
-
-//	 	pinctrl_cam1: pinctrl-cam1 {
-// 			rockchip,pins =
-// 				<3 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>,
-// 				<3 RK_PB5 RK_FUNC_GPIO &pcfg_pull_up>;
-// 		};
-
-// 	};
-
-// };
+	
+};	
