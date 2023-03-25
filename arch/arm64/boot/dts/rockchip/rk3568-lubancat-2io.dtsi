@@ -5,6 +5,8 @@
  */
 
 #include "rk3568-lubancat-2m-port.dtsi"
+#include "rk3568-lubancat-2io-cam.dtsi"
+
 / {
 
 	vcc_hub_power: vcc-hub-power-regulator {
