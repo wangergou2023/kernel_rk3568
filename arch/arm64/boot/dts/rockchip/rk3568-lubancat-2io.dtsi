@@ -214,12 +214,12 @@
 
 &i2c0 {
 		rx8010: rx8010@32 {
-				compatible = "epson,rx8010";
-				reg = <0x32>;
-				pinctrl-0 = <&rx8010_irq>;
-				interrupt-parent = <&gpio4>;
-				interrupts = <10 IRQ_TYPE_LEVEL_LOW>;
-				status = "okay";
+			compatible = "epson,rx8010";
+			reg = <0x32>;
+			pinctrl-0 = <&rx8010_irq>;
+			interrupt-parent = <&gpio0>;
+			interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
+			status = "okay";
 		};
 };
 

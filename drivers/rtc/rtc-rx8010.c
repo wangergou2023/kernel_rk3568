@@ -1,13 +1,9 @@
+// SPDX-License-Identifier: GPL-2.0-only
 /*
  * Driver for the Epson RTC module RX-8010 SJ
  *
  * Copyright(C) Timesys Corporation 2015
  * Copyright(C) General Electric Company 2015
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
- *
  */
 
 #include <linux/bcd.h>
@@ -200,8 +196,19 @@ static int rx8010_init_client(struct i2c_client *client)
 {
 	struct rx8010_data *rx8010 = i2c_get_clientdata(client);
 	u8 ctrl[2];
-	int need_clear = 0, err = 0;
+	int need_clear = 0, err = 0, flagreg;
 
+    flagreg = i2c_smbus_read_byte_data(rx8010->client, RX8010_FLAG);
+    if (flagreg < 0) 
+        return flagreg;
+    
+    if (flagreg & RX8010_FLAG_VLF) {
+        err = i2c_smbus_write_byte_data(rx8010->client, RX8010_FLAG,
+                        flagreg & ~RX8010_FLAG_VLF);
+        if (err < 0)
+            return err;
+    };
+ 
 	/* Initialize reserved registers as specified in datasheet */
 	err = i2c_smbus_write_byte_data(client, RX8010_RESV17, 0xD8);
 	if (err < 0)
@@ -224,8 +231,9 @@ static int rx8010_init_client(struct i2c_client *client)
 	if (err != 2)
 		return err < 0 ? err : -EIO;
 
-	if (ctrl[0] & RX8010_FLAG_VLF)
+	if (ctrl[0] & RX8010_FLAG_VLF) {
 		dev_warn(&client->dev, "Frequency stop was detected\n");
+	}
 
 	if (ctrl[0] & RX8010_FLAG_AF) {
 		dev_warn(&client->dev, "Alarm was detected\n");
@@ -428,26 +436,16 @@ static int rx8010_ioctl(struct device *dev, unsigned int cmd, unsigned long arg)
 	}
 }
 
-static const struct rtc_class_ops rx8010_rtc_ops_default = {
+static struct rtc_class_ops rx8010_rtc_ops = {
 	.read_time = rx8010_get_time,
 	.set_time = rx8010_set_time,
 	.ioctl = rx8010_ioctl,
-};
-
-static const struct rtc_class_ops rx8010_rtc_ops_alarm = {
-	.read_time = rx8010_get_time,
-	.set_time = rx8010_set_time,
-	.ioctl = rx8010_ioctl,
-	.read_alarm = rx8010_read_alarm,
-	.set_alarm = rx8010_set_alarm,
-	.alarm_irq_enable = rx8010_alarm_irq_enable,
 };
 
 static int rx8010_probe(struct i2c_client *client,
 			const struct i2c_device_id *id)
 {
-	struct i2c_adapter *adapter = to_i2c_adapter(client->dev.parent);
-	const struct rtc_class_ops *rtc_ops;
+	struct i2c_adapter *adapter = client->adapter;
 	struct rx8010_data *rx8010;
 	int err = 0;
 
@@ -464,7 +462,6 @@ static int rx8010_probe(struct i2c_client *client,
 
 	rx8010->client = client;
 	i2c_set_clientdata(client, rx8010);
-	device_set_wakeup_capable(&client->dev, true);
 
 	err = rx8010_init_client(client);
 	if (err)
@@ -479,16 +476,16 @@ static int rx8010_probe(struct i2c_client *client,
 
 		if (err) {
 			dev_err(&client->dev, "unable to request IRQ\n");
-			return err;
+			client->irq = 0;
+		} else {
+			rx8010_rtc_ops.read_alarm = rx8010_read_alarm;
+			rx8010_rtc_ops.set_alarm = rx8010_set_alarm;
+			rx8010_rtc_ops.alarm_irq_enable = rx8010_alarm_irq_enable;
 		}
-
-		rtc_ops = &rx8010_rtc_ops_alarm;
-	} else {
-		rtc_ops = &rx8010_rtc_ops_default;
 	}
 
 	rx8010->rtc = devm_rtc_device_register(&client->dev, client->name,
-					       rtc_ops, THIS_MODULE);
+		&rx8010_rtc_ops, THIS_MODULE);
 
 	if (IS_ERR(rx8010->rtc)) {
 		dev_err(&client->dev, "unable to register the class device\n");
