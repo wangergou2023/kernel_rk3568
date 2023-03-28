@@ -1,5 +1,6 @@
 /dts-v1/;
 /plugin/;
+#include <dt-bindings/clock/rk3568-cru.h>
 
 / {
 	compatible = "rockchip,rk3568";
@@ -9,8 +10,9 @@
 
 		__overlay__ {
 			status = "okay";
+			compatible = "rockchip,can-1.0";
 			pinctrl-names = "default";
-			pinctrl-0 = <&can1m1_pins>;
+        	pinctrl-0 = <&can1m1_pins>;
 		};
 	};
 };
