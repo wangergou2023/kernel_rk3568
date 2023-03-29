@@ -1,0 +1,21 @@
+uname_r=4.19.232
+size=0x1000000
+bootargs=console=ttyFIQ0 console=tty1
+#dtb=rk3568-lubancat2-io.dtb
+
+enable_uboot_overlays=1
+#overlay_start
+
+#dtoverlay=/dtb/overlay/rk3568-lubancat-can1-m1-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk3568-lubancat-can2-m0-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk3568-lubancat-canfd1-m1-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk3568-lubancat-canfd2-m0-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk356x-lubancat-uart3-m1-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk356x-lubancat-uart4-m1-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk356x-lubancat-uart7-m1-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk356x-lubancat-uart9-m1-overlay.dtbo
+
+
+
+#overlay_end
+
