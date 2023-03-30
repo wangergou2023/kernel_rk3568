@@ -853,10 +853,6 @@
 	status = "okay";
 };
 
-&rockchip_suspend {
-	status = "okay";
-};
-
 /* USB OTG/USB Host_1 USB 2.0 Comb */
 &usb2phy0 {
 	status = "okay";
