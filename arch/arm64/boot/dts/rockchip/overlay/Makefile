@@ -28,10 +28,15 @@ dtbo-$(CONFIG_CPU_RK3568) += \
 	rk356x-lubancat-uart8-m0-overlay.dtbo \
 	rk356x-lubancat-uart8-m1-overlay.dtbo \
 	rk356x-lubancat-uart9-m1-overlay.dtbo \
+	rk3566-lubancat-0-spi3-m1-gpio-cs-overlay.dtbo \
 	rk3566-lubancat-dsi0-720p-overlay.dtbo \
 	rk3566-lubancat-dsi0-1080p-overlay.dtbo \
 	rk3566-lubancat-dsi0-rpi-overlay.dtbo \
-	rk3566-lubancat-0-spi3-m1-gpio-cs-overlay.dtbo \
+	rk3568-lubancat-2io-dsi0-in-vp0-1080p-overlay.dtbo \
+	rk3568-lubancat-2io-dsi0-in-vp0-rpi-overlay.dtbo \
+	rk3568-lubancat-2io-dsi1-in-vp1-1080p-overlay.dtbo \
+	rk3568-lubancat-2io-dsi1-in-vp1-rpi-overlay.dtbo \
+	rk3568-lubancat-2io-edp-in-vp1-overlay.dtbo \
 	rk3568-lubancat-can1-m0-overlay.dtbo \
 	rk3568-lubancat-can1-m1-overlay.dtbo \
 	rk3568-lubancat-can2-m0-overlay.dtbo \
