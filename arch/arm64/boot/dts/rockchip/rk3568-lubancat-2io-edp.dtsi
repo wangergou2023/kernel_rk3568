@@ -51,13 +51,12 @@
 	force-hpd; //强制hpd，忽略物理hdp信号
 
 	ports {
-		edp_out: port@1 {
-			reg = <1>;
-			#address-cells = <1>;
-			#size-cells = <0>;
+		#address-cells = <1>;
+		#size-cells = <0>;
 
+		port@1 {
+			reg = <1>;
 			edp_out_panel: endpoint@0 {
-				reg = <0>;
 				remote-endpoint = <&panel_in_edp>;
 			};
 		};
