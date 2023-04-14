@@ -358,6 +358,25 @@
 			248 249 250 251 252 253 254 255>;
 		default-brightness-level = <200>;
 	};
+	
+	hdmi_sound: hdmi-sound {
+		compatible = "simple-audio-card";
+		simple-audio-card,format = "i2s";
+		simple-audio-card,mclk-fs = <128>;
+		simple-audio-card,name = "rockchip,hdmi";
+		status = "okay";
+
+		simple-audio-card,cpu {
+			sound-dai = <&i2s0_8ch>;
+		};
+		simple-audio-card,codec {
+			sound-dai = <&hdmi>;
+		};
+	};
+};
+
+&i2s0_8ch {
+    status = "okay";
 };
 
 &sfc{

@@ -832,6 +832,25 @@
 			status = "okay";
 		};
 	};
+
+	hdmi_sound: hdmi-sound {
+		compatible = "simple-audio-card";
+		simple-audio-card,format = "i2s";
+		simple-audio-card,mclk-fs = <128>;
+		simple-audio-card,name = "rockchip,hdmi";
+		status = "okay";
+
+		simple-audio-card,cpu {
+			sound-dai = <&i2s0_8ch>;
+		};
+		simple-audio-card,codec {
+			sound-dai = <&hdmi>;
+		};
+	};
+};
+
+&i2s0_8ch {
+    status = "okay";
 };
 
 &i2c1 {
@@ -1152,6 +1171,9 @@
 &combphy2_psq {
 	status = "okay";
 };
+
+
+
 
 &route_hdmi {
 	status = "okay";
