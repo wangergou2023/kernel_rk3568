@@ -128,3 +128,7 @@
 			<0xb5	KEY_BACKSPACE>;
 	};
 };
+
+&rockchip_suspend {
+	status = "okay";
+};
