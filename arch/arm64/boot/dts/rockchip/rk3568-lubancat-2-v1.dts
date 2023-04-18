@@ -4,14 +4,14 @@
  *
  */
 
-#include "rk3568-lubancat-2.dtsi"
+#include "rk3568-lubancat-2.dts"
 
 / {
 	model = "EmbedFire LubanCat-2";
-	compatible = "embedfire,lubancat-2", "rockchip,rk3568";
+	compatible = "embedfire,lubancat-2-v1", "rockchip,rk3568";
 };
 
-&pwm7 {
+&pwm3 {
 	status = "okay";
 
 	compatible = "rockchip,remotectl-pwm";
@@ -20,7 +20,7 @@
 	handle_cpu_id = <1>;
 	remote_support_psci = <0>;
 	pinctrl-names = "default";
-	pinctrl-0 = <&pwm7_pins>;
+	pinctrl-0 = <&pwm3_pins>;
 
 	ir_key_lubancat{
 		rockchip,usercode = <0x909>;
