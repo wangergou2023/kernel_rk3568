@@ -125,7 +125,7 @@
 			 &gmac1m1_clkinout>;
 
 	tx_delay = <0x20>;
-	rx_delay = <0x00>;
+	rx_delay = <0x02>;
 
 	phy-handle = <&rgmii_phy1>;
 	status = "disabled";
