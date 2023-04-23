@@ -27,15 +27,8 @@
 
 
 / {
-	model = "EmbedFire LubanCat-2N";
-	compatible = "embedfire,lubancat-2n", "rockchip,rk3568";
-
-	aliases {
-		ethernet0 = &gmac0;
-		ethernet1 = &gmac1;
-		ethernet2 = &rtl8125_2;
-		ethernet3 = &rtl8125_1;
-	};
+	model = "EmbedFire LubanCat-2";
+	compatible = "embedfire,lubancat-2", "rockchip,rk3568";
 
 	chosen: chosen {
 		bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0 root=PARTUUID=614e0000-0000 rw rootwait";
@@ -156,7 +149,7 @@
 		enable-active-high;
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
-		gpio = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
+		gpio = <&gpio0 RK_PD3 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&vcc5v0_otg_vbus_en>;
 		regulator-name = "vcc5v0_otg_vbus";
@@ -174,26 +167,15 @@
 		vin-supply = <&vcc5v0_sys>;
 	};
 
-	vcc3v3_pcie: gpio-regulator {
-		compatible = "regulator-fixed";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <3300000>;
+	pcie30_3v3: gpio-regulator {
+		compatible = "regulator-gpio";
+		regulator-name = "pcie30_3v3";
+		regulator-min-microvolt = <100000>;
 		regulator-max-microvolt = <3300000>;
-		regulator-name = "vcc3v3_pcie";
-		vin-supply = <&vcc5v0_sys>;
-	};
-
-	sata_power: sata-power-regulator {
-		compatible = "regulator-fixed";
-		regulator-name = "sata_power";
-		regulator-min-microvolt = <12000000>;
-		regulator-max-microvolt = <12000000>;
-		gpio = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
-		regulator-boot-on;
-		pinctrl-names = "default";
-		pinctrl-0 = <&sata_pwr_en>;
+		gpios = <&gpio0 RK_PD4 GPIO_ACTIVE_HIGH>;
+		gpios-states = <0x1>;
+		states = <100000 0x0
+			  3300000 0x1>;
 	};
 
 	mipi_dsi0_power: mipi-dsi0-power-regulator {
@@ -287,7 +269,7 @@
 	rk_headset: rk-headset {
 		status = "okay";
 		compatible = "rockchip_headset";
-		headset_gpio = <&gpio0 RK_PB0 GPIO_ACTIVE_HIGH>;
+		headset_gpio = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&hp_det>;
 		io-channels = <&saradc 1>;
@@ -340,29 +322,10 @@
 		>;
 		default-brightness-level = <200>;
 	};
-	
+
 	test-power {
 		status = "okay";
 	};
-
-	hdmi_sound: hdmi-sound {
-		compatible = "simple-audio-card";
-		simple-audio-card,format = "i2s";
-		simple-audio-card,mclk-fs = <128>;
-		simple-audio-card,name = "rockchip,hdmi";
-		status = "okay";
-
-		simple-audio-card,cpu {
-			sound-dai = <&i2s0_8ch>;
-		};
-		simple-audio-card,codec {
-			sound-dai = <&hdmi>;
-		};
-	};
-};
-
-&i2s0_8ch {
-    status = "okay";
 };
 
 &saradc {
@@ -387,34 +350,6 @@
 
 &pwm4 {
 	status = "okay";
-};
-
-&pwm3 {
-	status = "okay";
-
-	compatible = "rockchip,remotectl-pwm";
-	remote_pwm_id = <3>;
-	handle_cpu_id = <1>;
-	remote_support_psci = <0>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&pwm3_pins>;
-
-	ir_key_lubancat{
-	rockchip,usercode = <0xff00>;
-	rockchip,key_table =
-		<0xeb   KEY_POWER>,
-		<0xec   KEY_MENU>,
-		<0xfe   KEY_BACK>,
-		<0xb7   KEY_HOME>,
-		<0xa3   KEY_WWW>,
-		<0xf4   KEY_VOLUMEUP>,
-		<0xa7   KEY_VOLUMEDOWN>,
-		<0xf8   KEY_REPLY>,
-		<0xfc   KEY_UP>,
-		<0xfd   KEY_DOWN>,
-		<0xf1   KEY_LEFT>,
-		<0xe5   KEY_RIGHT>;
-	};
 };
 
 &cpu0 {
@@ -559,7 +494,7 @@
 				regulator-initial-mode = <0x2>;
 				regulator-name = "vdd_logic";
 				regulator-state-mem {
-					regulator-off-in-suspend;
+					regulator-on-in-suspend;
 				};
 			};
 
@@ -749,6 +684,25 @@
 			status = "okay";
 		};
 	};
+
+	hdmi_sound: hdmi-sound {
+		compatible = "simple-audio-card";
+		simple-audio-card,format = "i2s";
+		simple-audio-card,mclk-fs = <128>;
+		simple-audio-card,name = "rockchip,hdmi";
+		status = "okay";
+
+		simple-audio-card,cpu {
+			sound-dai = <&i2s0_8ch>;
+		};
+		simple-audio-card,codec {
+			sound-dai = <&hdmi>;
+		};
+	};
+};
+
+&i2s0_8ch {
+    status = "okay";
 };
 
 &i2c1 {
@@ -959,7 +913,6 @@
 };
 
 &sata0 {
-	target-supply = <&sata_power>;
 	status = "okay";
 };
 
@@ -982,11 +935,12 @@
 
 	snps,reset-gpio = <&gpio2 RK_PD3 GPIO_ACTIVE_LOW>;
 	snps,reset-active-low;
-	/* Reset time is 20ms, 100ms for rtl8211f */
-	snps,reset-delays-us = <0 20000 100000>;
+	/* Reset time is 75ms, 100ms */
+	snps,reset-delays-us = <0 75000 100000>;
 
 	assigned-clocks = <&cru SCLK_GMAC0_RX_TX>, <&cru SCLK_GMAC0>;
 	assigned-clock-parents = <&cru SCLK_GMAC0_RGMII_SPEED>, <&cru CLK_MAC0_2TOP>;
+	assigned-clock-rates = <0>, <125000000>;
 
 	pinctrl-names = "default";
 	pinctrl-0 = <&gmac0_miim
@@ -995,8 +949,8 @@
 			 &gmac0_rgmii_clk
 			 &gmac0_rgmii_bus>;
 
-	tx_delay = <0x19>;
-	rx_delay = <0x10>;
+	tx_delay = <0x22>;
+	rx_delay = <0x0e>;
 
 	phy-handle = <&rgmii_phy0>;
 	status = "okay";
@@ -1015,11 +969,12 @@
 
 	snps,reset-gpio = <&gpio3 RK_PA2 GPIO_ACTIVE_LOW>;
 	snps,reset-active-low;
-	/* Reset time is 20ms, 100ms for rtl8211f */
-	snps,reset-delays-us = <0 20000 100000>;
+	/* Reset time is 75ms, 100ms */
+	snps,reset-delays-us = <0 75000 100000>;
 
 	assigned-clocks = <&cru SCLK_GMAC1_RX_TX>, <&cru SCLK_GMAC1>;
 	assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>, <&cru CLK_MAC1_2TOP>;
+	assigned-clock-rates = <0>, <125000000>;
 
 	pinctrl-names = "default";
 	pinctrl-0 = <&gmac1m1_miim
@@ -1028,13 +983,13 @@
 			 &gmac1m1_rgmii_clk
 			 &gmac1m1_rgmii_bus>;
 
-	/* RTL8211F  */
-//	tx_delay = <0x1f>;
-//	rx_delay = <0x0c>;
+	/* RTL8211F */	
+	// tx_delay = <0x1c>;
+	// rx_delay = <0x0c>;
 
 	/* JL2101 */
-	tx_delay = <0x1f>;
-	rx_delay = <0x08>;
+	tx_delay = <0x22>;
+	rx_delay = <0x07>;
 
 	phy-handle = <&rgmii_phy1>;
 	status = "okay";
@@ -1051,44 +1006,10 @@
 	status = "okay";
 };
 
-&pcie3x1 {
-	rockchip,bifurcation;
-	reset-gpios = <&gpio2 RK_PD5 GPIO_ACTIVE_HIGH>;
-	vpcie3v3-supply = <&vcc3v3_pcie>;
-	status = "okay";
-
-	pcie@10 {
-		reg = <0x00100000 0 0 0 0>;
-		#address-cells = <3>;
-		#size-cells = <2>;
-
-		rtl8125_1: pcie-eth@10,0 {
-			compatible = "pci10ec,8125";
-			reg = <0x000000 0 0 0 0>;
-
-			realtek,led-data = <0x4078>;
-		};
-	};
-};
-
 &pcie3x2 {
-	rockchip,bifurcation;
-	reset-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
-	vpcie3v3-supply = <&vcc3v3_pcie>;
+	reset-gpios = <&gpio2 RK_PD6 GPIO_ACTIVE_HIGH>;
+	vpcie3v3-supply = <&pcie30_3v3>;
 	status = "okay";
-
-	pcie@20 {
-		reg = <0x00200000 0 0 0 0>;
-		#address-cells = <3>;
-		#size-cells = <2>;
-
-		rtl8125_2: pcie-eth@20,0 {
-			compatible = "pci10ec,8125";
-			reg = <0x000000 0 0 0 0>;
-
-			realtek,led-data = <0x4078>;
-		};
-	};
 };
 
 /* mini pcie */
@@ -1102,6 +1023,9 @@
 &combphy2_psq {
 	status = "okay";
 };
+
+
+
 
 &route_hdmi {
 	status = "okay";
@@ -1119,7 +1043,6 @@
 &hdmi {
 	status = "okay";
 };
-
 
 &pinctrl {
 	pmic {
@@ -1150,7 +1073,7 @@
 
 	headphone {
 		hp_det: hp-det {
-			rockchip,pins = <0 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
+			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
@@ -1164,13 +1087,7 @@
 		};
 
 		vcc5v0_otg_vbus_en: vcc5v0-otg-vbus-en {
-			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-	};
-
-	sata {
-	sata_pwr_en: sata-pwr-en {
-			rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
+			rockchip,pins = <0 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 

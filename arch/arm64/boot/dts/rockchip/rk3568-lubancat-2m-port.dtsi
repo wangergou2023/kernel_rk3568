@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 /*
  * Copyright (c) 2020 Rockchip Electronics Co., Ltd.
+ * Copyright (c) 2023 EmbedFire Electronic Technology Co., Ltd.
  *
+ * LubanCat-2M MXM connector port devicestree
  */
 
 /dts-v1/;
@@ -12,69 +14,120 @@
 
 / {
 	compatible = "rockchip,lubancat-2m-port", "rockchip,rk3568";
-
-	vcc2v5_sys: vcc2v5-ddr {
-		compatible = "regulator-fixed";
-		regulator-name = "vcc2v5-sys";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <2500000>;
-		regulator-max-microvolt = <2500000>;
-		vin-supply = <&vcc3v3_sys>;
-	};
-
-	vcc3v3_vga: vcc3v3-vga {
-		compatible = "regulator-fixed";
-		regulator-name = "vcc3v3_vga";
-		regulator-always-on;
-		regulator-boot-on;
-		gpio = <&gpio0 RK_PD5 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
-		vin-supply = <&vcc3v3_sys>;
-	};
-
-	pcie30_avdd0v9: pcie30-avdd0v9 {
-		compatible = "regulator-fixed";
-		regulator-name = "pcie30_avdd0v9";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <900000>;
-		regulator-max-microvolt = <900000>;
-		vin-supply = <&vcc3v3_sys>;
-	};
-
-	pcie30_avdd1v8: pcie30-avdd1v8 {
-		compatible = "regulator-fixed";
-		regulator-name = "pcie30_avdd1v8";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
-		vin-supply = <&vcc3v3_sys>;
-	};
-
-	pcie30_3v3: gpio-regulator {
-		compatible = "regulator-gpio";
-		regulator-name = "pcie30_3v3";
-		regulator-min-microvolt = <100000>;
-		regulator-max-microvolt = <3300000>;
-		gpios = <&gpio0 RK_PD3 GPIO_ACTIVE_HIGH>;
-		gpios-states = <0x1>;
-		states = <100000 0x0
-			  3300000 0x1>;
-	};
 };
 
+&sfc{
+	pinctrl-names = "default";
+	pinctrl-0 = <&fspi_pins>;
+	assigned-clock-rates = <50000000>;
+	status = "disabled";
+};
+
+&sdmmc0 {
+	bus-width = <4>;
+	vqmmc-supply = <&vccio_sd>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&sdmmc0_bus4 &sdmmc0_clk &sdmmc0_cmd &sdmmc0_det>;
+	status = "disabled";
+};
+
+/* USB OTG/USB Host_1 USB 2.0 Comb */
+&usb2phy0 {
+	status = "disabled";
+};
+
+&u2phy0_host {
+	status = "disabled";
+};
+
+&u2phy0_otg {
+	status = "disabled";
+};
+
+&usb_host0_ehci {
+	status = "disabled";
+};
+
+&usb_host0_ohci {
+	status = "disabled";
+};
+
+/* USB Host_2/USB Host_3 USB 2.0 Comb */
+&usb2phy1 {
+	status = "disabled";
+};
+
+&u2phy1_otg {
+	status = "disabled";
+};
+
+&u2phy1_host {
+	status = "disabled";
+};
+
+&usb_host1_ehci {
+	status = "disabled";
+};
+
+&usb_host1_ohci {
+	status = "disabled";
+};
+
+/* MULTI_PHY0 For SATA0, USB3.0 OTG0 */
 &combphy0_us {
-	status = "okay";
+	status = "disabled";
 };
 
+&usbdrd30 {
+	status = "disabled";
+};
+
+#if 0 //MULTI_PHY0
+/* MULTI_PHY0 For USB3.0 OTG0 */
+&usbdrd_dwc3 {
+	status = "disabled";
+};
+else
+/* MULTI_PHY0 For SATA0, USB3.0 OTG0 Only USB2.0 */
+&usbdrd_dwc3 {
+	phys = <&u2phy0_otg>;
+	phy-names = "usb2-phy";
+	extcon = <&usb2phy0>;
+	maximum-speed = "high-speed";
+	snps,dis_u2_susphy_quirk;
+	status = "disabled";
+};
+
+&sata0 {
+	status = "disabled";
+};
+#endif //MULTI_PHY0
+
+/* MULTI_PHY1 For SATA1, USB3.0 HOST1, QSGMII_M0 */
 &combphy1_usq {
-	status = "okay";
+	status = "disabled";
 };
 
+&usbhost30 {
+	status = "disabled";
+};
+
+&usbhost_dwc3 {
+	status = "disabled";
+};
+
+/* MULTI_PHY2 For SATA2, PCIe2.0, QSGMII_M1 */
 &combphy2_psq {
-	status = "okay";
+	status = "disabled";
+};
+
+&sata2 {
+	status = "disabled";
+};
+
+/* PCIe3.0x2 Comb */
+&pcie30phy {
+	status = "disabled";
 };
 
 &gmac0 {
@@ -101,6 +154,51 @@
 	rx_delay = <0x0d>;
 
 	phy-handle = <&rgmii_phy0>;
+	status = "disabled";
+};
+
+&mdio0 {
+	rgmii_phy0: phy@0 {
+		compatible = "ethernet-phy-ieee802.3-c22";
+		reg = <0x0>;
+		// led_status_value = <0x6940>;
+	};
+};
+
+&uart8 {
+	status = "disabled";
+};
+
+&saradc {
+	status = "okay";
+	vref-supply = <&vcca_1v8>;
+};
+
+#if 0 //CAN1
+&can1 {
+	status = "disabled"; //Default to use DTBO
+	compatible = "rockchip,can-1.0";
+	pinctrl-names = "default";
+	pinctrl-0 = <&can1m1_pins>;
+};
+else
+&can1 {
+	status = "disabled"; //Default to use DTBO
+	compatible = "rockchip,canfd-1.0";
+	pinctrl-names = "default";
+	assigned-clocks = <&cru CLK_CAN1>;
+	assigned-clock-rates = <150000000>;
+	pinctrl-0 = <&can1m1_pins>;
+};
+#endif //CAN1
+
+&uart9 {
+	status = "disabled"; //Default to use DTBO
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart9m1_xfer>;
+};
+
+&sdmmc2 {
 	status = "disabled";
 };
 
@@ -131,92 +229,62 @@
 	status = "disabled";
 };
 
-&mdio0 {
-	rgmii_phy0: phy@0 {
-		compatible = "ethernet-phy-ieee802.3-c22";
-		reg = <0x0>;
-	};
-};
-
 &mdio1 {
 	rgmii_phy1: phy@0 {
 		compatible = "ethernet-phy-ieee802.3-c22";
 		reg = <0x0>;
+		// led_status_value = <0x6940>;
 	};
 };
 
-&pcie30phy {
+&i2c4 {
 	status = "disabled";
 };
 
-&pcie3x2 {
-	reset-gpios = <&gpio2 RK_PD6 GPIO_ACTIVE_HIGH>;
-	vpcie3v3-supply = <&pcie30_3v3>;
+#if 0 //CAN2
+&can2 {
+	status = "disabled"; //Default to use DTBO
+	compatible = "rockchip,can-1.0";
+	pinctrl-names = "default";
+	pinctrl-0 = <&can2m0_pins>;
+};
+else
+&can2 {
+	status = "disabled"; //Default to use DTBO
+	compatible = "rockchip,canfd-1.0";
+	pinctrl-names = "default";
+	assigned-clocks = <&cru CLK_CAN1>;
+	assigned-clock-rates = <150000000>;
+	pinctrl-0 = <&can2m0_pins>;
+};
+#endif //CAN2
+
+&i2s3_2ch {
 	status = "disabled";
 };
 
-&sata2 {
-	status = "disabled";
-};
-
-
-&spdif_8ch {
+&uart4 {
 	status = "disabled";
 	pinctrl-names = "default";
-	pinctrl-0 = <&spdifm1_tx>;
+	pinctrl-0 = <&uart4m1_xfer>;
 };
 
-
-
-
-&uart8 {
-	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&uart8m0_xfer &uart8m0_ctsn>;
-};
-
-&spi1 {
+&i2c5 {
 	status = "disabled";
-	max-freq = <48000000>;
-	dev-port = <0>;
-	pinctrl-0 = <&spi1m1_pins>;
-	pinctrl-1 = <&spi1m1_pins_hs>;
-
-	spi_wk2xxx: spi_wk2xxx@00{
-		status = "disabled";
-		compatible = "lubancat,spi-wk2xxx";
-		reg = <0x00>;
-		spi-max-frequency = <10000000>;
-		// power-gpio = <&pca9555 PCA_IO1_7 GPIO_ACTIVE_HIGH>;
-		// reset-gpio = <&pca9555 PCA_IO1_1 GPIO_ACTIVE_HIGH>;
-		irq-gpio = <&gpio0 RK_PA6 IRQ_TYPE_EDGE_FALLING>;
-		cs-gpio = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
-		/* rk3399 driver support SPI_CPOL | SPI_CPHA | SPI_CS_HIGH */
-		//spi-cpha;	 /* SPI mode: CPHA=1 */
-		//spi-cpol;	 /* SPI mode: CPOL=1 */
-		//spi-cs-high;
-	};
 };
 
-&pinctrl {
-	headphone {
-		hp_det: hp-det {
-			rockchip,pins = <3 RK_PC2 RK_FUNC_GPIO &pcfg_pull_down>;
-		};
-	};
-	
-	touch {
-		touch_gpio: touch-gpio {
-			rockchip,pins =
-				<0 RK_PB5 RK_FUNC_GPIO &pcfg_pull_up>,
-				<0 RK_PB6 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-	};
-};
-
-&sfc{
+&uart3 {
+	status = "disabled";
 	pinctrl-names = "default";
-	pinctrl-0 = <&fspi_pins>;
-	assigned-clock-rates = <50000000>;
-	status = "okay";
+	pinctrl-0 = <&uart3m1_xfer>;
+};
+
+&uart7 {
+	status = "disabled";
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart7m1_xfer>;
+};
+
+&i2c3 {
+	status = "disabled";
 };

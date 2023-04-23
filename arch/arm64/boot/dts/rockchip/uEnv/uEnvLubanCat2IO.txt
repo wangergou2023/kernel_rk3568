@@ -14,6 +14,13 @@ enable_uboot_overlays=1
 #dtoverlay=/dtb/overlay/rk356x-lubancat-uart4-m1-overlay.dtbo
 #dtoverlay=/dtb/overlay/rk356x-lubancat-uart7-m1-overlay.dtbo
 #dtoverlay=/dtb/overlay/rk356x-lubancat-uart9-m1-overlay.dtbo
+#display
+#dtoverlay=/dtb/overlay/rk3568-lubancat-hdmi-disabled-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk3568-lubancat-2io-dsi0-in-vp0-1080p-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk3568-lubancat-2io-dsi0-in-vp0-rpi-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk3568-lubancat-2io-dsi1-in-vp1-1080p-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk3568-lubancat-2io-dsi1-in-vp1-rpi-overlay.dtbo
+#dtoverlay=/dtb/overlay/rk3568-lubancat-2io-edp-in-vp1-overlay.dtbo
 
 
 
