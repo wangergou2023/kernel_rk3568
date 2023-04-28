@@ -1,7 +1,6 @@
 uname_r=4.19.232
 size=0x1000000
-bootargs=console=ttyFIQ0 console=tty1
-#dtb=rk3568-lubancat2-n.dtb
+cmdline="earlyprintk console=ttyFIQ0 console=tty1 consoleblank=0 loglevel=7 rootwait rw rootfstype=ext4"
 
 enable_uboot_overlays=1
 #overlay_start
