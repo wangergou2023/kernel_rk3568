@@ -24,6 +24,7 @@ if test -e ${devtype} ${devnum}:${distro_bootpart} /uEnv/uEnv.txt; then
     fdt set /chosen bootargs
 
     echo [boot.cmd] dtoverlay from /uEnv/uEnv.txt
+    setenv dev_bootpart ${devnum}:${distro_bootpart}
     dtfile ${fdt_addr_r} ${fdt_over_addr}  /uEnv/uEnv.txt ${env_addr_r}
 
     echo [boot.cmd] [${devtype} ${devnum}:${distro_bootpart}] ...
