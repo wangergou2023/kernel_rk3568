@@ -92,7 +92,7 @@ board_id
 board_info ${BOARD_ID}
 
 if [ ! -L "/boot/uEnv/uEnv.txt" ] ; then 
-	echo "ln -sf /boot/uEnv/$BOARD_uEnv /boot/uEnv/uEnv.txt"
-	ln -sf /boot/uEnv/$BOARD_uEnv /boot/uEnv/uEnv.txt 
+	echo "ln -sf $BOARD_uEnv /boot/uEnv/uEnv.txt"
+	ln -sf $BOARD_uEnv /boot/uEnv/uEnv.txt 
 fi
 exit 0
