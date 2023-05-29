@@ -47,7 +47,6 @@
 
 		__overlay__ {
 			status = "okay";
-			power-supply = <&mipi_dsi0_power>;
 			#address-cells = <1>;
 			#size-cells = <0>;
 
@@ -56,7 +55,7 @@
 				reg = <0>;
 				backlight = <&backlight>;
 				reset-gpios = <&gpio3 RK_PA4 GPIO_ACTIVE_LOW>;
-
+				power-supply = <&mipi_dsi0_power>;
 				enable-delay-ms = <35>;
 				prepare-delay-ms = <6>;
 				reset-delay-ms = <0>;
