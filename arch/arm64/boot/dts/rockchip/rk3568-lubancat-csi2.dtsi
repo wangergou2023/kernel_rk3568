@@ -16,8 +16,8 @@
 &i2c1 {
 	// ov5648 Camare
 	dw9714: dw9714@0c {
-		status = "okay";
 		compatible = "dongwoon,dw9714";
+		status = "disabled";
 		reg = <0x0c>;
 		rockchip,camera-module-index = <0>;
 		rockchip,vcm-max-current = <100>;
@@ -32,10 +32,10 @@
 
 	ov5647: ov5647@36 {
 		compatible = "ovti,ov5647";
+		status = "disabled";
 		reg = <0x36>;
 		clocks = <&ext_cam_25m_clk>;
 		clock-names = "ext_cam_25m_clk";
-		pwdn-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_LOW>;
 		lens-focus = <&dw9714>;
 
 		port {
@@ -48,16 +48,14 @@
 
 	ov5648: camera@36 {
 		compatible = "ovti,ov5648";
+		status = "disabled";
 		reg = <0x36>;
 		clocks = <&ext_cam_clk>;
 		clock-names = "xvclk";
 		dovdd-supply= <&cam_dovdd>; /* 1.8v */
 		avdd-supply = <&cam_avdd>;  /* 2.8v */
 		dvdd-supply = <&cam_dvdd>;  /* 1.2v */
-		pwdn-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
-		reset-gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_LOW>;
 		rotation = <180>;
-		status = "okay";
 
 		rockchip,camera-module-index = <0>;
 		rockchip,camera-module-facing = "back";
@@ -77,16 +75,14 @@
 
 	ov8858: ov8858@36 {
 		compatible = "ovti,ov8858";
+		status = "disabled";
 		reg = <0x36>;
 		clocks = <&ext_cam_clk>;
 		clock-names = "xvclk";
 		dovdd-supply= <&cam_dovdd>; /* 1.8v */
 		avdd-supply = <&cam_avdd>;  /* 2.8v */
 		dvdd-supply = <&cam_dvdd>;  /* 1.2v */
-		pwdn-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
-		reset-gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_HIGH>;
 		rotation = <180>;
-		status = "okay";
 
 		rockchip,camera-module-index = <1>;
 		rockchip,camera-module-facing = "back";
@@ -106,16 +102,14 @@
 
    ov13850: ov13850@10 {
 		compatible = "ovti,ov13850";
+		status = "disable";
 		reg = <0x10>;
 		clocks = <&ext_cam_clk>;
 		clock-names = "xvclk";
 		dovdd-supply= <&cam_dovdd>; /* 1.8v */
 		avdd-supply = <&cam_avdd>;  /* 2.8v */
 		dvdd-supply = <&cam_dvdd>;  /* 1.2v */
-		pwdn-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
-		reset-gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_HIGH>;
 		rotation = <180>;
-		status = "okay";
 
 		rockchip,camera-module-index = <2>;
 		rockchip,camera-module-facing = "back";
@@ -131,7 +125,32 @@
 				data-lanes = <1 2 3 4>;
 			};
 		};
-   };
+    };
+
+	sc132gs: sc132gs@30 {
+		compatible = "smartsens,sc132gs";
+		status = "disable";
+		reg = <0x30>;
+		clocks = <&ext_cam_clk>;
+		clock-names = "xvclk";
+
+		dovdd-supply= <&cam_dovdd>; /* 1.8v */
+		avdd-supply = <&cam_avdd>;  /* 2.8v */
+		dvdd-supply = <&cam_dvdd>;  /* 1.2v */
+
+		rockchip,camera-module-index = <1>;
+		rockchip,camera-module-facing = "back";
+		rockchip,camera-module-name = "default";
+		rockchip,camera-module-lens-name = "default";
+
+		port {
+			sc132gs_out: endpoint {
+				remote-endpoint = <&dphy0_in_sc132gs>;
+				clock-lanes = <0>;
+				data-lanes = <1>;
+			};
+		};
+	};
 };
 
 &csi2_dphy_hw {
@@ -172,6 +191,12 @@
 				reg = <4>;
 				remote-endpoint = <&ov5647_out>;
 				data-lanes = <1 2>;
+			};
+
+			dphy0_in_sc132gs: endpoint@5 {
+				reg = <5>;
+				remote-endpoint = <&sc132gs_out>;
+				data-lanes = <1>;
 			};
 		};
 

@@ -4,121 +4,11 @@
  *
  */
 
-/ {
-	ext_cam0_clk: external-camera0-clock {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <24000000>;
-		clock-output-names = "CLK_CAMERA0_24MHZ";
-	};
-
-	ext_cam0_25m_clk: external-camera0-25m-clock {
-		compatible = "fixed-clock";
-		clock-frequency = <25000000>;
-		clock-output-names = "ext_cam0_25m_clk";
-		#clock-cells = <0>;
-	};
-
-	vdd_cam0_5v: vdd-cam0-5v-regulator {
-		compatible = "regulator-fixed";
-		regulator-name = "vdd_cam0_5v";
-		regulator-min-microvolt = <5000000>;
-		regulator-max-microvolt = <5000000>;
-		enable-active-high;
-		regulator-always-on;
-	};
-
-	cam0_dovdd: cam0-dovdd {
-		compatible = "regulator-fixed";
-		regulator-name = "cam0_dovdd";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
-		vin-supply = <&vdd_cam0_5v>;
-	};
-
-	cam0_avdd: cam0-avdd {
-		compatible = "regulator-fixed";
-		regulator-name = "cam0_avdd";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <2800000>;
-		regulator-max-microvolt = <2800000>;
-		vin-supply = <&vdd_cam0_5v>;
-	};
-
-	cam0_dvdd: cam0-dvdd {
-		compatible = "regulator-fixed";
-		regulator-name = "cam0_dvdd";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <1200000>;
-		regulator-max-microvolt = <1200000>;
-		vin-supply = <&vdd_cam0_5v>;
-	};
-
-	ext_cam1_clk: external-camera1-clock {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <24000000>;
-		clock-output-names = "CLK_CAMERA1_24MHZ";
-	};
-
-	ext_cam1_25m_clk: external-camera1-25m-clock {
-		compatible = "fixed-clock";
-		clock-frequency = <25000000>;
-		clock-output-names = "ext_cam1_25m_clk";
-		#clock-cells = <0>;
-	};
-
-
-	vdd_cam1_5v: vdd-cam1-5v-regulator {
-		compatible = "regulator-fixed";
-		regulator-name = "vdd_cam1_5v";
-		regulator-min-microvolt = <5000000>;
-		regulator-max-microvolt = <5000000>;
-		enable-active-high;
-		regulator-always-on;
-	};
-
-	cam1_dovdd: cam1-dovdd {
-		compatible = "regulator-fixed";
-		regulator-name = "cam1_dovdd";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
-		vin-supply = <&vdd_cam1_5v>;
-	};
-
-	cam1_avdd: cam1-avdd {
-		compatible = "regulator-fixed";
-		regulator-name = "cam1_avdd";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <2800000>;
-		regulator-max-microvolt = <2800000>;
-		vin-supply = <&vdd_cam1_5v>;
-	};
-
-	cam1_dvdd: cam1-dvdd {
-		compatible = "regulator-fixed";
-		regulator-name = "cam1_dvdd";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <1200000>;
-		regulator-max-microvolt = <1200000>;
-		vin-supply = <&vdd_cam1_5v>;
-	};
-
-};
-
 &i2c1 {
 	status = "okay";
 	// ov5648 Camare
-	cam0_dw9714: cam0_dw9714@0c {
-		status = "okay";
+	dw9714: dw9714@0c {
+		status = "disable";
 		compatible = "dongwoon,dw9714";
 		reg = <0x0c>;
 		rockchip,camera-module-index = <0>;
@@ -132,28 +22,26 @@
 		rockchip,camera-module-facing = "back";
 	};
 
-	cam0_ov5648: cam0_camera@36 {
+	ov5648: camera@36 {
 		compatible = "ovti,ov5648";
 		reg = <0x36>;
-		clocks = <&ext_cam0_clk>;
+		clocks = <&ext_cam_clk>;
 		clock-names = "xvclk";
-		dovdd-supply= <&cam0_dovdd>; /* 1.8v */
-		avdd-supply = <&cam0_avdd>;  /* 2.8v */
-		dvdd-supply = <&cam0_dvdd>;  /* 1.2v */
-		pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
-		reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_LOW>;
+		dovdd-supply= <&cam_dovdd>; /* 1.8v */
+		avdd-supply = <&cam_avdd>;  /* 2.8v */
+		dvdd-supply = <&cam_dvdd>;  /* 1.2v */
 		rotation = <180>;
-		status = "okay";
+		status = "disable";
 
 		rockchip,camera-module-index = <0>;
 		rockchip,camera-module-facing = "back";
 		rockchip,camera-module-name = "THDS11073";
 		rockchip,camera-module-lens-name = "Largan-40122a1";
-		lens-focus = <&cam0_dw9714>;
+		lens-focus = <&dw9714>;
 
 		port {
 			/* MIPI CSI-2 bus endpoint */
-			cam0_ov5648_out: endpoint {
+			ov5648_out: endpoint {
 				remote-endpoint = <&dphy1_in_ov5648>;
 				clock-lanes = <0>;
 				data-lanes = <1 2>;
@@ -163,22 +51,20 @@
 
 	ov8858: ov8858@36 {
 		compatible = "ovti,ov8858";
+		status = "disable";
 		reg = <0x36>;
-		clocks = <&ext_cam0_clk>;
+		clocks = <&ext_cam_clk>;
 		clock-names = "xvclk";
-		dovdd-supply= <&cam0_dovdd>; /* 1.8v */
-		avdd-supply = <&cam0_avdd>;  /* 2.8v */
-		dvdd-supply = <&cam0_dvdd>;  /* 1.2v */
-		pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
-		reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
+		dovdd-supply= <&cam_dovdd>; /* 1.8v */
+		avdd-supply = <&cam_avdd>;  /* 2.8v */
+		dvdd-supply = <&cam_dvdd>;  /* 1.2v */
 		rotation = <180>;
-		status = "okay";
 
 		rockchip,camera-module-index = <0>;
 		rockchip,camera-module-facing = "back";
 		rockchip,camera-module-name = "HS5885-BNSM1018-V01";
 		rockchip,camera-module-lens-name = "default";
-		lens-focus = <&cam0_dw9714>;
+		lens-focus = <&dw9714>;
 
 		port {
 			/* MIPI CSI-2 bus endpoint */
@@ -189,15 +75,56 @@
 			};
 		};
 	};
+
+	ov5647: ov5647@36 {
+		compatible = "ovti,ov5647";
+		status = "disable";
+		reg = <0x36>;
+		clocks = <&ext_cam_25m_clk>;
+		clock-names = "ext_cam_25m_clk";
+		lens-focus = <&dw9714>;
+
+		port {
+			ov5647_out: endpoint {
+				remote-endpoint = <&dphy1_in_ov5647>;
+				data-lanes = <1 2>;
+			};
+		};
+	};
+
+	sc132gs: sc132gs@30 {
+		compatible = "smartsens,sc132gs";
+		status = "disable";
+		reg = <0x30>;
+		clocks = <&ext_cam_clk>;
+		clock-names = "xvclk";
+
+		dovdd-supply= <&cam_dovdd>; /* 1.8v */
+		avdd-supply = <&cam_avdd>;  /* 2.8v */
+		dvdd-supply = <&cam_dvdd>;  /* 1.2v */
+
+		rockchip,camera-module-index = <1>;
+		rockchip,camera-module-facing = "back";
+		rockchip,camera-module-name = "default";
+		rockchip,camera-module-lens-name = "default";
+
+		port {
+			sc132gs_out: endpoint {
+				remote-endpoint = <&dphy1_in_sc132gs>;
+				clock-lanes = <0>;
+				data-lanes = <1>;
+			};
+		};
+	};
 };
 
 &i2c4 {
 	pinctrl-names = "default";
     pinctrl-0 = <&i2c4m1_xfer>;
-	status = "okay";
+	status = "disable";
 	// ov5648 Camare
 	cam1_dw9714: cam1_dw9714@0c {
-		status = "okay";
+		status = "disable";
 		compatible = "dongwoon,dw9714";
 		reg = <0x0c>;
 		rockchip,camera-module-index = <0>;
@@ -213,16 +140,14 @@
 
 	cam1_ov5648: cam1_camera@36 {
 		compatible = "ovti,ov5648";
+		status = "disable";
 		reg = <0x36>;
 		clocks = <&ext_cam1_clk>;
 		clock-names = "xvclk";
 		dovdd-supply= <&cam1_dovdd>; /* 1.8v */
 		avdd-supply = <&cam1_avdd>;  /* 2.8v */
 		dvdd-supply = <&cam1_dvdd>;  /* 1.2v */
-		pwdn-gpios = <&gpio2 RK_PB3 GPIO_ACTIVE_HIGH>;
-		reset-gpios = <&gpio2 RK_PB4 GPIO_ACTIVE_LOW>;
 		rotation = <180>;
-		status = "okay";
 
 		rockchip,camera-module-index = <1>;
 		rockchip,camera-module-facing = "front";
@@ -242,17 +167,15 @@
 
 	cam1_ov8858: cam1_ov8858@36 {
 		compatible = "ovti,ov8858";
+		status = "disable";
 		reg = <0x36>;
 		clocks = <&ext_cam1_clk>;
 		clock-names = "xvclk";
 		dovdd-supply= <&cam1_dovdd>; /* 1.8v */
 		avdd-supply = <&cam1_avdd>;  /* 2.8v */
 		dvdd-supply = <&cam1_dvdd>;  /* 1.2v */
-		pwdn-gpios = <&gpio2 RK_PB3 GPIO_ACTIVE_HIGH>;
-		reset-gpios = <&gpio2 RK_PB4 GPIO_ACTIVE_HIGH>;
 		rotation = <180>;
-		status = "okay";
-
+		
 		rockchip,camera-module-index = <1>;
 		rockchip,camera-module-facing = "front";
 		rockchip,camera-module-name = "HS5885-BNSM1018-V01";
@@ -265,6 +188,47 @@
 				remote-endpoint = <&dphy2_in_ov8858>;
 				clock-lanes = <0>;
 				data-lanes = <1 2>;
+			};
+		};
+	};
+
+	cam1_ov5647: cam1_ov5647@36 {
+		compatible = "ovti,ov5647";
+		status = "disabled";
+		reg = <0x36>;
+		clocks = <&ext_cam1_25m_clk>;
+		clock-names = "ext_cam1_25m_clk";
+		lens-focus = <&dw9714>;
+
+		port {
+			cam1_ov5647_out: endpoint {
+				remote-endpoint = <&dphy2_in_ov5647>;
+				data-lanes = <1 2>;
+			};
+		};
+	};
+
+	cam1_sc132gs: cam1_sc132gs@30 {
+		compatible = "smartsens,sc132gs";
+		status = "disable";
+		reg = <0x30>;
+		clocks = <&ext_cam1_clk>;
+		clock-names = "xvclk";
+
+		dovdd-supply= <&cam1_dovdd>; /* 1.8v */
+		avdd-supply = <&cam1_avdd>;  /* 2.8v */
+		dvdd-supply = <&cam1_dvdd>;  /* 1.2v */
+
+		rockchip,camera-module-index = <1>;
+		rockchip,camera-module-facing = "back";
+		rockchip,camera-module-name = "default";
+		rockchip,camera-module-lens-name = "default";
+
+		port {
+			cam1_sc132gs_out: endpoint {
+				remote-endpoint = <&dphy2_in_sc132gs>;
+				clock-lanes = <0>;
+				data-lanes = <1>;
 			};
 		};
 	};
@@ -292,7 +256,7 @@
 
 			dphy1_in_ov5648: endpoint@1 {
 				reg = <1>;
-				remote-endpoint = <&cam0_ov5648_out>;
+				remote-endpoint = <&ov5648_out>;
 				data-lanes = <1 2>;
 			};
 
@@ -300,6 +264,18 @@
 				reg = <2>;
 				remote-endpoint = <&ov8858_out>;
 				data-lanes = <1 2>;
+			};
+
+			dphy1_in_ov5647: endpoint@3 {
+				reg = <3>;
+				remote-endpoint = <&ov5647_out>;
+				data-lanes = <1 2>;
+			};
+
+			dphy1_in_sc132gs: endpoint@4 {
+				reg = <4>;
+				remote-endpoint = <&sc132gs_out>;
+				data-lanes = <1>;
 			};
 		};
 
@@ -317,7 +293,7 @@
 };
 
 &csi2_dphy2 {
-	status = "okay";
+	status = "disabled";
 	
 	ports {
 		#address-cells = <1>;
@@ -339,6 +315,18 @@
 				remote-endpoint = <&cam1_ov8858_out>;
 				data-lanes = <1 2>;
 			};
+
+			dphy2_in_ov5647: endpoint@3 {
+				reg = <3>;
+				remote-endpoint = <&cam1_ov5647_out>;
+				data-lanes = <1 2>;
+			};
+
+			dphy2_in_sc132gs: endpoint@4 {
+				reg = <4>;
+				remote-endpoint = <&cam1_sc132gs_out>;
+				data-lanes = <1>;
+			};
 		};
 
 		port@1 {
@@ -355,7 +343,7 @@
 };
 
 &mipi_csi2 {
-	status = "okay";
+	status = "disabled";
     ports {
         #address-cells = <1>;
         #size-cells = <0>;
@@ -387,7 +375,7 @@
 };
 
 &rkcif_mipi_lvds {
-    status = "okay";
+    status = "disabled";
     port {
         cif_mipi_in: endpoint {
             remote-endpoint = <&mipi_csi2_output>;
@@ -397,7 +385,7 @@
 };
 
 &rkcif_mipi_lvds_sditf {
-    status = "okay";
+    status = "disabled";
     port {
         mipi_lvds_sditf: endpoint {
             remote-endpoint = <&isp1_in>;
@@ -431,7 +419,7 @@
 };
 
 &rkisp_vir1 {
-	status = "okay";
+	status = "disabled";
 	ports {
 		#address-cells = <1>;
 		#size-cells = <0>;

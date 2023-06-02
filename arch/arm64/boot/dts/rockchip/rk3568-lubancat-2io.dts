@@ -9,7 +9,7 @@
 #include "rk3568-lubancat-2m-port.dtsi"
 
 //MIPI摄像头配置
-#include "rk3568-lubancat-2io-cam.dtsi"
+#include "rk3568-lubancat-csi2-double-2.dtsi"
 
 // 屏幕设置，通用镜像使用设备树插件
 // 以下屏幕配置同时只能使用一个
@@ -29,6 +29,119 @@
 		regulator-boot-on;
 		regulator-min-microvolt = <12000000>;
 		regulator-max-microvolt = <12000000>;
+	};
+
+	ext_cam_clk: external-camera0-clock {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <24000000>;
+		clock-output-names = "CLK_CAMERA0_24MHZ";
+	};
+
+	ext_cam_25m_clk: external-camera0-25m-clock {
+		compatible = "fixed-clock";
+		clock-frequency = <25000000>;
+		clock-output-names = "ext_cam_25m_clk";
+		#clock-cells = <0>;
+	};
+
+	vdd_cam_5v: vdd-cam0-5v-regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "vdd_cam_5v";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpio3 RK_PA2 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&cam_pwr_en>;
+		enable-active-high;
+		regulator-always-on;
+	};
+
+	cam_dovdd: cam_dovdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_dovdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		vin-supply = <&vdd_cam_5v>;
+	};
+
+	cam_avdd: cam_avdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_avdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		vin-supply = <&vdd_cam_5v>;
+	};
+
+	cam_dvdd: cam_dvdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_dvdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <1200000>;
+		regulator-max-microvolt = <1200000>;
+		vin-supply = <&vdd_cam_5v>;
+	};
+
+	ext_cam1_clk: external-camera1-clock {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <24000000>;
+		clock-output-names = "CLK_CAMERA1_24MHZ";
+	};
+
+	ext_cam1_25m_clk: external-camera1-25m-clock {
+		compatible = "fixed-clock";
+		clock-frequency = <25000000>;
+		clock-output-names = "ext_cam1_25m_clk";
+		#clock-cells = <0>;
+	};
+
+
+	vdd_cam1_5v: vdd-cam1-5v-regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "vdd_cam1_5v";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpio3 RK_PA4 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&cam1_pwr_en>;
+		enable-active-high;
+		regulator-always-on;
+	};
+
+	cam1_dovdd: cam1-dovdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam1_dovdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		vin-supply = <&vdd_cam1_5v>;
+	};
+
+	cam1_avdd: cam1-avdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam1_avdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		vin-supply = <&vdd_cam1_5v>;
+	};
+
+	cam1_dvdd: cam1-dvdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam1_dvdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <1200000>;
+		regulator-max-microvolt = <1200000>;
+		vin-supply = <&vdd_cam1_5v>;
 	};
 
 	vdd_5v: vdd-5v {
@@ -523,6 +636,53 @@
 	};
 };
 
+&i2c5 {
+	status = "okay";
+};
+
+//cam0-gpio-setting
+&ov5647 {
+    pwdn-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
+};
+
+&ov5648 {
+	pwdn-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio1 RK_PB0 GPIO_ACTIVE_LOW>;
+};
+
+&ov8858 {
+	pwdn-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio1 RK_PB0 GPIO_ACTIVE_HIGH>;
+};
+ 
+&sc132gs {
+	pwdn-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio1 RK_PB0 GPIO_ACTIVE_HIGH>;
+};
+
+
+//cam1-gpio-setting
+&cam1_ov5647 {
+    pwdn-gpios = <&gpio1 RK_PB1 GPIO_ACTIVE_HIGH>;
+};
+
+&cam1_ov5648 {
+	pwdn-gpios = <&gpio1 RK_PB1 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio1 RK_PB2 GPIO_ACTIVE_LOW>;
+};
+
+&cam1_ov8858 {
+	pwdn-gpios = <&gpio1 RK_PB1 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio1 RK_PB2 GPIO_ACTIVE_HIGH>;
+};
+
+&cam1_sc132gs {
+	pwdn-gpios = <&gpio1 RK_PB1 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio1 RK_PB2 GPIO_ACTIVE_HIGH>;
+};
+
+
+
 &i2c0 {
 	rx8010: rx8010@32 {
 		compatible = "epson,rx8010";
@@ -722,6 +882,15 @@
 		};
 	};
 
+	cam {
+		cam_pwr_en: cam_pwr_en {
+			rockchip,pins = <3 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+		cam1_pwr_en: cam1_pwr_en {
+			rockchip,pins = <3 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+
 	lcd {
 		edp_lcd_pwr_en: edp-lcd-pwr-en {
 			rockchip,pins = <3 RK_PA3 RK_FUNC_GPIO &pcfg_pull_none>;
@@ -742,7 +911,7 @@
 
 	rx8010 {
 		rx8010_irq: rx8010-irq {
-				rockchip,pins = <0 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
+			rockchip,pins = <0 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 

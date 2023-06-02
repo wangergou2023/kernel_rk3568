@@ -16,7 +16,7 @@
 #include "rk3566.dtsi"
 
 //MIPI摄像头配置
-#include "rk3566-lubancat-csi2.dtsi"
+#include "rk3568-lubancat-csi2-double-1.dtsi"
 
 /*  屏幕设置，通用镜像使用设备树插件,默认开启hdmi
 	专用镜像如果要开启MIPI屏幕支持，按屏幕型号开启2-4
@@ -26,7 +26,6 @@
 // #include "rk3566-lubancat-dsi0-ebf410125_720p.dtsi" //野火5.5寸 720P
 // #include "rk3566-lubancat-dsi0-ebf410125_1080p.dtsi" //野火5.5寸 1080P
 // #include "rk3566-lubancat-dsi0-rpi.dtsi" //树莓派 5寸 800x480
-
 
 / {
 	model = "EmbedFire LubanCat-1";
@@ -164,48 +163,6 @@
 		regulator-always-on;
 	};
 
-	vdd_cam_5v: vdd-cam-5v-regulator {
-		compatible = "regulator-fixed";
-		regulator-name = "vdd_cam_5v";
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-		gpio = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&cam_pwr_en>;
-		enable-active-high;
-		regulator-always-on;
-	};
-
-	cam_dovdd: cam-dovdd {
-		compatible = "regulator-fixed";
-		regulator-name = "cam_dovdd";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
-		vin-supply = <&vdd_cam_5v>;
-	};
-
-	cam_avdd: cam-avdd {
-		compatible = "regulator-fixed";
-		regulator-name = "cam_avdd";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <2800000>;
-		regulator-max-microvolt = <2800000>;
-		vin-supply = <&vdd_cam_5v>;
-	};
-
-	cam_dvdd: cam-dvdd {
-		compatible = "regulator-fixed";
-		regulator-name = "cam_dvdd";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <1200000>;
-		regulator-max-microvolt = <1200000>;
-		vin-supply = <&vdd_cam_5v>;
-	};
-
 	leds: leds {
 		status = "okay";
 		compatible = "gpio-leds";
@@ -251,13 +208,6 @@
 		io-channels = <&saradc 1>;
 	};
 
-	ext_cam_clk: external-camera-clock {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <24000000>;
-		clock-output-names = "CLK_CAMERA1_24MHZ";
-	};
-
 	backlight: backlight {
 		status = "okay";
 		compatible = "pwm-backlight";
@@ -297,6 +247,115 @@
 			248 249 250 251 252 253 254 255
 		>;
 		default-brightness-level = <200>;
+	};
+
+	ext_cam_clk: external-camera0-clock {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <24000000>;
+		clock-output-names = "CLK_CAMERA0_24MHZ";
+	};
+
+	ext_cam_25m_clk: external-camera0-25m-clock {
+		compatible = "fixed-clock";
+		clock-frequency = <25000000>;
+		clock-output-names = "ext_cam_25m_clk";
+		#clock-cells = <0>;
+	};
+
+	ext_cam1_clk: external-camera1-clock {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <24000000>;
+		clock-output-names = "CLK_CAMERA1_24MHZ";
+	};
+
+	ext_cam1_25m_clk: external-camera1-25m-clock {
+		compatible = "fixed-clock";
+		clock-frequency = <25000000>;
+		clock-output-names = "ext_cam1_25m_clk";
+		#clock-cells = <0>;
+	};
+
+	vdd_cam_5v: vdd-cam-5v-regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "vdd_cam_5v";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&cam_pwr_en>;
+		enable-active-high;
+		regulator-always-on;
+	};
+
+	cam_dovdd: cam-dovdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_dovdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		vin-supply = <&vdd_cam_5v>;
+	};
+
+	cam_avdd: cam-avdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_avdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		vin-supply = <&vdd_cam_5v>;
+	};
+
+	cam_dvdd: cam-dvdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_dvdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <1200000>;
+		regulator-max-microvolt = <1200000>;
+		vin-supply = <&vdd_cam_5v>;
+	};
+
+	vdd_cam1_5v: vdd-cam1-5v-regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "vdd_cam1_5v";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		enable-active-high;
+		regulator-always-on;
+	};
+
+	cam1_dovdd: cam1-dovdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam1_dovdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		vin-supply = <&vdd_cam1_5v>;
+	};
+
+	cam1_avdd: cam1-avdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam1_avdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		vin-supply = <&vdd_cam1_5v>;
+	};
+
+	cam1_dvdd: cam1-dvdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam1_dvdd";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <1200000>;
+		regulator-max-microvolt = <1200000>;
+		vin-supply = <&vdd_cam1_5v>;
 	};
 };
 
@@ -378,6 +437,10 @@
 
 &gpu {
 	mali-supply = <&vdd_gpu>;
+	status = "okay";
+};
+
+&i2c4 {
 	status = "okay";
 };
 
@@ -693,6 +756,48 @@
 		status = "okay";
 	};
 };
+
+//cam0-gpio-setting
+&ov5647 {
+    pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
+};
+
+&ov5648 {
+	pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_LOW>;
+};
+
+&ov8858 {
+	pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
+};
+ 
+&sc132gs {
+	pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
+};
+
+
+//cam1-gpio-setting
+&cam1_ov5647 {
+    pwdn-gpios = <&gpio2 RK_PB3 GPIO_ACTIVE_HIGH>;
+};
+
+&cam1_ov5648 {
+	pwdn-gpios = <&gpio2 RK_PB3 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio2 RK_PB4 GPIO_ACTIVE_LOW>;
+};
+
+&cam1_ov8858 {
+	pwdn-gpios = <&gpio2 RK_PB3 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio2 RK_PB4 GPIO_ACTIVE_HIGH>;
+};
+
+&cam1_sc132gs {
+	pwdn-gpios = <&gpio2 RK_PB3 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio2 RK_PB4 GPIO_ACTIVE_HIGH>;
+};
+
 
 &iep {
 	status = "okay";

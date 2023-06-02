@@ -16,7 +16,7 @@
 #include "rk3566.dtsi"
 
 //MIPI摄像头配置
-#include "rk3566-lubancat-csi2.dtsi"
+#include "rk3568-lubancat-csi2.dtsi"
 
 /*  屏幕设置，通用镜像使用设备树插件,默认开启hdmi
 	专用镜像如果要开启MIPI屏幕支持，按屏幕型号开启2-4
@@ -568,6 +568,32 @@
 		status = "okay";
 	};
 };
+
+//cam-gpio-setting
+&ov5647 {
+    pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
+};
+
+&ov5648 {
+	pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_LOW>;
+};
+
+&ov8858 {
+	pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
+};
+
+&ov13850 {
+	pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
+};
+ 
+&sc132gs {
+	pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
+};
+
 
 &iep {
 	status = "okay";
