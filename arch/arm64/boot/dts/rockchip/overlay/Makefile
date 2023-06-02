@@ -49,8 +49,16 @@ dtbo-$(CONFIG_CPU_RK3568) += \
 	rk3568-lubancat-dsi0-1080p-overlay.dtbo \
 	rk3568-lubancat-dsi0-rpi-overlay.dtbo \
 	rk3568-lubancat-hdmi-disabled-overlay.dtbo \
-	rk3568-lubancat-msata-overlay.dtbo 
-
+	rk3568-lubancat-msata-overlay.dtbo \
+	rk3568-lubancat-edp-touch-overlay.dtbo \
+	rk356x-lubancat-csi0-sc132gs-overlay.dtbo \
+	rk356x-lubancat-csi0-ov5647-overlay.dtbo \
+	rk356x-lubancat-csi0-ov5648-overlay.dtbo \
+	rk356x-lubancat-csi0-ov8858-overlay.dtbo \
+	rk356x-lubancat-csi1-ov5648-overlay.dtbo \
+	rk356x-lubancat-csi1-ov8858-overlay.dtbo \
+	rk356x-lubancat-csi1-ov5647-overlay.dtbo \
+	rk356x-lubancat-csi1-sc132gs-overlay.dtbo
 
 endif
 
