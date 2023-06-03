@@ -18,7 +18,7 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 
-			edp-gt911: edp-gt911@5d {
+			edp_gt911: edp_gt911@5d {
 				status = "okay";
 				compatible = "goodix,gt911";
 				reg = <0x5d>;
