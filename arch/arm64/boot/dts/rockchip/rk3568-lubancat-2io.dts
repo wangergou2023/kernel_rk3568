@@ -694,10 +694,6 @@
 	};
 };
 
-&can1 {
-	status = "disabled"; //Default to use DTBO
-};
-
 &uart3 {
 	status = "disabled"; //Default to use DTBO
 };
