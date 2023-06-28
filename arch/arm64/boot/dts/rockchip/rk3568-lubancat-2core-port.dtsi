@@ -10,10 +10,10 @@
 
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/pinctrl/rockchip.h>
-#include "rk3568-lubancat-2m.dtsi"
+#include "rk3568-lubancat-2core.dtsi"
 
 / {
-	compatible = "rockchip,lubancat-2m-port", "rockchip,rk3568";
+	compatible = "rockchip,lubancat-2core-port", "rockchip,rk3568";
 };
 
 &sfc{
