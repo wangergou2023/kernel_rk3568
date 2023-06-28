@@ -162,6 +162,72 @@
         regulator-always-on;
     };
 
+
+    pcie2_3v3: pcie2-3v3-regulator {
+        compatible = "regulator-fixed";
+        enable-active-high;
+        gpio = <&gpio0 RK_PD4 GPIO_ACTIVE_HIGH>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&pcie2_3v3_en>;
+        regulator-name = "pcie2_3v3";
+        regulator-always-on;
+    };
+
+    wlan_3v3: wlan-3v3-regulator {
+        compatible = "regulator-fixed";
+        enable-active-high;
+        gpio = <&gpio0 RK_PD5 GPIO_ACTIVE_HIGH>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&wlan_3v3_en>;
+        regulator-name = "wlan_3v3";
+        regulator-always-on;
+    };
+
+    rk809_sound: rk809-sound {
+		status = "okay";
+		compatible = "simple-audio-card";
+		simple-audio-card,format = "i2s";
+		simple-audio-card,name = "rockchip,rk809-codec";
+		simple-audio-card,mclk-fs = <256>;
+		simple-audio-card,widgets =
+			"Microphone", "Mic Jack",
+			"Headphone", "Headphone Jack";
+		simple-audio-card,routing =
+			"Mic Jack", "MICBIAS1",
+			"IN1P", "Mic Jack",
+			"Headphone Jack", "HPOL",
+			"Headphone Jack", "HPOR";
+		simple-audio-card,cpu {
+			sound-dai = <&i2s1_8ch>;
+		};
+		simple-audio-card,codec {
+			sound-dai = <&rk809_codec>;
+		};
+	};
+
+    rk_headset: rk-headset {
+		status = "okay";
+		compatible = "rockchip_headset";
+		headset_gpio = <&gpio1 RK_PB2 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&hp_det>;
+		io-channels = <&saradc 1>;
+	};
+
+    adc_keys: adc-keys {
+		compatible = "adc-keys";
+		io-channels = <&saradc 0>;
+		io-channel-names = "buttons";
+		keyup-threshold-microvolt = <1800000>;
+		poll-interval = <100>;
+
+		restart-key {
+			label = "restart";
+			linux,code = <KEY_RESTART>;
+			press-threshold-microvolt = <9>;
+		};
+	};
+
     backlight: backlight {
         status = "okay";
         compatible = "pwm-backlight";
@@ -202,6 +268,58 @@
         >;
         default-brightness-level = <200>;
     };
+};
+
+// pcie
+&pcie2x1 {
+	reset-gpios = <&gpio0 RK_PB6 GPIO_ACTIVE_HIGH>;
+	disable-gpios = <&gpio3 RK_PB5 GPIO_ACTIVE_HIGH>;
+	vpcie3v3-supply = <&pcie2_3v3>;
+	status = "okay";
+};
+
+&combphy2_psq {
+		status = "okay";
+};
+
+// 红外
+&pwm3 {
+	status = "okay";
+
+	compatible = "rockchip,remotectl-pwm";
+	remote_pwm_id = <3>;
+	handle_cpu_id = <1>;
+	remote_support_psci = <0>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pwm3_pins>;
+
+	ir_key_lubancat{
+		rockchip,usercode = <0xff00>;
+		rockchip,key_table =
+			<0xeb   KEY_POWER>,
+			<0xec   KEY_MENU>,
+			<0xfe   KEY_BACK>,
+			<0xb7   KEY_HOME>,
+			<0xa3   KEY_WWW>,
+			<0xf4   KEY_VOLUMEUP>,
+			<0xa7   KEY_VOLUMEDOWN>,
+			<0xf8   KEY_REPLY>,
+			<0xfc   KEY_UP>,
+			<0xfd   KEY_DOWN>,
+			<0xf1   KEY_LEFT>,
+			<0xe5   KEY_RIGHT>;
+	};
+};
+
+&i2s1_8ch {
+	status = "okay";
+	rockchip,clk-trcm = <1>;
+	/delete-property/ rockchip,playback-only;
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2s1m0_sclktx
+					&i2s1m0_lrcktx
+					&i2s1m0_sdi0
+					&i2s1m0_sdo0>;
 };
 
 &saradc {
@@ -542,6 +660,22 @@
                 };
             };
         };
+
+        rk809_codec: codec {
+            #sound-dai-cells = <0>;
+            compatible = "rockchip,rk809-codec", "rockchip,rk817-codec";
+            clocks = <&cru I2S1_MCLKOUT_TX>;
+            clock-names = "mclk";
+            assigned-clocks = <&cru I2S1_MCLKOUT_TX>, <&cru I2S1_MCLK_TX_IOE>;
+            assigned-clock-rates = <12288000>;
+            assigned-clock-parents = <&cru CLK_I2S1_8CH_TX>, <&cru I2S1_MCLKOUT_TX>;
+            pinctrl-names = "default";
+            pinctrl-0 = <&i2s1m0_mclk>;
+            hp-volume = <20>;
+            spk-volume = <3>;
+            //mic-in-differential;
+            status = "okay";
+		};
     };
 };
 
@@ -786,6 +920,8 @@
 };
 
 
+
+
 &pinctrl {
     pmic {
         pmic_int: pmic_int {
@@ -837,5 +973,21 @@
         vcc5v0_usb30_en: vcc5v0-usb30-en {
             rockchip,pins = <4 RK_PC3 RK_FUNC_GPIO &pcfg_pull_none>;
         };
+
+        pcie2_3v3_en: pcie2-3v3-en {
+            rockchip,pins = <0 RK_PD4 RK_FUNC_GPIO &pcfg_pull_none>;
+        };
+
+        wlan_3v3_en: wlan_3v3-en {
+            rockchip,pins = <0 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
+        };
+
+
     };
+
+    headphone {
+		hp_det: hp-det {
+			rockchip,pins = <1 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
 };
