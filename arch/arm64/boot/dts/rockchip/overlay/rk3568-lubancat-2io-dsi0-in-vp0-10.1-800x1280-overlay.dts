@@ -9,16 +9,16 @@
 / {
 
 	fragment@0 {
-		target = <&route_dsi1>;
+		target = <&route_dis0>;
 
 		__overlay__ {
 			status = "okay";
-			connect = <&vp1_out_dsi1>;
+			connect = <&vp0_out_dis0>;
 		};
 	};
 
 	fragment@1 {
-		target = <&video_phy1>;
+		target = <&video_phy0>;
 
 		__overlay__ {
 			status = "okay";
@@ -26,36 +26,36 @@
 	};
 
 	fragment@2 {
-		target = <&dsi1_in_vp0>;
+		target = <&dis0_in_vp0>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@3 {
+		target = <&dis0_in_vp1>;
 
 		__overlay__ {
 			status = "disabled";
 		};
 	};
 
-	fragment@3 {
-		target = <&dsi1_in_vp1>;
-
-		__overlay__ {
-			status = "okay";
-		};
-	};
-
 	fragment@4 {
-		target = <&dsi1>;
+		target = <&dis0>;
 
 		__overlay__ {
 			status = "okay";
-			power-supply = <&mipi_dsi1_power>;
+			power-supply = <&mipi_dis0_power>;
 			#address-cells = <1>;
 			#size-cells = <0>;
 
-			dsi1_panel: panel@0 {
+			dis0_panel: panel@0 {
 				status = "okay";
 				compatible = "simple-panel-dsi";
 				reg = <0>;
-				backlight = <&backlight1>;
-				reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_LOW>;
+				backlight = <&backlight0>;
+				reset-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_LOW>;
 
 				enable-delay-ms = <35>;
 				prepare-delay-ms = <6>;
@@ -272,8 +272,8 @@
 				];
 
 				disp_timings: display-timings {
-					native-mode = <&dsi1_timing>;
-					dsi1_timing: timing {
+					native-mode = <&dis0_timing>;
+					dis0_timing: timing {
 						clock-frequency = <67000000>;
 						hactive = <800>;
 						vactive = <1280>;
@@ -295,8 +295,8 @@
 					#size-cells = <0>;
 					port@0 {
 						reg = <0>;
-						panel_in_dsi1: endpoint {
-							remote-endpoint = <&dsi1_out_panel>;
+						panel_in_dis0: endpoint {
+							remote-endpoint = <&dis0_out_panel>;
 						};
 					};
 				};
@@ -308,8 +308,8 @@
 
 				port@1 {
 					reg = <1>;
-					dsi1_out_panel: endpoint {
-						remote-endpoint = <&panel_in_dsi1>;
+					dis0_out_panel: endpoint {
+						remote-endpoint = <&panel_in_dis0>;
 					};
 				};
 			};
@@ -317,7 +317,7 @@
 	};
 
 	fragment@5 {
-		target = <&i2c5>;
+		target = <&i2c1>;
 
 		__overlay__ {
 			status = "okay";
@@ -329,10 +329,10 @@
 				status = "okay";
 				compatible = "goodix,gt928";
 				reg = <0x5d>;
-				interrupt-parent = <&gpio3>;
-				interrupts = <RK_PA1 IRQ_TYPE_LEVEL_LOW>;
-				reset-gpios = <&gpio3 RK_PB0 GPIO_ACTIVE_LOW>;
-				irq-gpios = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
+				interrupt-parent = <&gpio0>;
+				interrupts = <RK_PA0 IRQ_TYPE_LEVEL_LOW>;
+				reset-gpios = <&gpio0 RK_PA5 GPIO_ACTIVE_LOW>;
+				irq-gpios = <&gpio0 RK_PA0 GPIO_ACTIVE_HIGH>;
 				touchscreen-inverted-y;
 			};
 		};

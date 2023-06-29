@@ -5,7 +5,6 @@
 #include <dt-bindings/pinctrl/rockchip.h>
 
 / {
-	compatible = "rockchip,rk3568";
 
 	fragment@0 {
 		target = <&spi3>;
