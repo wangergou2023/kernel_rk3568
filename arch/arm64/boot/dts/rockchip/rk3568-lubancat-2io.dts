@@ -9,7 +9,7 @@
 #include "rk3568-lubancat-2core-port.dtsi"
 
 //MIPI摄像头配置
-#include "rk3568-lubancat-csi2-double-2.dtsi"
+#include "rk3568-lubancat-csi2-double.dtsi"
 
 // 屏幕设置，通用镜像使用设备树插件
 // 以下屏幕配置同时只能使用一个

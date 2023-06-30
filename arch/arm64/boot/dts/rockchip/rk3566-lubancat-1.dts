@@ -16,7 +16,7 @@
 #include "rk3566.dtsi"
 
 //MIPI摄像头配置
-#include "rk3568-lubancat-csi2-double-1.dtsi"
+#include "rk3566-lubancat-csi2-double.dtsi"
 
 /*  屏幕设置，通用镜像使用设备树插件,默认开启hdmi
 	专用镜像如果要开启MIPI屏幕支持，按屏幕型号开启2-4
