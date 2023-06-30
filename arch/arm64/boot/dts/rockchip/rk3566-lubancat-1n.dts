@@ -230,13 +230,6 @@
 		io-channels = <&saradc 1>;
 	};
 
-	ext_cam_clk: external-camera-clock {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <24000000>;
-		clock-output-names = "CLK_CAMERA1_24MHZ";
-	};
-
 	backlight: backlight {
 		status = "okay";
 		compatible = "pwm-backlight";
