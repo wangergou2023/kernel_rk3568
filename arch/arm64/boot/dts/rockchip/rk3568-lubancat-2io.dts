@@ -38,13 +38,6 @@
 		clock-output-names = "CLK_CAMERA0_24MHZ";
 	};
 
-	ext_cam_25m_clk: external-camera0-25m-clock {
-		compatible = "fixed-clock";
-		clock-frequency = <25000000>;
-		clock-output-names = "ext_cam_25m_clk";
-		#clock-cells = <0>;
-	};
-
 	vdd_cam_5v: vdd-cam0-5v-regulator {
 		compatible = "regulator-fixed";
 		regulator-name = "vdd_cam_5v";

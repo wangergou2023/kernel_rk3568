@@ -15,9 +15,6 @@
 #include <dt-bindings/sensor-dev.h>
 #include "rk3568.dtsi"
 
-//MIPI摄像头配置
-#include "rk3568-lubancat-csi2.dtsi"
-
 // MIPI屏幕设置，通用镜像使用设备树插件
 //专用镜像如果要开启MIPI屏幕支持，按屏幕型号开启1-3
 //以下3个配置互斥，不可同时开启
@@ -273,13 +270,6 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&hp_det>;
 		io-channels = <&saradc 1>;
-	};
-
-	ext_cam_clk: external-camera-clock {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <24000000>;
-		clock-output-names = "CLK_CAMERA1_24MHZ";
 	};
 
 	backlight: backlight {
@@ -704,43 +694,6 @@
 
 &i2s0_8ch {
     status = "okay";
-};
-
-//cam-gpio-setting
-&ov5647 {
-    pwdn-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
-};
-
-&ov5648 {
-	pwdn-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
-	reset-gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_LOW>;
-};
-
-&ov8858 {
-	pwdn-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
-	reset-gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_HIGH>;
-};
-
-&ov13850 {
-	pwdn-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
-	reset-gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_HIGH>;
-};
- 
-&sc132gs {
-	pwdn-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
-	reset-gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_HIGH>;
-};
-
-
-&i2c1 {
-	status = "okay";
-	clock-frequency = <100000>;
-
-	rockpi_ft5406: rockpi_ft5406@38 {
-		compatible = "rockpi_ft5406";
-		reg = <0x38>;
-		status = "okay";
-	};
 };
 
 &iep {
