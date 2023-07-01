@@ -50,6 +50,10 @@ dtbo-$(CONFIG_CPU_RK3568) += \
 	rk3566-lubancat-dsi0-1080p-overlay.dtbo \
 	rk3566-lubancat-dsi0-rpi-overlay.dtbo \
 	rk3566-lubancat-msata-overlay.dtbo \
+	rk3568-lubancat-2-dsi1-in-vp0-7.0-1024x600-overlay.dtbo \
+	rk3568-lubancat-2-dsi1-in-vp0-10.1-800x1280-overlay.dtbo \
+	rk3568-lubancat-2-dsi1-in-vp0-1080p-overlay.dtbo \
+	rk3568-lubancat-2-dsi1-in-vp0-rpi-overlay.dtbo \
 	rk3568-lubancat-2io-dsi0-in-vp0-7.0-1024x600-overlay.dtbo \
 	rk3568-lubancat-2io-dsi0-in-vp0-10.1-800x1280-overlay.dtbo \
 	rk3568-lubancat-2io-dsi0-in-vp0-1080p-overlay.dtbo \
