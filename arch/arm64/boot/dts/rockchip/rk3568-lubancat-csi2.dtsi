@@ -109,7 +109,7 @@
 
    ov13850: ov13850@10 {
 		compatible = "ovti,ov13850";
-		status = "disable";
+		status = "disabled";
 		reg = <0x10>;
 		clocks = <&ext_cam_clk>;
 		clock-names = "xvclk";
@@ -136,7 +136,7 @@
 
 	sc132gs: sc132gs@30 {
 		compatible = "smartsens,sc132gs";
-		status = "disable";
+		status = "disabled";
 		reg = <0x30>;
 		clocks = <&ext_cam_clk>;
 		clock-names = "xvclk";

@@ -8,7 +8,7 @@
 	status = "okay";
 	// ov5648 Camare
 	dw9714: dw9714@0c {
-		status = "disable";
+		status = "disabled";
 		compatible = "dongwoon,dw9714";
 		reg = <0x0c>;
 		rockchip,camera-module-index = <0>;
@@ -31,7 +31,7 @@
 		avdd-supply = <&cam_avdd>;  /* 2.8v */
 		dvdd-supply = <&cam_dvdd>;  /* 1.2v */
 		rotation = <180>;
-		status = "disable";
+		status = "disabled";
 
 		rockchip,camera-module-index = <0>;
 		rockchip,camera-module-facing = "back";
@@ -51,7 +51,7 @@
 
 	ov8858: ov8858@36 {
 		compatible = "ovti,ov8858";
-		status = "disable";
+		status = "disabled";
 		reg = <0x36>;
 		clocks = <&ext_cam_clk>;
 		clock-names = "xvclk";
@@ -78,7 +78,7 @@
 
 	ov5647: ov5647@36 {
 		compatible = "ovti,ov5647";
-		status = "disable";
+		status = "disabled";
 		reg = <0x36>;
 		clocks = <&ext_cam_25m_clk>;
 		clock-names = "ext_cam_25m_clk";
@@ -94,7 +94,7 @@
 
 	sc132gs: sc132gs@30 {
 		compatible = "smartsens,sc132gs";
-		status = "disable";
+		status = "disabled";
 		reg = <0x30>;
 		clocks = <&ext_cam_clk>;
 		clock-names = "xvclk";
@@ -121,10 +121,10 @@
 &i2c4 {
 	pinctrl-names = "default";
     pinctrl-0 = <&i2c4m1_xfer>;
-	status = "disable";
+	status = "disabled";
 	// ov5648 Camare
 	cam1_dw9714: cam1_dw9714@0c {
-		status = "disable";
+		status = "disabled";
 		compatible = "dongwoon,dw9714";
 		reg = <0x0c>;
 		rockchip,camera-module-index = <0>;
@@ -140,7 +140,7 @@
 
 	cam1_ov5648: cam1_camera@36 {
 		compatible = "ovti,ov5648";
-		status = "disable";
+		status = "disabled";
 		reg = <0x36>;
 		clocks = <&ext_cam1_clk>;
 		clock-names = "xvclk";
@@ -167,7 +167,7 @@
 
 	cam1_ov8858: cam1_ov8858@36 {
 		compatible = "ovti,ov8858";
-		status = "disable";
+		status = "disabled";
 		reg = <0x36>;
 		clocks = <&ext_cam1_clk>;
 		clock-names = "xvclk";
@@ -210,7 +210,7 @@
 
 	cam1_sc132gs: cam1_sc132gs@30 {
 		compatible = "smartsens,sc132gs";
-		status = "disable";
+		status = "disabled";
 		reg = <0x30>;
 		clocks = <&ext_cam1_clk>;
 		clock-names = "xvclk";
