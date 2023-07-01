@@ -325,7 +325,7 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 
-			gt911: gt911@5d {
+			gt928: gt928@5d {
 				status = "okay";
 				compatible = "goodix,gt928";
 				reg = <0x5d>;
