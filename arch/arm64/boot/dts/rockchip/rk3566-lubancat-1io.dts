@@ -164,6 +164,15 @@
         regulator-always-on;
     };
 
+    vdd_3v3_edp_tp: vdd-3v3-edp-tp-regulator {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		gpio = <&gpio1 RK_PB0 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&edp_tp_pwr_en>;
+		regulator-name = "vdd_3v3_edp_tp";
+		regulator-always-on;
+	};
 
     pcie2_3v3: pcie2-3v3-regulator {
         compatible = "regulator-fixed";
@@ -175,15 +184,14 @@
         regulator-always-on;
     };
 
-    wlan_3v3: wlan-3v3-regulator {
-        compatible = "regulator-fixed";
-        enable-active-high;
-        gpio = <&gpio0 RK_PD5 GPIO_ACTIVE_HIGH>;
-        pinctrl-names = "default";
-        pinctrl-0 = <&wlan_3v3_en>;
-        regulator-name = "wlan_3v3";
-        regulator-always-on;
-    };
+	wireless_wlan: wireless-wlan {
+		compatible = "wlan-platdata";
+		wifi_chip_type = "rtl8821cu";
+		pinctrl-names = "default";
+		pinctrl-0 = <&wifi_poweren_gpio>;
+		WIFI,poweren_gpio = <&gpio0 RK_PD5 GPIO_ACTIVE_LOW>;
+		status = "okay";
+	};
 
 	mipi_dsi0_power: mipi-dsi0-power-regulator {
 		compatible = "regulator-fixed";
@@ -240,22 +248,36 @@
     rk_headset: rk-headset {
 		status = "okay";
 		compatible = "rockchip_headset";
-		headset_gpio = <&gpio1 RK_PB2 GPIO_ACTIVE_HIGH>;
+		headset_gpio = <&gpio1 RK_PB2 GPIO_ACTIVE_LOW>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&hp_det>;
-		io-channels = <&saradc 1>;
 	};
 
-    adc_keys: adc-keys {
+    adc_key_1: adc-key-1 {
 		compatible = "adc-keys";
 		io-channels = <&saradc 0>;
 		io-channel-names = "buttons";
 		keyup-threshold-microvolt = <1800000>;
 		poll-interval = <100>;
 
-		restart-key {
-			label = "restart";
-			linux,code = <KEY_RESTART>;
+		up-key {
+			label = "up";
+			linux,code = <KEY_UP>;
+			press-threshold-microvolt = <9>;
+		};
+	};
+
+    adc_key_2: adc-key-2 {
+        status = "okay";
+		compatible = "adc-keys";
+		io-channels = <&saradc 1>;
+		io-channel-names = "buttons";
+		keyup-threshold-microvolt = <1800000>;
+		poll-interval = <100>;
+
+		ok-key {
+			label = "ok";
+			linux,code = <KEY_OK>;
 			press-threshold-microvolt = <9>;
 		};
 	};
@@ -803,6 +825,25 @@
     status = "okay";
 };
 
+&i2c4 {
+    status = "okay";
+	clock-frequency = <100000>;
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	edp_gt911: edp_gt911@5d {
+		status = "okay";
+		compatible = "goodix,gt911";
+		reg = <0x5d>;
+		interrupt-parent = <&gpio3>;
+		interrupts = <RK_PB0 IRQ_TYPE_LEVEL_LOW>;
+		reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_LOW>;
+		irq-gpios = <&gpio3 RK_PB0 GPIO_ACTIVE_HIGH>;
+		touchscreen-inverted-x = <1>;
+		touchscreen-inverted-y = <1>;
+	};
+};
+
 &iep_mmu {
     status = "okay";
 };
@@ -879,6 +920,22 @@
     status = "okay";
     pinctrl-names = "default";
     pinctrl-0 = <&uart1m0_xfer &uart1m0_ctsn>;
+};
+
+&uart3 {
+    status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart3m1_xfer>;
+};
+
+&uart4 {
+    status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart4m1_xfer>;
+};
+
+&uart6 {
+    status = "okay";
 };
 
 &vdpu {
@@ -1076,6 +1133,10 @@
         vcc3v3_output_en: vcc3v3-output-en {
             rockchip,pins = <3 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
         };
+        
+        edp_tp_pwr_en: edp-tp-pwr-en {
+			rockchip,pins = <1 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
     };
 
     usb {
@@ -1090,13 +1151,11 @@
         pcie2_3v3_en: pcie2-3v3-en {
             rockchip,pins = <0 RK_PD4 RK_FUNC_GPIO &pcfg_pull_none>;
         };
-
-        wlan_3v3_en: wlan_3v3-en {
-            rockchip,pins = <0 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
-        };
-
-
-    };
+        
+		wifi_poweren_gpio: wifi-poweren-gpio {
+			rockchip,pins = <0 RK_PD5 RK_FUNC_GPIO &pcfg_output_low>;
+		};
+	};
 
     headphone {
 		hp_det: hp-det {
