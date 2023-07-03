@@ -249,6 +249,16 @@
 	status = "okay";
 };
 
+&gmac0 {
+	tx_delay = <0x23>;
+	rx_delay = <0x07>;
+};	
+
+&gmac1 {
+	tx_delay = <0x22>;
+	rx_delay = <0x07>;
+};	
+
 &vdd_cam_5v {
 	gpio = <&gpio3 RK_PD0 GPIO_ACTIVE_HIGH>;
 	pinctrl-names = "default";
@@ -408,6 +418,10 @@
 
 		mipi_dsi1_pwr_en: mipi-dsi1-pwr-en {
 			rockchip,pins = <3 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		mipi_dsi1_irq: mipi-dsi1-irq {
+			rockchip,pins = <3 RK_PB0 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
 
