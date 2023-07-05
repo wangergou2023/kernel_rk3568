@@ -132,18 +132,6 @@
     };
 
     // LubanCat1io
-    vcc3v3_output: vcc3v3-output {
-        compatible = "regulator-fixed";
-        status = "disable";
-        enable-active-high;
-        gpio = <&gpio3 RK_PB0 GPIO_ACTIVE_HIGH>;
-        pinctrl-names = "default";
-        pinctrl-0 = <&vcc3v3_output_en>;
-        regulator-name = "vcc3v3_output";
-        regulator-always-on;
-    };
-
-    // LubanCat1io
     vcc5v0_usb20: vcc5v0-usb20-regulator {
         compatible = "regulator-fixed";
         enable-active-high;
@@ -163,6 +151,15 @@
         regulator-name = "vcc5v0_usb30_host";
         regulator-always-on;
     };
+
+    usb_otg_vbus: usb-otg-vbus-regulator {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		gpio = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&usb_otg_vbus_en>;
+		regulator-name = "vcc5v0_otg";
+	};
 
     vdd_3v3_edp_tp: vdd-3v3-edp-tp-regulator {
 		compatible = "regulator-fixed";
@@ -213,6 +210,37 @@
 		regulator-always-on;
 	};
 
+	vcc3v3_output: vcc3v3-output-regulator {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		gpio = <&gpio3 RK_PC1 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&vcc3v3_output_en>;
+		regulator-name = "vcc3v3_output";
+		regulator-always-on;
+	};
+
+	vcc5v0_output: vcc5v0-output-regulator {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		gpio = <&gpio0 RK_PC5 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&vcc5v0_output_en>;
+		regulator-name = "vcc5v0_output";
+		regulator-always-on;
+	};
+
+    vcc12v0_output: vcc12v0-output-regulator {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		gpio = <&gpio0 RK_PD3 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&vcc12v0_output_en>;
+		regulator-name = "vcc12v0_output";
+		regulator-always-on;
+	};
+
+
 	vdd_3v3_edp_lcd: vdd-3v3-edp-lcd-regulator {
 		compatible = "regulator-fixed";
 		enable-active-high;
@@ -222,6 +250,7 @@
 		regulator-name = "vdd_3v3_edp_lcd";
 		regulator-always-on;
 	};
+
 
     rk809_sound: rk809-sound {
 		status = "okay";
@@ -919,7 +948,7 @@
 &uart1 {
     status = "okay";
     pinctrl-names = "default";
-    pinctrl-0 = <&uart1m0_xfer &uart1m0_ctsn>;
+    pinctrl-0 = <&uart1m0_xfer>;
 };
 
 &uart3 {
@@ -981,11 +1010,13 @@
 };
 
 &u2phy0_host {
+    phy-supply = <&vcc5v0_usb30>;
     status = "okay";
 };
 
 &u2phy0_otg {
     status = "okay";
+    vbus-supply = <&usb_otg_vbus>;
 };
 
 &usb_host0_ehci {
@@ -1002,6 +1033,7 @@
 };
 
 &u2phy1_otg {
+    phy-supply = <&vcc5v0_usb20>;
     status = "okay";
 };
 
@@ -1023,12 +1055,13 @@
 };
 
 &usbdrd_dwc3 {
+    dr_mode = "otg";
+	extcon = <&usb2phy0>;
     status = "okay";
 };
 
-/* USB3.0 Host to USB2.0 only */
+/* USB3.0 Host  */
 &combphy1_usq {
-    rockchip,dis-u3otg1-port; /* 配置 dwc3_1 控制器最高支持 high speed */
     status = "okay";
 };
 
@@ -1037,9 +1070,6 @@
 };
 
 &usbhost_dwc3 {
-    phys = <&u2phy0_host>; /* 配置 phys 属性只引用 usb 2.0 phy 节点 */
-    phy-names = "usb2-phy";
-    maximum-speed = "high-speed"; /* 配置 dwc3 控制器最高支持 high speed */
     status = "okay";
 };
 
@@ -1065,7 +1095,7 @@
                     &gmac1m1_clkinout>;
 
     tx_delay = <0x16>;
-    rx_delay = <0x0a>;
+    rx_delay = <0x06>;
 
     phy-handle = <&rgmii_phy1>;
     status = "okay";
@@ -1130,13 +1160,22 @@
 	};
 
     power{
-        vcc3v3_output_en: vcc3v3-output-en {
-            rockchip,pins = <3 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
-        };
-        
         edp_tp_pwr_en: edp-tp-pwr-en {
 			rockchip,pins = <1 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
+
+        vcc3v3_output_en: vcc3v3-output-en {
+			rockchip,pins = <3 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+        vcc5v0_output_en: vcc5v0-output-en {
+			rockchip,pins = <0 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+        vcc12v0_output_en: vcc12v0-output-en {
+			rockchip,pins = <0 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+        
     };
 
     usb {
@@ -1154,6 +1193,10 @@
         
 		wifi_poweren_gpio: wifi-poweren-gpio {
 			rockchip,pins = <0 RK_PD5 RK_FUNC_GPIO &pcfg_output_low>;
+		};
+
+        usb_otg_vbus_en: usb-otg-vbus-en {
+			rockchip,pins = <0 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
