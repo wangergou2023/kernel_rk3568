@@ -9,16 +9,16 @@
 / {
 
 	fragment@0 {
-		target = <&route_dsi1>;
+		target = <&route_dsi0>;
 
 		__overlay__ {
 			status = "okay";
-			connect = <&vp0_out_dsi1>;
+			connect = <&vp1_out_dsi0>;
 		};
 	};
 
 	fragment@1 {
-		target = <&video_phy1>;
+		target = <&video_phy0>;
 
 		__overlay__ {
 			status = "okay";
@@ -26,23 +26,23 @@
 	};
 
 	fragment@2 {
-		target = <&dsi1_in_vp0>;
-
-		__overlay__ {
-			status = "okay";
-		};
-	};
-
-	fragment@3 {
-		target = <&dsi1_in_vp1>;
+		target = <&dsi0_in_vp0>;
 
 		__overlay__ {
 			status = "disabled";
 		};
 	};
 
+	fragment@3 {
+		target = <&dsi0_in_vp1>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
 	fragment@4 {
-		target = <&dsi1>;
+		target = <&dsi0>;
 
 		__overlay__ {
 			status = "okay";
@@ -50,7 +50,7 @@
 	};
 
 	fragment@5 {
-		target = <&dsi1_panel>;
+		target = <&dsi0_panel>;
 
 		__overlay__ {
 			status = "okay";
@@ -269,9 +269,9 @@
 				05 00 01 10
 			];
 
-			disp_timings: display-timings {
-				native-mode = <&dsi1_timing>;
-				dsi1_timing: timing {
+			disp_timing: display-timings {
+				native-mode = <&dsi0_timing>;
+				dsi0_timing: timing {
 					clock-frequency = <67000000>;
 					hactive = <800>;
 					vactive = <1280>;
@@ -291,7 +291,7 @@
 	};
 
 	fragment@6 {
-		target = <&i2c5>;
+		target = <&i2c1>;
 
 		__overlay__ {
 			status = "okay";
@@ -299,42 +299,10 @@
 	};
 
 	fragment@7 {
-		target = <&gt928_dsi1>;
+		target = <&gt928_dsi0>;
 
 		__overlay__ {
 			status = "okay";
-		};
-	};
-
-	fragment@8 {
-		target = <&route_hdmi>;
-
-		__overlay__ {
-			status = "disabled";
-		};
-	};
-
-	fragment@9 {
-		target = <&hdmi_in_vp0>;
-
-		__overlay__ {
-			status = "disabled";
-		};
-	};
-
-	fragment@10 {
-		target = <&hdmi_in_vp1>;
-
-		__overlay__ {
-			status = "disabled";
-		};
-	};
-
-	fragment@11 {
-		target = <&hdmi>;
-
-		__overlay__ {
-			status = "disabled";
 		};
 	};
 };

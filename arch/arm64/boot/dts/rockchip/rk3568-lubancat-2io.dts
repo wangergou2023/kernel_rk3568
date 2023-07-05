@@ -11,12 +11,8 @@
 //MIPI摄像头配置
 #include "rk3568-lubancat-csi2-double.dtsi"
 
-// 屏幕设置，通用镜像使用设备树插件
-// 以下屏幕配置同时只能使用一个
-//开启dsi屏幕时要将本文件中hdmi相关节点全部disabled
-// #include "rk3568-lubancat-2io-dsi-1080p.dtsi" //野火5.5寸 1080P
-// #include "rk3568-lubancat-2io-dsi-rpi.dtsi" //树莓派 5寸 800x480
-// #include "rk3568-lubancat-2io-edp.dtsi" // edp接口屏幕
+// MIPI-DSI屏幕
+#include "rk3568-lubancat-dsi.dtsi"
 
 / {
 	model = "LubanCat-2IO";
@@ -674,7 +670,43 @@
 	reset-gpios = <&gpio1 RK_PB2 GPIO_ACTIVE_HIGH>;
 };
 
+// mipi dsi0 gpio set
+&dsi0_panel {
+	reset-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_LOW>;
+};
 
+&gt911_dsi0 {
+	interrupt-parent = <&gpio0>;
+	interrupts = <RK_PA0 IRQ_TYPE_LEVEL_LOW>;
+	reset-gpios = <&gpio0 RK_PA5 GPIO_ACTIVE_LOW>;
+	irq-gpios = <&gpio0 RK_PA0 GPIO_ACTIVE_HIGH>;
+};
+
+&gt928_dsi0 {
+	interrupt-parent = <&gpio0>;
+	interrupts = <RK_PA0 IRQ_TYPE_LEVEL_LOW>;
+	reset-gpios = <&gpio0 RK_PA5 GPIO_ACTIVE_LOW>;
+	irq-gpios = <&gpio0 RK_PA0 GPIO_ACTIVE_HIGH>;
+};
+
+// mipi dsi1 gpio set
+&dsi1_panel {
+	reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_LOW>;
+};
+
+&gt911_dsi1 {
+	interrupt-parent = <&gpio3>;
+	interrupts = <RK_PA1 IRQ_TYPE_LEVEL_LOW>;
+	reset-gpios = <&gpio3 RK_PB0 GPIO_ACTIVE_LOW>;
+	irq-gpios = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
+};
+
+&gt928_dsi1 {
+	interrupt-parent = <&gpio3>;
+	interrupts = <RK_PA1 IRQ_TYPE_LEVEL_LOW>;
+	reset-gpios = <&gpio3 RK_PB0 GPIO_ACTIVE_LOW>;
+	irq-gpios = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
+};
 
 &i2c0 {
 	rx8010: rx8010@32 {
