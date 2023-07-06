@@ -746,7 +746,7 @@
 
 //cam-gpio-setting
 &ov5647 {
-    pwdn-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
+    pwdn-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_LOW>;
 };
 
 &ov5648 {
