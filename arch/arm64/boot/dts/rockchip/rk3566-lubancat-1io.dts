@@ -14,7 +14,9 @@
 #include <dt-bindings/display/rockchip_vop.h>
 #include <dt-bindings/sensor-dev.h>
 #include "rk3566.dtsi"
-#include "rk3566-lubancat-hdmi.dtsi" //HDMI输出
+
+//HDMI输出
+#include "rk3566-lubancat-hdmi.dtsi" 
 
 / {
     model = "EmbedFire LubanCat-1IO";
@@ -161,16 +163,6 @@
 		regulator-name = "vcc5v0_otg";
 	};
 
-    vdd_3v3_edp_tp: vdd-3v3-edp-tp-regulator {
-		compatible = "regulator-fixed";
-		enable-active-high;
-		gpio = <&gpio1 RK_PB0 GPIO_ACTIVE_HIGH>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&edp_tp_pwr_en>;
-		regulator-name = "vdd_3v3_edp_tp";
-		regulator-always-on;
-	};
-
     pcie2_3v3: pcie2-3v3-regulator {
         compatible = "regulator-fixed";
         enable-active-high;
@@ -240,17 +232,15 @@
 		regulator-always-on;
 	};
 
-
-	vdd_3v3_edp_lcd: vdd-3v3-edp-lcd-regulator {
+	vcc_edp_lcd: vcc-edp-lcd-regulator {
 		compatible = "regulator-fixed";
 		enable-active-high;
 		gpio = <&gpio1 RK_PB0 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&edp_lcd_pwr_en>;
-		regulator-name = "vdd_3v3_edp_lcd";
+		pinctrl-0 = <&edp_pwr_en>;
+		regulator-name = "vdd_edp_lcd";
 		regulator-always-on;
 	};
-
 
     rk809_sound: rk809-sound {
 		status = "okay";
@@ -1132,7 +1122,7 @@
     };
 
 	lcd {
-		edp_lcd_pwr_en: edp-lcd-pwr-en {
+		edp_pwr_en: edp-pwr-en {
 			rockchip,pins = <1 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
@@ -1160,10 +1150,6 @@
 	};
 
     power{
-        edp_tp_pwr_en: edp-tp-pwr-en {
-			rockchip,pins = <1 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-
         vcc3v3_output_en: vcc3v3-output-en {
 			rockchip,pins = <3 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
@@ -1175,7 +1161,6 @@
         vcc12v0_output_en: vcc12v0-output-en {
 			rockchip,pins = <0 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
-        
     };
 
     usb {

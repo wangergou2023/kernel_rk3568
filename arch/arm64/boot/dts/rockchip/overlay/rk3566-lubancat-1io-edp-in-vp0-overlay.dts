@@ -71,7 +71,7 @@
 				compatible = "simple-panel";
 				backlight = <&backlight2>;
 				status = "okay";
-				power-supply = <&vdd_3v3_edp_lcd>;
+				power-supply = <&vcc_edp_lcd>;
 				enable-gpios = <&gpio0 RK_PC7 GPIO_ACTIVE_HIGH>;
 				//bus-format = <MEDIA_BUS_FMT_RBG888_1X24>;
 				prepare-delay-ms = <100>; //AUX通信前延时
