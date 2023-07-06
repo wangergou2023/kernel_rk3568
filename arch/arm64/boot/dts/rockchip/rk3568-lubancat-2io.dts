@@ -90,7 +90,6 @@
 		#clock-cells = <0>;
 	};
 
-
 	vdd_cam1_5v: vdd-cam1-5v-regulator {
 		compatible = "regulator-fixed";
 		regulator-name = "vdd_cam1_5v";

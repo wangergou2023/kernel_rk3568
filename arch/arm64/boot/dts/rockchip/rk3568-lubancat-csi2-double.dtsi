@@ -32,7 +32,6 @@
 		clock-output-names = "ext_cam1_25m_clk";
 		#clock-cells = <0>;
 	};
-
 };
 
 &i2c1 {
