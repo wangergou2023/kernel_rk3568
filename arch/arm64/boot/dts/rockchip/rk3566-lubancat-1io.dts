@@ -18,6 +18,9 @@
 //HDMI输出
 #include "rk3566-lubancat-hdmi.dtsi" 
 
+// MIPI-DSI屏幕
+#include "rk3568-lubancat-dsi.dtsi"
+
 / {
     model = "EmbedFire LubanCat-1IO";
     compatible = "embedfire,lubancat", "rockchip,rk3566";
@@ -424,6 +427,44 @@
 	};
 };
 
+// mipi dsi0 gpio set
+&dsi0_panel {
+	reset-gpios = <&gpio3 RK_PA3 GPIO_ACTIVE_LOW>;
+};
+
+&gt911_dsi0 {
+    interrupt-parent = <&gpio3>;
+    interrupts = <RK_PC4 IRQ_TYPE_LEVEL_LOW>;
+    reset-gpios = <&gpio3 RK_PC2 GPIO_ACTIVE_LOW>;
+    irq-gpios = <&gpio3 RK_PC4 GPIO_ACTIVE_HIGH>;
+};
+
+&gt928_dsi0 {
+    interrupt-parent = <&gpio3>;
+    interrupts = <RK_PC4 IRQ_TYPE_LEVEL_LOW>;
+    reset-gpios = <&gpio3 RK_PC2 GPIO_ACTIVE_LOW>;
+    irq-gpios = <&gpio3 RK_PC4 GPIO_ACTIVE_HIGH>;
+};
+
+// mipi dsi1 gpio set
+&dsi1_panel {
+	reset-gpios = <&gpio2 RK_PC2 GPIO_ACTIVE_LOW>;
+};
+
+&gt911_dsi1 {
+	interrupt-parent = <&gpio2>;
+	interrupts = <RK_PC3 IRQ_TYPE_LEVEL_LOW>;
+	reset-gpios = <&gpio2 RK_PC4 GPIO_ACTIVE_LOW>;
+	irq-gpios = <&gpio2 RK_PC3 GPIO_ACTIVE_HIGH>;
+};
+
+&gt928_dsi1 {
+	interrupt-parent = <&gpio2>;
+	interrupts = <RK_PC3 IRQ_TYPE_LEVEL_LOW>;
+	reset-gpios = <&gpio2 RK_PC4 GPIO_ACTIVE_LOW>;
+	irq-gpios = <&gpio2 RK_PC3 GPIO_ACTIVE_HIGH>;
+};
+
 // pcie
 &pcie2x1 {
 	reset-gpios = <&gpio0 RK_PB6 GPIO_ACTIVE_HIGH>;
@@ -433,7 +474,7 @@
 };
 
 &combphy2_psq {
-		status = "okay";
+	status = "okay";
 };
 
 // 红外
@@ -844,25 +885,6 @@
     status = "okay";
 };
 
-&i2c4 {
-    status = "okay";
-	clock-frequency = <100000>;
-	#address-cells = <1>;
-	#size-cells = <0>;
-
-	edp_gt911: edp_gt911@5d {
-		status = "okay";
-		compatible = "goodix,gt911";
-		reg = <0x5d>;
-		interrupt-parent = <&gpio3>;
-		interrupts = <RK_PB0 IRQ_TYPE_LEVEL_LOW>;
-		reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_LOW>;
-		irq-gpios = <&gpio3 RK_PB0 GPIO_ACTIVE_HIGH>;
-		touchscreen-inverted-x = <1>;
-		touchscreen-inverted-y = <1>;
-	};
-};
-
 &iep_mmu {
     status = "okay";
 };
@@ -881,7 +903,6 @@
 
 &pmu_io_domains {
     status = "okay";
-    pmuio1-supply = <&vcc3v3_pmu>;
     pmuio2-supply = <&vcc3v3_pmu>;
     vccio1-supply = <&vccio_acodec>;
     vccio3-supply = <&vccio_sd>;

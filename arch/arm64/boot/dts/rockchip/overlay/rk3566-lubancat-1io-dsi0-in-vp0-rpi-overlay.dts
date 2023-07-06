@@ -46,65 +46,43 @@
 
 		__overlay__ {
 			status = "okay";
-			power-supply = <&mipi_dsi0_power>;
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			dsi0_panel: panel@0 {
-				compatible = "rockpi,tc358762";
-				reg = <0x0>;
-				status = "okay";
-
-				ports {
-					#address-cells = <1>;
-					#size-cells = <0>;
-					port@0 {
-						reg = <0>;
-						panel_in_dsi0: endpoint {
-							remote-endpoint = <&dsi0_out_panel>;
-						};
-					};
-				};
-			};
-
-			ports {
-				#address-cells = <1>;
-				#size-cells = <0>;
-
-				port@1 {
-					reg = <1>;
-					dsi0_out_panel: endpoint {
-						remote-endpoint = <&panel_in_dsi0>;
-					};
-				};
-			};
 		};
 	};
 
 	fragment@5 {
-		target = <&i2c1>;
+		target = <&dsi0_panel>;
 
 		__overlay__ {
+			compatible = "rockpi,tc358762";
 			status = "okay";
-			clock-frequency = <100000>;
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			rockpi_mcu_0: rockpi-mcu@45 {
-				compatible = "rockpi_mcu";
-				reg = <0x45>;
-				status = "okay";
-			};
-
-			rockpi_ft5406_0: rockpi_ft5406@38 {
-				compatible = "rockpi_ft5406";
-				reg = <0x38>;
-				status = "okay";
-			};
 		};
 	};
 
 	fragment@6 {
+		target = <&i2c1>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@7 {
+		target = <&rockpi_mcu_0>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@8 {
+		target = <&rockpi_ft5406_0>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@9 {
 		target = <&route_hdmi>;
 
 		__overlay__ {
@@ -112,7 +90,7 @@
 		};
 	};
 
-	fragment@7 {
+	fragment@10 {
 		target = <&hdmi_in_vp0>;
 
 		__overlay__ {
@@ -120,7 +98,7 @@
 		};
 	};
 
-	fragment@8 {
+	fragment@11 {
 		target = <&hdmi_in_vp1>;
 
 		__overlay__ {
@@ -128,7 +106,7 @@
 		};
 	};
 
-	fragment@9 {
+	fragment@12 {
 		target = <&hdmi>;
 
 		__overlay__ {
