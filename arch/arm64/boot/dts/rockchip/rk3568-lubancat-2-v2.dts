@@ -7,13 +7,8 @@
 #include "rk3568-lubancat-2.dtsi"
 // 双摄像头
 #include "rk3568-lubancat-csi2-double.dtsi"
-
-// 删除rk3568-lubancat-csi2-double.dtsi中i2c5中的cam1节点
-/delete-node/ &cam1_dw9714;
-/delete-node/ &cam1_ov5648;
-/delete-node/ &cam1_ov8858;
-/delete-node/ &cam1_ov5647;
-/delete-node/ &cam1_sc132gs;
+// MIPI-DSI屏幕
+#include "rk3568-lubancat-dsi.dtsi"
 
 / {
 	model = "EmbedFire LubanCat-2";
@@ -289,125 +284,65 @@
 	reset-gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_HIGH>;
 };
 
-&i2c3 {
+//cam1-gpio-setting
+&cam1_ov5647 {
+    pwdn-gpios = <&gpio3 RK_PC4 GPIO_ACTIVE_LOW>;
+};
+
+&cam1_ov5648 {
+	pwdn-gpios = <&gpio3 RK_PC4 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio3 RK_PA3 GPIO_ACTIVE_LOW>;
+};
+
+&cam1_ov8858 {
+	pwdn-gpios = <&gpio3 RK_PC4 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio3 RK_PA3 GPIO_ACTIVE_HIGH>;
+};
+
+&cam1_sc132gs {
+	pwdn-gpios = <&gpio3 RK_PC4 GPIO_ACTIVE_HIGH>;
+	reset-gpios = <&gpio3 RK_PA3 GPIO_ACTIVE_HIGH>;
+};
+
+// mipi dsi0 gpio set
+&dsi0_panel {
+	backlight = <&backlight>;
+	reset-gpios = <&gpio0 RK_PC5 GPIO_ACTIVE_LOW>;
+};
+
+&gt911_dsi0 {
+	interrupt-parent = <&gpio0>;
+	interrupts = <RK_PB5 IRQ_TYPE_LEVEL_LOW>;
+	reset-gpios = <&gpio0 RK_PB6 GPIO_ACTIVE_LOW>;
+	irq-gpios = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;
+};
+
+&gt928_dsi0 {
+	interrupt-parent = <&gpio0>;
+	interrupts = <RK_PB5 IRQ_TYPE_LEVEL_LOW>;
+	reset-gpios = <&gpio0 RK_PB6 GPIO_ACTIVE_LOW>;
+	irq-gpios = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;
+};
+
+// mipi dsi1 gpio set
+&dsi1_panel {
+	reset-gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_LOW>;
+};
+
+&gt911_dsi1 {
+	interrupt-parent = <&gpio3>;
+	interrupts = <RK_PB0 IRQ_TYPE_LEVEL_LOW>;
+	reset-gpios = <&gpio0 RK_PA0 GPIO_ACTIVE_LOW>;
+	irq-gpios = <&gpio3 RK_PB0 GPIO_ACTIVE_HIGH>;
+};
+
+&gt928_dsi1 {
+	interrupt-parent = <&gpio3>;
+	interrupts = <RK_PB0 IRQ_TYPE_LEVEL_LOW>;
+	reset-gpios = <&gpio0 RK_PA0 GPIO_ACTIVE_LOW>;
+	irq-gpios = <&gpio3 RK_PB0 GPIO_ACTIVE_HIGH>;
 	pinctrl-names = "default";
-	status = "okay";
-	// ov5648 Camare
-	cam1_dw9714: cam1_dw9714@0c {
-		status = "disabled";
-		compatible = "dongwoon,dw9714";
-		reg = <0x0c>;
-		rockchip,camera-module-index = <1>;
-		rockchip,vcm-max-current = <100>;
-		rockchip,vcm-start-current = <0>;
-		rockchip,vcm-rated-current = <100>;
-		rockchip,vcm-step-mode = <0xd>;
-		rockchip,vcm-dlc-enable = <0>;
-		rockchip,vcm-mclk = <0>;	
-		rockchip,vcm-t-src = <0>;
-		rockchip,camera-module-facing = "front";
-	};
-
-	cam1_ov5648: cam1_camera@36 {
-		compatible = "ovti,ov5648";
-		status = "disabled";
-		reg = <0x36>;
-		clocks = <&ext_cam1_clk>;
-		clock-names = "xvclk";
-		pwdn-gpios = <&gpio3 RK_PC4 GPIO_ACTIVE_HIGH>;
-		reset-gpios = <&gpio3 RK_PA3 GPIO_ACTIVE_LOW>;
-		dovdd-supply= <&cam1_dovdd>; /* 1.8v */
-		avdd-supply = <&cam1_avdd>;  /* 2.8v */
-		dvdd-supply = <&cam1_dvdd>;  /* 1.2v */
-		rotation = <180>;
-
-		rockchip,camera-module-index = <1>;
-		rockchip,camera-module-facing = "front";
-		rockchip,camera-module-name = "THDS11073";
-		rockchip,camera-module-lens-name = "Largan-40122a1";
-		lens-focus = <&cam1_dw9714>;
-
-		port {
-			/* MIPI CSI-2 bus endpoint */
-			cam1_ov5648_out: endpoint {
-				remote-endpoint = <&dphy2_in_ov5648>;
-				clock-lanes = <0>;
-				data-lanes = <1 2>;
-			};
-		};
-	};
-
-	cam1_ov8858: cam1_ov8858@36 {
-		compatible = "ovti,ov8858";
-		status = "disabled";
-		reg = <0x36>;
-		clocks = <&ext_cam1_clk>;
-		clock-names = "xvclk";
-		pwdn-gpios = <&gpio3 RK_PC4 GPIO_ACTIVE_HIGH>;
-		reset-gpios = <&gpio3 RK_PA3 GPIO_ACTIVE_HIGH>;
-		dovdd-supply= <&cam1_dovdd>; /* 1.8v */
-		avdd-supply = <&cam1_avdd>;  /* 2.8v */
-		dvdd-supply = <&cam1_dvdd>;  /* 1.2v */
-		rotation = <180>;
-		
-		rockchip,camera-module-index = <1>;
-		rockchip,camera-module-facing = "front";
-		rockchip,camera-module-name = "HS5885-BNSM1018-V01";
-		rockchip,camera-module-lens-name = "default";
-		lens-focus = <&cam1_dw9714>;
-
-		port {
-			/* MIPI CSI-2 bus endpoint */
-			cam1_ov8858_out: endpoint {
-				remote-endpoint = <&dphy2_in_ov8858>;
-				clock-lanes = <0>;
-				data-lanes = <1 2>;
-			};
-		};
-	};
-
-	cam1_ov5647: cam1_ov5647@36 {
-		compatible = "ovti,ov5647";
-		status = "disabled";
-		reg = <0x36>;
-		clocks = <&ext_cam1_25m_clk>;
-		clock-names = "ext_cam1_25m_clk";
-		lens-focus = <&dw9714>;
-    	pwdn-gpios = <&gpio3 RK_PC4 GPIO_ACTIVE_LOW>;
-
-		port {
-			cam1_ov5647_out: endpoint {
-				remote-endpoint = <&dphy2_in_ov5647>;
-				data-lanes = <1 2>;
-			};
-		};
-	};
-
-	cam1_sc132gs: cam1_sc132gs@30 {
-		compatible = "smartsens,sc132gs";
-		status = "disabled";
-		reg = <0x30>;
-		clocks = <&ext_cam1_clk>;
-		clock-names = "xvclk";
-		pwdn-gpios = <&gpio3 RK_PC4 GPIO_ACTIVE_HIGH>;
-		reset-gpios = <&gpio3 RK_PA3 GPIO_ACTIVE_HIGH>;
-		dovdd-supply= <&cam1_dovdd>; /* 1.8v */
-		avdd-supply = <&cam1_avdd>;  /* 2.8v */
-		dvdd-supply = <&cam1_dvdd>;  /* 1.2v */
-
-		rockchip,camera-module-index = <1>;
-		rockchip,camera-module-facing = "back";
-		rockchip,camera-module-name = "default";
-		rockchip,camera-module-lens-name = "default";
-
-		port {
-			cam1_sc132gs_out: endpoint {
-				remote-endpoint = <&dphy2_in_sc132gs>;
-				clock-lanes = <0>;
-				data-lanes = <1>;
-			};
-		};
-	};
+	pinctrl-0 = <&mipi_dsi1_irq>;
 };
 
 &pinctrl {
