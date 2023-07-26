@@ -21,6 +21,8 @@
 //MIPI摄像头配置
 #include "rk3568-lubancat-csi2-double.dtsi"
 
+//LVDS屏幕配置
+// #include "rk3566-lubancat-lvds-10.1-800x1280.dtsi"
 
 / {
 	model = "EmbedFire LubanCat-1H";
